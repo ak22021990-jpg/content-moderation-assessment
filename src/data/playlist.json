@@ -1,0 +1,21 @@
+{
+  "videos": [
+    {
+      "id": "placeholder",
+      "srcUrl": "",
+      "r2Url": "TBD — provision R2 bucket and paste URL here before Phase 2",
+      "duration": 5,
+      "poster": "",
+      "chapters": []
+    }
+  ],
+  "_cdnDocs": {
+    "devNote": "srcUrl empty in dev; Vite dev server serves public/videos/ at /videos/ path",
+    "productionCDN": "Cloudflare R2 bucket (free tier: 10 GB storage, 10M reads/mo, zero egress cost)",
+    "jsDelivrWarning": "jsDelivr CANNOT serve GitHub LFS files — it receives the 128-byte LFS pointer, not the binary. Do NOT use jsDelivr for *.mp4 tracked in LFS.",
+    "r2SetupDocs": "https://developers.cloudflare.com/r2/buckets/public-buckets/",
+    "swapInstruction": "To enable production video: (1) provision R2 bucket, (2) upload placeholder.mp4 to R2, (3) copy the r2.dev or custom-domain URL into srcUrl for the placeholder entry, (4) rebuild and redeploy",
+    "VIDEO_BASE_URL": "VITE_VIDEO_BASE_URL env var wires the CDN base — lands in Phase 6 (CONTENT-03)",
+    "phase6Note": "CONTENT-03: env-conditional srcUrl wiring (VITE_VIDEO_BASE_URL) lands in Phase 6"
+  }
+}
