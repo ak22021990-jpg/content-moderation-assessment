@@ -47,7 +47,7 @@ or any file tracked in this repository.
 - `toy story`, `toystory`
 - `finding nemo`
 - `wall-e`, `walle`
-- `coco`
+- `coco` *(word-boundary anchored — avoids false positive on npm package `picocolors`)*
 - `buzz lightyear`
 - `woody`
 - `incredibles`
@@ -73,8 +73,9 @@ or any file tracked in this repository.
 
 ## Word-Boundary Note
 
-`\bthor\b` and `\bfrozen\b` use word-boundary anchors to reduce false positives:
+`\bthor\b`, `\bfrozen\b`, and `\bcoco\b` use word-boundary anchors to reduce false positives:
 - `\bthor\b` correctly ignores `author` — `u` before `t` is a word character, so `\b` does not match.
+- `\bcoco\b` correctly ignores `picocolors` (npm package) — `i` before `c` is a word character, so `\b` does not match before `c` in `picocolors`.
 - `\bfrozen\b` will still match `--frozen-lockfile` because `-` is a non-word character (both sides are word boundaries). This is an accepted limitation. Mitigated by: the pre-commit hook only scans staged diffs, not existing files; the CI scan excludes `package-lock.json`; this project uses `npm ci` not `--frozen-lockfile`. If a future config file requires that flag, add `--exclude` for that file in `brand-guard.yml`.
 
 ---
@@ -84,7 +85,7 @@ or any file tracked in this repository.
 The exact pattern used by the pre-commit hook and CI workflow (case-insensitive, `-iE` flag):
 
 ```
-disney|disney\+|marvel|spider-man|spiderman|avengers|iron man|ironman|captain america|\bthor\b|black panther|hulk|wolverine|x-men|star wars|starwars|luke skywalker|darth vader|mandalorian|jedi|sith|han solo|chewbacca|yoda|lightsaber|pixar|toy story|toystory|finding nemo|wall-e|walle|coco|buzz lightyear|woody|incredibles|mickey mouse|minnie mouse|\bfrozen\b|moana|encanto|elsa|anna|simba|lion king|cinderella|snow white|hulu|espn\+
+disney|disney\+|marvel|spider-man|spiderman|avengers|iron man|ironman|captain america|\bthor\b|black panther|hulk|wolverine|x-men|star wars|starwars|luke skywalker|darth vader|mandalorian|jedi|sith|han solo|chewbacca|yoda|lightsaber|pixar|toy story|toystory|finding nemo|wall-e|walle|\bcoco\b|buzz lightyear|woody|incredibles|mickey mouse|minnie mouse|\bfrozen\b|moana|encanto|elsa|anna|simba|lion king|cinderella|snow white|hulu|espn\+
 ```
 
 ---
