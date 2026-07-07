@@ -2,11 +2,30 @@
   "name": "content-moderation-assessment",
   "version": "0.0.1",
   "description": "Content moderation hiring assessment",
+  "author": "ak22021990-jpg",
   "private": true,
+  "type": "module",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepare": "husky"
   },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
   "devDependencies": {
-    "husky": "^9.1.7"
+    "@eslint/js": "^9.39.1",
+    "@vitejs/plugin-react": "^6.0.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "vite": "^8.1.0"
   }
 }
