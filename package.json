@@ -1,0 +1,12 @@
+{
+  "name": "content-moderation-assessment",
+  "version": "0.0.1",
+  "description": "Content moderation hiring assessment",
+  "private": true,
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

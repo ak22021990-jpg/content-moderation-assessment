@@ -1,0 +1,35 @@
+name: Brand Guard
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  brand-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Scan for forbidden brand strings
+        run: |
+          FORBIDDEN='disney|disney\+|marvel|spider-man|spiderman|avengers|iron man|ironman|captain america|\bthor\b|black panther|hulk|wolverine|x-men|star wars|starwars|luke skywalker|darth vader|mandalorian|jedi|sith|han solo|chewbacca|yoda|lightsaber|pixar|toy story|toystory|finding nemo|wall-e|walle|coco|buzz lightyear|woody|incredibles|mickey mouse|minnie mouse|\bfrozen\b|moana|encanto|elsa|anna|simba|lion king|cinderella|snow white|hulu|espn\+'
+          grep -riE "$FORBIDDEN" \
+            --include="*.js" \
+            --include="*.jsx" \
+            --include="*.ts" \
+            --include="*.tsx" \
+            --include="*.html" \
+            --include="*.json" \
+            --include="*.md" \
+            --include="*.yml" \
+            --include="*.yaml" \
+            --include="*.css" \
+            --exclude-dir=node_modules \
+            --exclude-dir=.git \
+            --exclude=package-lock.json \
+            --exclude=brand-guardrails.md \
+            --exclude=brand-guard.yml \
+            . && echo "BRAND LEAK DETECTED" && exit 1 || echo "Brand check passed"
