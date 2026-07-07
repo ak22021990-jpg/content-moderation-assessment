@@ -1,0 +1,128 @@
+{
+  "version": "0.1.0-draft",
+  "categories": [
+    {
+      "id": "1",
+      "label": "Copyright & IP",
+      "subcategories": [
+        { "id": "1.1", "label": "Unauthorized full-work reproduction" },
+        { "id": "1.2", "label": "Sync / soundtrack infringement" },
+        { "id": "1.3", "label": "Franchise / character IP misuse" },
+        { "id": "1.4", "label": "Trademark / logo infringement" },
+        { "id": "1.5", "label": "Counterfeit / bootleg sales" },
+        { "id": "1.6", "label": "Watermark removal / stripped credits" },
+        { "id": "1.7", "label": "Livestream / event piracy" }
+      ]
+    },
+    {
+      "id": "2",
+      "label": "Hate & Harassment",
+      "subcategories": [
+        { "id": "2.1", "label": "Hate speech targeting protected characteristics" },
+        { "id": "2.2", "label": "Slurs / dehumanizing language" },
+        { "id": "2.3", "label": "Targeted harassment / bullying of an individual" },
+        { "id": "2.4", "label": "Doxxing / PII exposure" },
+        { "id": "2.5", "label": "Threats of violence" },
+        { "id": "2.6", "label": "Hateful groups / symbols / praise" }
+      ]
+    },
+    {
+      "id": "3",
+      "label": "Violence & Graphic Content",
+      "subcategories": [
+        { "id": "3.1", "label": "Graphic real-world violence" },
+        { "id": "3.2", "label": "Gore / injury / medical graphic imagery" },
+        { "id": "3.3", "label": "Animal abuse / cruelty" },
+        { "id": "3.4", "label": "Incitement to violence" },
+        { "id": "3.5", "label": "Dangerous acts / stunts likely to cause injury" },
+        { "id": "3.6", "label": "Weapons — instructional / brandishing" },
+        { "id": "3.7", "label": "Terrorism / violent extremism" }
+      ]
+    },
+    {
+      "id": "4",
+      "label": "Sexual & Nudity",
+      "subcategories": [
+        { "id": "4.1", "label": "Explicit sexual activity" },
+        { "id": "4.2", "label": "Nudity (adult)" },
+        { "id": "4.3", "label": "Sexually suggestive content" },
+        { "id": "4.4", "label": "Non-consensual intimate imagery" },
+        { "id": "4.5", "label": "Sexual solicitation / commercial sexual services" },
+        { "id": "4.6", "label": "Fetish content likely to violate site policy" }
+      ]
+    },
+    {
+      "id": "5",
+      "label": "Minor Safety",
+      "subcategories": [
+        { "id": "5.1", "label": "CSAM / suspected child sexual abuse material" },
+        { "id": "5.2", "label": "Child sexualization (non-CSAM)" },
+        { "id": "5.3", "label": "Grooming / predatory behavior toward minors" },
+        { "id": "5.4", "label": "Minors in dangerous / harmful situations" },
+        { "id": "5.5", "label": "Minors + adult themes co-appearance" },
+        { "id": "5.6", "label": "PII disclosure of a minor" }
+      ]
+    },
+    {
+      "id": "6",
+      "label": "Regulated Goods & Activities",
+      "subcategories": [
+        { "id": "6.1", "label": "Firearms / weapons sales" },
+        { "id": "6.2", "label": "Illicit drugs — sale / promotion" },
+        { "id": "6.3", "label": "Alcohol / tobacco / vape promotion (age-restricted)" },
+        { "id": "6.4", "label": "Gambling promotion (unlicensed)" },
+        { "id": "6.5", "label": "Prescription / pharmaceutical sales" },
+        { "id": "6.6", "label": "Human exploitation / trafficking" },
+        { "id": "6.7", "label": "Endangered wildlife / illegal animal trade" }
+      ]
+    },
+    {
+      "id": "7",
+      "label": "Misinformation & Deceptive Sync",
+      "subcategories": [
+        { "id": "7.1", "label": "Health misinformation with harm potential" },
+        { "id": "7.2", "label": "Election / civic integrity misinformation" },
+        { "id": "7.3", "label": "Manipulated media / synthetic media undisclosed" },
+        { "id": "7.4", "label": "Impersonation of real people / brands" },
+        { "id": "7.5", "label": "Conspiracy content promoting real-world harm" },
+        { "id": "7.6", "label": "Deceptive edits / out-of-context clips" }
+      ]
+    },
+    {
+      "id": "8",
+      "label": "Spam & Manipulation",
+      "subcategories": [
+        { "id": "8.1", "label": "Coordinated inauthentic behavior" },
+        { "id": "8.2", "label": "Engagement bait / click farming" },
+        { "id": "8.3", "label": "Scams / financial fraud" },
+        { "id": "8.4", "label": "Repetitive / low-quality reuploads" },
+        { "id": "8.5", "label": "Off-platform link spam to malicious destinations" },
+        { "id": "8.6", "label": "Fake giveaways / lottery scams" }
+      ]
+    },
+    {
+      "id": "9",
+      "label": "Brand Safety (GARM)",
+      "subcategories": [
+        { "id": "9.1", "label": "Adjacency to profanity / mature language" },
+        { "id": "9.2", "label": "Adjacency to violence (non-policy-violating)" },
+        { "id": "9.3", "label": "Adjacency to adult / sexual themes (non-policy-violating)" },
+        { "id": "9.4", "label": "Adjacency to sensitive social/political issues" },
+        { "id": "9.5", "label": "Adjacency to death / injury / military conflict" },
+        { "id": "9.6", "label": "Adjacency to controversial IP / hate-adjacent aesthetics" }
+      ]
+    },
+    {
+      "id": "10",
+      "label": "Community Standards (Platform-Specific)",
+      "subcategories": [
+        { "id": "10.1", "label": "Off-topic / wrong category" },
+        { "id": "10.2", "label": "Low production quality — vertical framing, unwatchable audio" },
+        { "id": "10.3", "label": "Duplicate / cross-posted content" },
+        { "id": "10.4", "label": "Metadata mismatch — title/tags don't match content" },
+        { "id": "10.5", "label": "Community-tone violation (family-friendly surface)" },
+        { "id": "10.6", "label": "Age-gate / rating mismatch" }
+      ]
+    }
+  ]
+}
