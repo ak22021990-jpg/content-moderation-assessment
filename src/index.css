@@ -87,3 +87,32 @@ body {
   font-size: 0.875rem;
   color: var(--cma-text-secondary);
 }
+
+/* ── Tag Panel ── */
+.cma-tag-panel { padding: var(--cma-space-md); }
+.cma-tag-l1-list {
+  display: flex; flex-direction: column; gap: var(--cma-space-md);
+  max-height: 65vh; overflow-y: auto; padding-right: var(--cma-space-sm);
+}
+.cma-tag-chip {
+  background: var(--cma-bg-elevated); color: var(--cma-text-secondary);
+  border: 1px solid var(--cma-border-subtle); border-radius: 8px;
+  padding: 6px 14px; font-size: 0.875rem; cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  font-family: inherit; line-height: 1.4; text-align: left;
+}
+.cma-tag-chip:hover { border-color: var(--cma-accent); }
+.cma-tag-chip:focus-visible { outline: var(--cma-focus-outline); outline-offset: 2px; }
+.cma-tag-chip--l1 { font-weight: 600; width: 100%; }
+.cma-tag-chip--l2 { font-size: 0.8125rem; font-weight: 400; }
+.cma-tag-chip--selected { background: var(--cma-accent); color: var(--cma-text-primary); border-color: var(--cma-accent); }
+.cma-tag-chip--selected:hover { background: var(--cma-accent-hover); }
+.cma-tag-l2-list {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: var(--cma-space-sm) 0 var(--cma-space-sm) var(--cma-space-md);
+  border-left: 2px solid var(--cma-border-subtle);
+  margin-top: var(--cma-space-xs);
+}
+.cma-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.cma-tag-l1-list fieldset { border: none; margin: 0; padding: 0; }
+.cma-tag-l1-list legend { padding: 0; margin: 0 0 var(--cma-space-xs) 0; width: 100%; }
