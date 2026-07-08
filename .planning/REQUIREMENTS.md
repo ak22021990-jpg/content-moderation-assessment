@@ -76,9 +76,9 @@ Grouped by category. Each requirement is atomic, testable, user-centric.
 - [x] **SCORE-03**: L2 scoring is set-based partial credit within selected L1s: `any-one-match` per L1 counts as full L2 credit for that L1 (proposed rule, client sign-off required)
 - [x] **SCORE-04**: Overall assessment score is the mean of the 5 video scores, expressed as a percentage
 - [x] **SCORE-05**: Per-L1 accuracy is computed across all 5 videos (denominator = number of videos where that L1 was in the answer key)
-- [ ] **SCORE-06**: Competency title derived: `>= 80% = Advanced`, `>= 50% = Proficient`, `< 50% = Foundation`
+- [x] **SCORE-06**: Competency title derived: `>= 80% = Advanced`, `>= 50% = Proficient`, `< 50% = Foundation`
 - [x] **SCORE-07**: Scoring logic lives in pure functions in `utils/scoring.js` (unit-testable, no React dependencies)
-- [ ] **SCORE-08**: Answer keys are bundled inside the JS build (not in `public/`) — accepts obscurity-not-security tradeoff per ARCHITECTURE.md
+- [x] **SCORE-08**: Answer keys are bundled inside the JS build (not in `public/`) — accepts obscurity-not-security tradeoff per ARCHITECTURE.md
 - [x] **SCORE-09**: Every submission carries an `answerKeyVersion` string so post-launch key edits don't corrupt cross-cohort comparisons
 
 ### Scoreboard (BOARD)
@@ -154,7 +154,7 @@ Grouped by category. Each requirement is atomic, testable, user-centric.
 - [ ] **QUALITY-01**: Each video's answer key is authored with explicit written rationale in `docs/video-manifest.md`
 - [ ] **QUALITY-02**: 3 independent raters tag each video blindly during Phase 4; Cohen/Fleiss kappa is computed per L1
 - [ ] **QUALITY-03**: All 5 videos must reach kappa ≥ 0.6 for their L1 tags before Phase 6 launch — videos below the threshold are re-authored, re-shot, or dropped from scoring
-- [ ] **QUALITY-04**: Tie-breaker rule (union L1 / any-one-match L2) is committed to `docs/scoring-rubric.md` BEFORE any candidate data is collected
+- [x] **QUALITY-04**: Tie-breaker rule (union L1 / any-one-match L2) is committed to `docs/scoring-rubric.md` BEFORE any candidate data is collected
 - [ ] **QUALITY-05**: Client moderation lead signs off on `taxonomy.json` L2 wording and on the per-video answer keys before Phase 6 launch
 - [ ] **QUALITY-06**: Answer keys have an `answerKeyVersion` field; any post-launch edit bumps the version
 

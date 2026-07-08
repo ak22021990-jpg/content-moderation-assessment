@@ -5,12 +5,13 @@ milestone_name: milestone
 current_phase: 04
 current_phase_name: scoring-scoreboard
 status: executing
-last_updated: "2026-07-08T14:05:22.819Z"
+stopped_at: Completed 04-scoring-scoreboard-03-PLAN.md
+last_updated: "2026-07-08T14:15:06.058Z"
 progress:
   total_phases: 7
   completed_phases: 2
   total_plans: 21
-  completed_plans: 14
+  completed_plans: 15
   percent: 29
 ---
 
@@ -41,7 +42,7 @@ progress:
 
 **Milestone:** v1 (initial launch)
 **Phase:** 04 (scoring-scoreboard) — EXECUTING
-**Plan:** 2 of 5
+**Plan:** 3 of 5
 **Status:** Ready to execute
 
 **Progress bar:**
@@ -67,6 +68,7 @@ progress:
 | Phase 03-timer-tagging-verdict P03 | 499 | 2 tasks | 9 files |
 | Phase 03-timer-tagging-verdict P04 | 480 | 2 tasks | 10 files |
 | Phase 04 P02 | 3min | 2 tasks | 2 files |
+| Phase 04-scoring-scoreboard P03 | 3min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -98,6 +100,10 @@ Open client decisions (O-01 through O-10) are tracked in `.planning/REQUIREMENTS
 ---
 
 ## Session Continuity
+
+**Last session:** 2026-07-08T14:15:06.039Z
+**Stopped at:** Completed 04-scoring-scoreboard-03-PLAN.md
+**Resume file:** None
 
 **Files in play (read on session resume):**
 
@@ -133,3 +139,5 @@ Open client decisions (O-01 through O-10) are tracked in `.planning/REQUIREMENTS
 - [Phase 03-04]: Integration tests mock RunnerScreen instead of VideoPlayerScreen to isolate shell wiring
 - [Phase ?]: Store API mismatch auto-fixed: buildAnswerSnapshot/commitAnswer take no args
 - [Phase ?]: SCOREBOARD enum added to screens.js, existing screens.test.js updated to expect 5 keys
+- [Phase ?]: Competency.js uses taxonomy.json for label resolution (not hardcoded strings)
+- [Phase 04-03]: allStrong/allWeak shortcuts guarded with categories.length > 1 for single-category label visibility

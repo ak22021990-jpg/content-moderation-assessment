@@ -135,7 +135,7 @@ Plans:
 
 - [x] 04-01-PLAN.md — Wave 0: Store Timing Backfill (pre-requisite — add videoId/timeSpentMs/timedOut/submittedAt to commitAnswer)
 - [x] 04-02-PLAN.md — Wave 1: Scoring Engine (SCORE-01..05,07,09 — pure functions + exhaustive unit tests)
-- [ ] 04-03-PLAN.md — Wave 1: Competency Module + answerKeys + Rubric Doc (SCORE-06,08 + QUALITY-04)
+- [x] 04-03-PLAN.md — Wave 1: Competency Module + answerKeys + Rubric Doc (SCORE-06,08 + QUALITY-04)
 - [ ] 04-04-PLAN.md — Wave 2: Scoreboard UI — Dependencies, Components, GSAP, Lottie (BOARD-01..07)
 - [ ] 04-05-PLAN.md — Wave 3: App Integration + Answer Key Authoring + Kappa (QUALITY-01,02)
 
