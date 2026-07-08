@@ -7,6 +7,7 @@ import LandingScreen from './components/LandingScreen.jsx'
 import GuidelinesScreen from './components/GuidelinesScreen.jsx'
 import RunnerScreen from './components/RunnerScreen.jsx'
 import AlreadyCompletedScreen from './components/AlreadyCompletedScreen.jsx'
+import ScoreboardScreen from './components/scoreboard/ScoreboardScreen.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 export default function App() {
@@ -41,12 +42,7 @@ export default function App() {
           />
         )
       case SCREENS.SCOREBOARD:
-        return (
-          <div className="cma-screen" data-testid="scoreboard-stub">
-            <h1>Assessment Complete</h1>
-            <p>Results will appear here in Phase 4.</p>
-          </div>
-        )
+        return <ScoreboardScreen />
       case SCREENS.ALREADY_COMPLETED:
         return <AlreadyCompletedScreen />
       default:

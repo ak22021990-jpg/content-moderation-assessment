@@ -13,6 +13,10 @@ vi.mock('../src/components/RunnerScreen.jsx', () => ({
   ),
 }))
 
+vi.mock('../src/components/scoreboard/ScoreboardScreen.jsx', () => ({
+  default: () => <div data-testid="scoreboard">ScoreboardScreen</div>,
+}))
+
 const IDENTITY_KEY = 'cma_identity_v1'
 const ATTEMPT_KEY = 'cma_attempt_v1'
 
@@ -68,7 +72,7 @@ describe('App integration', () => {
       expect(screen.getByTestId('runner-screen')).toBeInTheDocument()
 
       await user.click(screen.getByTestId('runner-trigger-complete'))
-      expect(screen.getByTestId('scoreboard-stub')).toBeInTheDocument()
+      expect(screen.getByTestId('scoreboard')).toBeInTheDocument()
     })
   })
 
