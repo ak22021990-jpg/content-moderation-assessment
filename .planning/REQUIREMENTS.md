@@ -83,13 +83,13 @@ Grouped by category. Each requirement is atomic, testable, user-centric.
 
 ### Scoreboard (BOARD)
 
-- [ ] **BOARD-01**: Scoreboard shows overall score percentage prominently
-- [ ] **BOARD-02**: Scoreboard shows per-L1 accuracy breakdown (bar chart or accuracy row per L1 that appeared in the answer keys)
-- [ ] **BOARD-03**: Scoreboard shows competency title (Advanced / Proficient / Foundation) and a 1–2 sentence strengths/weaknesses paragraph (reuse `generateCompetency` pattern from flagmail1)
-- [ ] **BOARD-04**: Scoreboard shows time-to-complete and per-video timing summary
-- [ ] **BOARD-05**: Scoreboard triggers a matching Lottie milestone animation on qualifying scores (PERFECT_EYE / SNIPER / ON_FIRE / ZONE_CLEAR / etc.)
-- [ ] **BOARD-06**: Lottie assets are lazy-loaded on demand (not eager-imported)
-- [ ] **BOARD-07**: Scoreboard shows per-video summary (verdict correct? L1 tags matched? L2 tags matched?) without revealing full answer keys
+- [x] **BOARD-01**: Scoreboard shows overall score percentage prominently
+- [x] **BOARD-02**: Scoreboard shows per-L1 accuracy breakdown (bar chart or accuracy row per L1 that appeared in the answer keys)
+- [x] **BOARD-03**: Scoreboard shows competency title (Advanced / Proficient / Foundation) and a 1–2 sentence strengths/weaknesses paragraph (reuse `generateCompetency` pattern from flagmail1)
+- [x] **BOARD-04**: Scoreboard shows time-to-complete and per-video timing summary
+- [x] **BOARD-05**: Scoreboard triggers a matching Lottie milestone animation on qualifying scores (PERFECT_EYE / SNIPER / ON_FIRE / ZONE_CLEAR / etc.)
+- [x] **BOARD-06**: Lottie assets are lazy-loaded on demand (not eager-imported)
+- [x] **BOARD-07**: Scoreboard shows per-video summary (verdict correct? L1 tags matched? L2 tags matched?) without revealing full answer keys
 
 ### One-Attempt Enforcement (ATTEMPT)
 
