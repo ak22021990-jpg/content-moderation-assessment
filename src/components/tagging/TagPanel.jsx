@@ -1,10 +1,16 @@
-import { useReducer } from 'react'
+import { useReducer, useEffect } from 'react'
 import taxonomy from '../../data/taxonomy.json'
 import { tagReducer, initialTagState } from './tagReducer.js'
 import L1Chip from './L1Chip.jsx'
 
-export default function TagPanel() {
+const noop = () => {}
+
+export default function TagPanel({ onSelectionChange = noop }) {
   const [state, dispatch] = useReducer(tagReducer, initialTagState)
+
+  useEffect(() => {
+    onSelectionChange(state.selectedL1, state.selectedL2)
+  }, [state.selectedL1, state.selectedL2, onSelectionChange])
 
   return (
     <section className="cma-tag-panel" aria-label="Content moderation tags">

@@ -2,11 +2,18 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
 
-vi.mock('../../../src/stores/useAssessmentStore.js', () => ({
-  default: vi.fn(),
+let mockCurrentVideoIndex = 0
+
+vi.mock('../../src/stores/useAssessmentStore.js', () => ({
+  default: (selector) => {
+    if (typeof selector === 'function') {
+      return selector({ currentVideoIndex: mockCurrentVideoIndex })
+    }
+    return { currentVideoIndex: mockCurrentVideoIndex }
+  },
 }))
 
-vi.mock('../../../src/data/playlist.json', () => ({
+vi.mock('../../src/data/playlist.json', () => ({
   default: {
     videos: [
       { id: 'v01', title: 'Video 1', srcUrl: '/videos/v01.mp4' },
@@ -18,37 +25,28 @@ vi.mock('../../../src/data/playlist.json', () => ({
   },
 }))
 
-import useAssessmentStore from '../../../src/stores/useAssessmentStore.js'
-import ProgressIndicator from '../../../src/components/ProgressIndicator.jsx'
+import ProgressIndicator from '../../src/components/ProgressIndicator.jsx'
 
 describe('ProgressIndicator', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockCurrentVideoIndex = 0
   })
 
-  function mockStore({ currentVideoIndex = 0 } = {}) {
-    useAssessmentStore.mockImplementation((selector) => {
-      if (typeof selector === 'function') {
-        return selector({ currentVideoIndex })
-      }
-      return { currentVideoIndex }
-    })
-  }
-
   it('renders "Video 2 of 5" when currentVideoIndex is 1', () => {
-    mockStore({ currentVideoIndex: 1 })
+    mockCurrentVideoIndex = 1
     render(React.createElement(ProgressIndicator))
     expect(screen.getByText('Video 2 of 5')).toBeInTheDocument()
   })
 
   it('renders "Video 1 of 5" when currentVideoIndex is 0', () => {
-    mockStore({ currentVideoIndex: 0 })
+    mockCurrentVideoIndex = 0
     render(React.createElement(ProgressIndicator))
     expect(screen.getByText('Video 1 of 5')).toBeInTheDocument()
   })
 
   it('renders "Video 5 of 5" at last index', () => {
-    mockStore({ currentVideoIndex: 4 })
+    mockCurrentVideoIndex = 4
     render(React.createElement(ProgressIndicator))
     expect(screen.getByText('Video 5 of 5')).toBeInTheDocument()
   })
