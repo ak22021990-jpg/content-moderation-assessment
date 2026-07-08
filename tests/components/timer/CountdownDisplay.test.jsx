@@ -3,12 +3,12 @@ import { render, screen } from '@testing-library/react'
 import React from 'react'
 
 // Must mock the store BEFORE importing the component
-vi.mock('../../src/stores/useAssessmentStore.js', () => ({
+vi.mock('../../../src/stores/useAssessmentStore.js', () => ({
   default: vi.fn(),
 }))
 
-import useAssessmentStore from '../../src/stores/useAssessmentStore.js'
-import CountdownDisplay from '../../src/components/timer/CountdownDisplay.jsx'
+import useAssessmentStore from '../../../src/stores/useAssessmentStore.js'
+import CountdownDisplay from '../../../src/components/timer/CountdownDisplay.jsx'
 
 describe('CountdownDisplay', () => {
   beforeEach(() => {

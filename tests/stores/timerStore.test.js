@@ -179,35 +179,37 @@ describe('Timer Store', () => {
 
   describe('phase transitions', () => {
     it('green when remainingMs > 60000', () => {
-      useAssessmentStore.setState({ remainingMs: 120000 })
       const { startTimer } = useAssessmentStore.getState()
       startTimer()
+      // elapsed = 50000, remaining = 180000 - 50000 = 130000 > 60000
+      now = 50000
+      tickFrames(1)
       expect(useAssessmentStore.getState().phase).toBe('green')
     })
 
     it('amber when remainingMs between 15000 and 60000', () => {
-      useAssessmentStore.setState({ remainingMs: 50000 })
       const { startTimer } = useAssessmentStore.getState()
       startTimer()
-      now = 1000
+      // elapsed = 130000, remaining = 180000 - 130000 = 50000 (amber zone)
+      now = 130000
       tickFrames(1)
       expect(useAssessmentStore.getState().phase).toBe('amber')
     })
 
     it('red when remainingMs < 15000', () => {
-      useAssessmentStore.setState({ remainingMs: 10000 })
       const { startTimer } = useAssessmentStore.getState()
       startTimer()
-      now = 1000
+      // elapsed = 170000, remaining = 180000 - 170000 = 10000 (red zone)
+      now = 170000
       tickFrames(1)
       expect(useAssessmentStore.getState().phase).toBe('red')
     })
 
     it('expired when remainingMs <= 0', () => {
-      useAssessmentStore.setState({ remainingMs: 500 })
       const { startTimer } = useAssessmentStore.getState()
       startTimer()
-      now = 500
+      // elapsed = 180000, remaining = 0
+      now = 180000
       tickFrames(1)
       expect(useAssessmentStore.getState().isExpired).toBe(true)
     })
