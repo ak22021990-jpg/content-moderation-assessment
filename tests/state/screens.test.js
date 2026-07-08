@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { SCREENS } from '../../src/state/screens.js'
 
 describe('SCREENS enum', () => {
-  it('has exactly 6 keys', () => {
-    expect(Object.keys(SCREENS)).toHaveLength(6)
+  it('has exactly 7 keys', () => {
+    expect(Object.keys(SCREENS)).toHaveLength(7)
   })
 
   it('has the required keys', () => {
@@ -13,6 +13,7 @@ describe('SCREENS enum', () => {
     expect(SCREENS).toHaveProperty('RUNNER')
     expect(SCREENS).toHaveProperty('ALREADY_COMPLETED')
     expect(SCREENS).toHaveProperty('SCOREBOARD')
+    expect(SCREENS).toHaveProperty('SUBMIT_DONE')
   })
 
   it('each key maps to a string equal to the key name', () => {
@@ -22,6 +23,7 @@ describe('SCREENS enum', () => {
     expect(SCREENS.RUNNER).toBe('RUNNER')
     expect(SCREENS.ALREADY_COMPLETED).toBe('ALREADY_COMPLETED')
     expect(SCREENS.SCOREBOARD).toBe('SCOREBOARD')
+    expect(SCREENS.SUBMIT_DONE).toBe('SUBMIT_DONE')
   })
 
   it('is immutable (Object.freeze applied)', () => {
