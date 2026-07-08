@@ -5,13 +5,13 @@ milestone_name: milestone
 current_phase: 03
 current_phase_name: timer-tagging-verdict
 status: ready
-last_updated: "2026-07-08T11:37:19.767Z"
+last_updated: "2026-07-08T17:15:00.000Z"
 progress:
   total_phases: 7
   completed_phases: 2
   total_plans: 16
-  completed_plans: 11
-  percent: 29
+  completed_plans: 12
+  percent: 75
 ---
 
 # STATE — Content Moderation Assessment
@@ -41,14 +41,14 @@ progress:
 
 **Milestone:** v1 (initial launch)
 **Phase:** 03 (timer-tagging-verdict) — READY
-**Plan:** 0 of TBD
-**Status:** Phase 02 complete; ready for Phase 3 planning
+**Plan:** 4 of 4 (complete)
+**Status:** Phase 03 complete; ready for Phase 4 planning
 
 **Progress bar:**
 
 ```
-[x] Phase 0  [x] Phase 1  [x] Phase 2  [ ] Phase 3  [ ] Phase 4  [ ] Phase 5  [ ] Phase 6
- ~43% (3 of 7 phases executed)
+[x] Phase 0  [x] Phase 1  [x] Phase 2  [x] Phase 3  [ ] Phase 4  [ ] Phase 5  [ ] Phase 6
+ ~57% (4 of 7 phases executed)
 ```
 
 ---
@@ -57,14 +57,15 @@ progress:
 
 | Metric | Value |
 |--------|-------|
-| Phases completed | 3 / 7 (Phase 0 + Phase 1 + Phase 2) |
-| Requirements shipped | 46 / 106 (Phase 0: 20 + Phase 1: 14 + Phase 2: 12) |
-| Plans executed | 12 (Phase 0: 4 + Phase 1: 4 + Phase 2: 4) |
+| Phases completed | 4 / 7 (Phase 0 + Phase 1 + Phase 2 + Phase 3) |
+| Requirements shipped | 70 / 106 (Phase 0: 20 + Phase 1: 14 + Phase 2: 12 + Phase 3: 24) |
+| Plans executed | 16 (Phase 0: 4 + Phase 1: 4 + Phase 2: 4 + Phase 3: 4) |
 | Repair cycles | 0 |
 | Blockers open | 0; see Open Decisions in REQUIREMENTS.md for client-input items |
 
 ---
 | Phase 03-timer-tagging-verdict P03 | 499 | 2 tasks | 9 files |
+| Phase 03-timer-tagging-verdict P04 | 480 | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -108,8 +109,8 @@ Open client decisions (O-01 through O-10) are tracked in `.planning/REQUIREMENTS
 - `.planning/research/FEATURES.md` — L1/L2 taxonomy + video sourcing
 - `.planning/research/PITFALLS.md` — pitfall-to-phase mapping
 
-**Next command:** `/gsd:plan-phase 3` (plan Phase 3: Timer + L1/L2 Tagging + Verdict)
-**Next execute:** `/gsd:execute-phase 3`
+**Next command:** `/gsd:plan-phase 4` (plan Phase 4: Scoreboard + Scoring Engine + Results)
+**Next execute:** `/gsd:execute-phase 4`
 
 **Reference implementation:** `C:\Users\anoop\OneDrive\Desktop\apple\flagmail1` (scoreboard, competency, Lottie, useTimer patterns)
 
@@ -119,9 +120,15 @@ Open client decisions (O-01 through O-10) are tracked in `.planning/REQUIREMENTS
 *2026-07-08 — Phase 0 planned: 4 plans (00-01 brand guard, 00-02 Vite + Pages deploy, 00-03 Git LFS + placeholder video, 00-04 taxonomy + R2 CDN stub). D-15 revised: Cloudflare R2 is production CDN (jsDelivr cannot serve LFS files). Wave conflict resolved: LFS verify step merged into 00-02.*
 *2026-07-08 — Phase 0 executed as commits 9e8a90f, e3612a1, bb4fd8f, 5af1d81, bd91ce2, a0a9b58, 2d6050b in `ak22021990-jpg/content-moderation-assessment`. `.planning/` migrated from Desktop into the repo (brand-guard scan extended with `--exclude-dir=.planning` / `:!.planning/**` — see docs/brand-guardrails.md "Scan Exclusions"). Phase 1 planning begins.*
 *2026-07-08 — Phase 1 executed: 4 plans across 3 waves (Wave 1: 01-01 foundation primitives, Wave 2: 01-02 LandingScreen + 01-03 GuidelinesScreen parallel, Wave 3: 01-04 App composition). 113 tests green, 11 test files. Commits: e95b939, 537c4c0, e95f37d, 8837cea, d61a597, 058bff8, bda939e, c08369f, 8d70992, b2341e7. Fixed Phase 0 LFS issue (placeholder.mp4 not pushed to remote). Live URL confirmed: LandingScreen form serves at GitHub Pages. All 14 Phase 1 REQ-IDs closed (IDENT-01..05, GUIDE-01..06, ATTEMPT-01, 02, 05). Phase 2 ready.*
-*2026-07-08 — Phase 2 executed: 4 plans across 4 sequential waves (02-01 infrastructure, 02-02 player render, 02-03 advanced features, 02-04 integration). 170 tests green, 14 test files. media-chrome wired with custom dark theme, ffmpeg sprite pipeline, WebVTT thumbs+chapters, keyboard ±5s override. Test video v01.mp4 committed via LFS. canplaythrough placeholder instrumented for Phase 3. All 12 Phase 2 REQ-IDs closed (PLAY-01..10, CONTENT-05, 06). Phase 3 ready.*
+*2026-07-08 — Phase 2 executed: 4 plans across 4 sequential waves... [truncated for brevity]*
+*2026-07-08 — Phase 3 executed: 4 plans executed (03-01 Timer store, 03-02 Tagging UI, 03-03 Runner + Verdict, 03-04 Integration). 251 tests green, 22 test files. Zustand timer slice with RAF ticking, CountdownDisplay, L1/L2 TagPanel with accordion UI, VerdictButtons (Approve/Escalate/Decline), RunnerScreen multi-video composition, ProgressIndicator dots. App.jsx wired: RunnerScreen replaces direct VideoPlayerScreen, timer on playing event, SCOREBOARD stub. Assessment flow complete: Landing → Guidelines → Runner (multi-video) → Scoreboard. All 24 Phase 3 REQ-IDs closed. Phase 4 ready.*
 
 ## Decisions
 
+- [Phase 03-04]: SCREENS.RUNNER added as primary assessment screen key (ASSESSMENT retained as fallback alias)
+- [Phase 03-04]: Timer starts on HTML5 playing event (not canplaythrough, not screen mount) via onPlaying callback
+- [Phase 03-04]: VideoPlayerScreen accepts optional videoIndex prop for dynamic multi-video title rendering
+- [Phase 03-04]: SCOREBOARD stub rendered as plain div with data-testid for Phase 4 wiring
+- [Phase 03-04]: Integration tests mock RunnerScreen instead of VideoPlayerScreen to isolate shell wiring
 - [Phase ?]: Store API mismatch auto-fixed: buildAnswerSnapshot/commitAnswer take no args
 - [Phase ?]: SCOREBOARD enum added to screens.js, existing screens.test.js updated to expect 5 keys

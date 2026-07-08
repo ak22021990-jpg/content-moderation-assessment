@@ -14,7 +14,7 @@
 - [x] **Phase 0: Foundations (Repo + Anti-Leak + Infra Gates)** — Fresh repo with generic name; pre-commit + CI brand-name grep gate; LFS budget math + CDN provisioned; taxonomy schema locked; deploy pipeline green with placeholder
 - [x] **Phase 1: App Shell + One-Attempt Gate** — Screen enum; Landing (name+email); Guidelines skeleton; one-attempt localStorage guard; deploys end-to-end
 - [x] **Phase 2: Custom Video Player (media-chrome)** — media-chrome wired; one MP4 via LFS end-to-end; ffmpeg sprite + WebVTT thumb + chapters pipeline; `canplaythrough`-anchored ready state
-- [ ] **Phase 3: Timer + L1/L2 Tagging + Verdict** — Zustand timer slice; 3:00 countdown with amber/red thresholds; multi-select L1 + dependent L2 tagging; Approve/Decline verdict; auto-submit on timeout; taxonomy client sign-off gate
+- [x] **Phase 3: Timer + L1/L2 Tagging + Verdict** — Zustand timer slice; 3:00 countdown with amber/red thresholds; multi-select L1 + dependent L2 tagging; Approve/Decline verdict; auto-submit on timeout; taxonomy client sign-off gate
 - [ ] **Phase 4: Scoring + Scoreboard (flagmail1 parity)** — Rubric scoring (50/25/25 partial credit); per-L1 accuracy; competency title; Lottie milestones; 3-rater kappa calibration begins
 - [ ] **Phase 5: Submission + One-Attempt Defense in Depth** — Google Apps Script `doPost` deployed; HMAC + origin check + rate limit; SHA-256 email dedup on server; retry/backoff; Formspree fallback wired
 - [ ] **Phase 6: Polish, Content Freeze & Launch Gates** — Final 5 videos committed; GSAP transitions; kappa ≥ 0.6 verified; client taxonomy + answer-key sign-off; CDN swap tested; browser matrix; brand-leak final audit
@@ -100,14 +100,14 @@
   4. Approve and Decline buttons are visible and clearly labeled; clicking either records the verdict AND advances to the next video; user cannot go back and edit a video's answers once verdict is recorded; zero-L1-selected + Approve is a valid submission
    5. Zustand timer slice with selector subscriptions is measurably preventing per-second re-renders of `VideoPlayer` and `TagPanel` (verified via React DevTools profiler on a 3-min run: player renders ≤ 5 times, tag panel renders only on user interaction)
 
-**Plans:** 1/4 plans executed
+**Plans:** 4/4 plans executed
 
 Plans:
 
-- [ ] 03-01-PLAN.md — Zustand Timer Store + Persistence (TIME-01..08): install zustand, RAF+performance.now() timer slice, sessionStorage persistence, CountdownDisplay, amber/red thresholds, auto-submit on expiry
-- [ ] 03-02-PLAN.md — TagPanel Component + L1/L2 Cascade (TAG-01..08): data-driven multi-select L1 chips, dependent L2 reveal, useReducer cascade logic, keyboard accessibility
+- [x] 03-01-PLAN.md — Zustand Timer Store + Persistence (TIME-01..08): install zustand, RAF+performance.now() timer slice, sessionStorage persistence, CountdownDisplay, amber/red thresholds, auto-submit on expiry
+- [x] 03-02-PLAN.md — TagPanel Component + L1/L2 Cascade (TAG-01..08): data-driven multi-select L1 chips, dependent L2 reveal, useReducer cascade logic, keyboard accessibility
 - [x] 03-03-PLAN.md — Verdict Buttons + RunnerScreen (VERDICT-01..04): Approve/Decline with double-click guard, multi-video loop, key-on-index remount, ProgressIndicator, side-by-side layout
-- [ ] 03-04-PLAN.md — Integration + Playlist Expansion: wire RunnerScreen into App.jsx, onPlaying timer start, playlist.json → 5 videos, scoreboard stub, integration test update, human-verify checkpoint
+- [x] 03-04-PLAN.md — Integration + Playlist Expansion: wire RunnerScreen into App.jsx, onPlaying timer start, playlist.json → 5 videos, scoreboard stub, integration test update, human-verify checkpoint
 
 **UI hint:** yes
 **Notes / Cross-Cutting:**
@@ -187,7 +187,7 @@ Plans:
 | 0. Foundations | 4/4 | Complete | 2026-07-08 |
 | 1. App Shell + One-Attempt Gate | 4/4 | Complete | 2026-07-08 |
 | 2. Custom Video Player | 4/4 | Complete | 2026-07-08 |
-| 3. Timer + Tagging + Verdict | 1/4 | In Progress|  |
+| 3. Timer + Tagging + Verdict | 4/4 | Complete | 2026-07-08 |
 | 4. Scoring + Scoreboard | 0/? | Not started | — |
 | 5. Submission + Defense in Depth | 0/? | Not started | — |
 | 6. Polish + Content Freeze + Launch | 0/? | Not started | — |
@@ -215,4 +215,4 @@ Plans:
 
 ---
 
-*Last updated: 2026-07-07 after initialization*
+*Last updated: 2026-07-08 after Phase 3 completion*

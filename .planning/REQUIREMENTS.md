@@ -42,25 +42,25 @@ Grouped by category. Each requirement is atomic, testable, user-centric.
 
 ### Timer (TIME)
 
-- [ ] **TIME-01**: Each video has a 3:00 countdown timer visible above the player
-- [ ] **TIME-02**: Timer starts on the `playing` event of that video (not on screen mount)
-- [ ] **TIME-03**: Timer uses `performance.now()` deltas anchored to a wall-clock start (per PITFALLS.md — not `setInterval`)
-- [ ] **TIME-04**: Timer persists to `sessionStorage` and survives page refresh mid-video (resumes at the correct remaining time)
-- [ ] **TIME-05**: Timer color shifts at 60 s (amber) and 15 s (red) remaining
-- [ ] **TIME-06**: At 0:00, the current video's answer auto-submits with whatever tags/verdict the user had selected
-- [ ] **TIME-07**: Timer lives in a Zustand slice with selector subscriptions to prevent per-second re-renders cascading through the player and tag panel
-- [ ] **TIME-08**: Pausing the video does NOT pause the timer (documented in Guidelines)
+- [x] **TIME-01**: Each video has a 3:00 countdown timer visible above the player
+- [x] **TIME-02**: Timer starts on the `playing` event of that video (not on screen mount)
+- [x] **TIME-03**: Timer uses `performance.now()` deltas anchored to a wall-clock start (per PITFALLS.md — not `setInterval`)
+- [x] **TIME-04**: Timer persists to `sessionStorage` and survives page refresh mid-video (resumes at the correct remaining time)
+- [x] **TIME-05**: Timer color shifts at 60 s (amber) and 15 s (red) remaining
+- [x] **TIME-06**: At 0:00, the current video's answer auto-submits with whatever tags/verdict the user had selected
+- [x] **TIME-07**: Timer lives in a Zustand slice with selector subscriptions to prevent per-second re-renders cascading through the player and tag panel
+- [x] **TIME-08**: Pausing the video does NOT pause the timer (documented in Guidelines)
 
 ### L1 / L2 Tagging (TAG)
 
-- [ ] **TAG-01**: User can select one or more L1 categories per video (multi-select)
-- [ ] **TAG-02**: Selecting an L1 reveals its L2 sub-categories; user can select one or more L2 tags per selected L1
-- [ ] **TAG-03**: L2 selection is scoped to its parent L1 (cannot pick an L2 without its L1 being selected)
-- [ ] **TAG-04**: User can deselect any L1 or L2 at any time before verdict submission
-- [ ] **TAG-05**: If user selects zero L1 categories and clicks Approve, that is a valid submission (no violation flagged)
-- [ ] **TAG-06**: If user selects an L1 but no L2 under it, the submission is valid but the L2 portion of the rubric scores 0 for that L1
-- [ ] **TAG-07**: TagPanel is driven by `taxonomy.json` (data-driven, no hard-coded category names in JSX)
-- [ ] **TAG-08**: TagPanel is keyboard-accessible (tab traversal, space = toggle)
+- [x] **TAG-01**: User can select one or more L1 categories per video (multi-select)
+- [x] **TAG-02**: Selecting an L1 reveals its L2 sub-categories; user can select one or more L2 tags per selected L1
+- [x] **TAG-03**: L2 selection is scoped to its parent L1 (cannot pick an L2 without its L1 being selected)
+- [x] **TAG-04**: User can deselect any L1 or L2 at any time before verdict submission
+- [x] **TAG-05**: If user selects zero L1 categories and clicks Approve, that is a valid submission (no violation flagged)
+- [x] **TAG-06**: If user selects an L1 but no L2 under it, the submission is valid but the L2 portion of the rubric scores 0 for that L1
+- [x] **TAG-07**: TagPanel is driven by `taxonomy.json` (data-driven, no hard-coded category names in JSX)
+- [x] **TAG-08**: TagPanel is keyboard-accessible (tab traversal, space = toggle)
 
 ### Verdict (VERDICT)
 
