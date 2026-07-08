@@ -243,8 +243,12 @@ describe('buildHmac', () => {
     await buildHmac({ name: 'test', hmac: 'existing', secret: 'data' }, 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2')
 
     // The sign call should NOT include the hmac field in the payload
-    const signedData = mockSign.mock.calls[0][1]
-    const signedString = new TextDecoder().decode(signedData)
+    // crypto.subtle.sign(algorithm, key, data) — data is third arg
+    const signedData = mockSign.mock.calls[0][2]
+    // Convert Uint8Array to string manually (TextDecoder may not be available in test env)
+    const signedString = Array.from(new Uint8Array(signedData))
+      .map((c) => String.fromCharCode(c))
+      .join('')
     expect(signedString).not.toContain('"hmac":"existing"')
     expect(signedString).toContain('"name":"test"')
   })
