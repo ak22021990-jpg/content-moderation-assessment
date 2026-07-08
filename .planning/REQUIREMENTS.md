@@ -71,15 +71,15 @@ Grouped by category. Each requirement is atomic, testable, user-centric.
 
 ### Scoring Rubric (SCORE)
 
-- [ ] **SCORE-01**: Each video is scored on a 100-point rubric: verdict correct = 50 pts, L1 correct = 25 pts, L2 correct = 25 pts
-- [ ] **SCORE-02**: L1 scoring is set-based partial credit: `|user ∩ answer| / |answer|` × 25 (per PITFALLS.md tie-breaker: union of user tags accepted; scored on intersection with reference set)
-- [ ] **SCORE-03**: L2 scoring is set-based partial credit within selected L1s: `any-one-match` per L1 counts as full L2 credit for that L1 (proposed rule, client sign-off required)
-- [ ] **SCORE-04**: Overall assessment score is the mean of the 5 video scores, expressed as a percentage
-- [ ] **SCORE-05**: Per-L1 accuracy is computed across all 5 videos (denominator = number of videos where that L1 was in the answer key)
+- [x] **SCORE-01**: Each video is scored on a 100-point rubric: verdict correct = 50 pts, L1 correct = 25 pts, L2 correct = 25 pts
+- [x] **SCORE-02**: L1 scoring is set-based partial credit: `|user ∩ answer| / |answer|` × 25 (per PITFALLS.md tie-breaker: union of user tags accepted; scored on intersection with reference set)
+- [x] **SCORE-03**: L2 scoring is set-based partial credit within selected L1s: `any-one-match` per L1 counts as full L2 credit for that L1 (proposed rule, client sign-off required)
+- [x] **SCORE-04**: Overall assessment score is the mean of the 5 video scores, expressed as a percentage
+- [x] **SCORE-05**: Per-L1 accuracy is computed across all 5 videos (denominator = number of videos where that L1 was in the answer key)
 - [ ] **SCORE-06**: Competency title derived: `>= 80% = Advanced`, `>= 50% = Proficient`, `< 50% = Foundation`
-- [ ] **SCORE-07**: Scoring logic lives in pure functions in `utils/scoring.js` (unit-testable, no React dependencies)
+- [x] **SCORE-07**: Scoring logic lives in pure functions in `utils/scoring.js` (unit-testable, no React dependencies)
 - [ ] **SCORE-08**: Answer keys are bundled inside the JS build (not in `public/`) — accepts obscurity-not-security tradeoff per ARCHITECTURE.md
-- [ ] **SCORE-09**: Every submission carries an `answerKeyVersion` string so post-launch key edits don't corrupt cross-cohort comparisons
+- [x] **SCORE-09**: Every submission carries an `answerKeyVersion` string so post-launch key edits don't corrupt cross-cohort comparisons
 
 ### Scoreboard (BOARD)
 
