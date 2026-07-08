@@ -55,7 +55,7 @@ created: 2026-07-08
 - [ ] `tests/utils/submission.test.js` — stubs for buildSubmissionPayload, buildHmac, submitResults, hashEmail
 - [ ] `tests/components/SubmitDoneScreen.test.jsx` — stubs for render with identity, no back nav, terminal state
 - [ ] `tests/utils/dedup.test.js` — update from placeholder hash (trim+lowercase) to real Web Crypto SHA-256 tests
-- [ ] `tests/state/screens.test.js` — bump expected key count from 7 to 8 (add SUBMIT_DONE)
+- [ ] `tests/state/screens.test.js` — bump expected key count from 6 to 7 (add SUBMIT_DONE)
 - [ ] `scripts/apps-script/Code.gs` — manual deploy gate (not automated testable)
 - [ ] `scripts/apps-script/README.md` — deployment documentation
 

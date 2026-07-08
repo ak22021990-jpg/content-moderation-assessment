@@ -665,7 +665,7 @@ function doPost(e) {
 | A4 | `JSON.stringify` key order is consistent between client V8 and Apps Script V8 | Common Pitfalls | HMAC mismatch — mitigated by stripping `hmac` field from raw body string on server |
 | A5 | `@formspree/react@3.0.0` API unchanged from docs | Standard Stack | API drift requires code change — package has stable history since 2024 |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Client-server HMAC matching across V8 versions**
    - What we know: Both use V8 engine. `JSON.stringify` key order is insertion-order (stable in practice).
