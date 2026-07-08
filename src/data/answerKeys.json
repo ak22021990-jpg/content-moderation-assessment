@@ -1,0 +1,41 @@
+{
+  "version": "1.0.0-draft",
+  "_note": "Initial draft answer keys. All keys will be refined after kappa calibration (QUALITY-02) and client sign-off (Phase 6). Version bumps on every edit.",
+  "videos": [
+    {
+      "id": "v01",
+      "verdict": "DECLINE",
+      "l1Tags": ["1", "8"],
+      "l2Tags": ["1.4", "1.6", "8.3"],
+      "rationale": "Visible trademark/logo infringement (1.4) and stripped watermark (1.6) — Copyright & IP violation. Promotes a fraudulent investment scheme (8.3) — financial scam under Spam & Manipulation."
+    },
+    {
+      "id": "v02",
+      "verdict": "APPROVE",
+      "l1Tags": [],
+      "l2Tags": [],
+      "rationale": "Benign content — generic lifestyle montage with no policy-violating elements. No hate speech, no copyright issues, no regulated goods, no explicit content, no misinformation."
+    },
+    {
+      "id": "v03",
+      "verdict": "DECLINE",
+      "l1Tags": ["2", "3"],
+      "l2Tags": ["2.2", "3.4"],
+      "rationale": "Contains racial slurs (2.2) and explicit calls to violence against a specific group (3.4). Hate speech + incitement to violence."
+    },
+    {
+      "id": "v04",
+      "verdict": "DECLINE",
+      "l1Tags": ["7"],
+      "l2Tags": ["7.1"],
+      "rationale": "Makes false medical claims that a household product cures a serious illness (7.1). Health misinformation with clear harm potential."
+    },
+    {
+      "id": "v05",
+      "verdict": "DECLINE",
+      "l1Tags": ["9"],
+      "l2Tags": ["9.6"],
+      "rationale": "Deliberately ambiguous brand-adjacent case. Music video uses imagery stylistically similar to a recognized extremist symbol (9.6). Falls under Brand Safety (GARM) adjacency. **PENDING client decision O-01**: strict brand-safe interpretation = DECLINE; community-guideline-only = APPROVE. Current draft uses DECLINE per preliminary rubric. Will be finalized after client sign-off."
+    }
+  ]
+}
