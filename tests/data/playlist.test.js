@@ -2,9 +2,9 @@ import { describe, it, expect } from 'vitest'
 import playlist from '../../src/data/playlist.json'
 
 describe('playlist.json v1', () => {
-  it('has videos array with exactly 1 entry for Phase 2', () => {
+  it('has videos array with exactly 5 entries for Phase 3', () => {
     expect(Array.isArray(playlist.videos)).toBe(true)
-    expect(playlist.videos).toHaveLength(1)
+    expect(playlist.videos).toHaveLength(5)
   })
 
   it('video entry has all required fields', () => {

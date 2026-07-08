@@ -13,15 +13,16 @@ import {
 import playlist from '../../data/playlist.json'
 import './VideoPlayer.css'
 
-export default function VideoPlayerScreen({ src, onReady, onError, onReset }) {
+export default function VideoPlayerScreen({ src, videoIndex, onReady, onPlaying, onError, onReset }) {
   const [videoError, setVideoError] = useState(false)
   const [videoReady, setVideoReady] = useState(false)
   const videoRef = useRef(null)
   const controllerRef = useRef(null)
 
-  const videoSrc = src || playlist.videos[0].srcUrl
-  const videoTitle = playlist.videos[0].title
-  const video = playlist.videos[0]
+  const currentVideoIdx = videoIndex !== undefined ? videoIndex : 0
+  const currentVideo = playlist.videos[currentVideoIdx] || playlist.videos[0]
+
+  const videoSrc = src || currentVideo.srcUrl
 
   useEffect(() => {
     const videoEl = videoRef.current
@@ -45,6 +46,16 @@ export default function VideoPlayerScreen({ src, onReady, onError, onReset }) {
       videoEl.removeEventListener('error', handleError)
     }
   }, [onReady, onError])
+
+  useEffect(() => {
+    const videoEl = videoRef.current
+    if (!videoEl) return
+    const handlePlaying = () => {
+      onPlaying?.()
+    }
+    videoEl.addEventListener('playing', handlePlaying)
+    return () => videoEl.removeEventListener('playing', handlePlaying)
+  }, [onPlaying])
 
   useEffect(() => {
     const controller = controllerRef.current
@@ -80,8 +91,8 @@ export default function VideoPlayerScreen({ src, onReady, onError, onReset }) {
     <section className="cma-player-container" aria-label="Video player">
       <div className="cma-player-card">
         <div className="cma-video-title-bar">
-          <span className="cma-video-title">Video 1 of 5</span>
-          <span className="cma-video-subtitle">{videoTitle}</span>
+          <span className="cma-video-title">Video {currentVideoIdx + 1} of {playlist.videos.length}</span>
+          <span className="cma-video-subtitle">{currentVideo.title}</span>
         </div>
         {videoError ? (
           <div className="cma-player-error" role="alert">
@@ -99,8 +110,8 @@ export default function VideoPlayerScreen({ src, onReady, onError, onReset }) {
               preload="metadata"
               crossOrigin=""
             >
-              <track default label="thumbnails" kind="metadata" src={video.thumbsVttUrl} />
-              <track default kind="chapters" src={video.chaptersVttUrl} srcLang="en" />
+              <track default label="thumbnails" kind="metadata" src={currentVideo.thumbsVttUrl} />
+              <track default kind="chapters" src={currentVideo.chaptersVttUrl} srcLang="en" />
             </video>
             <MediaLoadingIndicator slot="centered-chrome" />
             <MediaControlBar>

@@ -7,7 +7,7 @@ import VerdictButtons from './tagging/VerdictButtons.jsx'
 import ProgressIndicator from './ProgressIndicator.jsx'
 import playlist from '../data/playlist.json'
 
-export default function RunnerScreen({ onComplete, onReset }) {
+export default function RunnerScreen({ onComplete, onPlaying, onReset }) {
   const [submitting, setSubmitting] = useState(false)
   const currentVideoIndex = useAssessmentStore((s) => s.currentVideoIndex)
   const isComplete = useAssessmentStore((s) => s.isComplete)
@@ -47,7 +47,7 @@ export default function RunnerScreen({ onComplete, onReset }) {
       <ProgressIndicator />
       <div className="cma-runner-main">
         <div className="cma-runner-player-col">
-          <VideoPlayerScreen key={currentVideoIndex} src={currentVideo?.srcUrl} onReset={onReset} />
+          <VideoPlayerScreen key={currentVideoIndex} src={currentVideo?.srcUrl} videoIndex={currentVideoIndex} onPlaying={onPlaying} onReset={onReset} />
           <CountdownDisplay />
         </div>
         <div className="cma-runner-tags-col">

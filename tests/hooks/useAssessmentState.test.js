@@ -41,7 +41,7 @@ describe('useAssessmentState', () => {
     expect(typeof stored.startedAt).toBe('string')
   })
 
-  it('enterAssessment transitions to ASSESSMENT', () => {
+  it('enterAssessment transitions to RUNNER', () => {
     const { result } = renderHook(() => useAssessmentState())
 
     act(() => {
@@ -51,7 +51,17 @@ describe('useAssessmentState', () => {
       result.current.enterAssessment()
     })
 
-    expect(result.current.screen).toBe(SCREENS.ASSESSMENT)
+    expect(result.current.screen).toBe(SCREENS.RUNNER)
+  })
+
+  it('goToScreen navigates to arbitrary screen', () => {
+    const { result } = renderHook(() => useAssessmentState())
+
+    act(() => {
+      result.current.goToScreen(SCREENS.SCOREBOARD)
+    })
+
+    expect(result.current.screen).toBe(SCREENS.SCOREBOARD)
   })
 
   it('showAlreadyCompleted transitions to ALREADY_COMPLETED', () => {

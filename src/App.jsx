@@ -2,9 +2,10 @@ import { useCallback } from 'react'
 import { SCREENS } from './state/screens.js'
 import { useAssessmentState } from './hooks/useAssessmentState.js'
 import { useOneAttemptGuard } from './hooks/useOneAttemptGuard.js'
+import useAssessmentStore from './stores/useAssessmentStore.js'
 import LandingScreen from './components/LandingScreen.jsx'
 import GuidelinesScreen from './components/GuidelinesScreen.jsx'
-import VideoPlayerScreen from './components/player/VideoPlayerScreen.jsx'
+import RunnerScreen from './components/RunnerScreen.jsx'
 import AlreadyCompletedScreen from './components/AlreadyCompletedScreen.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 
@@ -28,15 +29,23 @@ export default function App() {
         )
       case SCREENS.GUIDELINES:
         return <GuidelinesScreen onBegin={state.enterAssessment} />
+      case SCREENS.RUNNER:
       case SCREENS.ASSESSMENT:
         return (
-          <VideoPlayerScreen
+          <RunnerScreen
             onReset={handleDevReset}
-            onReady={() => {
-              // TODO(Phase 3): wire timer.start() here once Zustand timer slice lands
-              console.log('[cma] video ready (canplaythrough) — timer start target');
+            onPlaying={() => {
+              useAssessmentStore.getState().startTimer()
             }}
+            onComplete={() => state.goToScreen(SCREENS.SCOREBOARD)}
           />
+        )
+      case SCREENS.SCOREBOARD:
+        return (
+          <div className="cma-screen" data-testid="scoreboard-stub">
+            <h1>Assessment Complete</h1>
+            <p>Results will appear here in Phase 4.</p>
+          </div>
         )
       case SCREENS.ALREADY_COMPLETED:
         return <AlreadyCompletedScreen />

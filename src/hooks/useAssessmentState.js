@@ -72,8 +72,12 @@ export function useAssessmentState() {
     setScreen(SCREENS.GUIDELINES)
   }, [])
 
+  const goToScreen = useCallback((target) => {
+    setScreen(target)
+  }, [])
+
   const enterAssessment = useCallback(() => {
-    setScreen(SCREENS.ASSESSMENT)
+    setScreen(SCREENS.RUNNER)
   }, [])
 
   const showAlreadyCompleted = useCallback(() => {
@@ -92,6 +96,7 @@ export function useAssessmentState() {
     startAssessment,
     enterGuidelines,
     enterAssessment,
+    goToScreen,
     showAlreadyCompleted,
     resetAttempt,
   }
