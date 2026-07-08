@@ -1,7 +1,23 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+current_phase: 02
+current_phase_name: custom-video-player
+status: ready
+last_updated: "2026-07-08T12:00:00.000Z"
+progress:
+  total_phases: 7
+  completed_phases: 2
+  total_plans: 8
+  completed_plans: 8
+  percent: 29
+---
+
 # STATE — Content Moderation Assessment
 
 **Last updated:** 2026-07-08
-**Session:** phase-1-planning
+**Session:** phase-1-complete
 
 ---
 
@@ -11,9 +27,10 @@
 
 **Core value:** Give hiring managers a defensible, industry-aligned signal that a candidate can moderate creator video content correctly and consistently.
 
-**Current focus:** Phase 0 executed (all 4 plans landed as commits in `ak22021990-jpg/content-moderation-assessment`); Phase 1 (App Shell + One-Attempt Gate) planning in progress.
+**Current focus:** Phase 02 — custom-video-player
 
 **Non-negotiables:**
+
 - Client brand name / logo / franchise / character names NEVER appear anywhere in UI, code, meta, repo names, or commit history
 - Zero paid infra; free tiers only
 - One-attempt-only assessment integrity
@@ -23,14 +40,15 @@
 ## Current Position
 
 **Milestone:** v1 (initial launch)
-**Phase:** 1 — App Shell + One-Attempt Gate — **planning**
-**Plan:** TBD (planner run in progress)
-**Status:** Phase 0 executed (commits 9e8a90f → 2d6050b); Phase 1 planning initiated
+**Phase:** 02 (custom-video-player) — READY
+**Plan:** 0 of TBD
+**Status:** Phase 01 complete; ready for Phase 2 planning
 
 **Progress bar:**
+
 ```
-[x] Phase 0  [~] Phase 1  [ ] Phase 2  [ ] Phase 3  [ ] Phase 4  [ ] Phase 5  [ ] Phase 6
- ~14% (1 of 7 phases executed)
+[x] Phase 0  [x] Phase 1  [ ] Phase 2  [ ] Phase 3  [ ] Phase 4  [ ] Phase 5  [ ] Phase 6
+ ~29% (2 of 7 phases executed)
 ```
 
 ---
@@ -39,11 +57,11 @@
 
 | Metric | Value |
 |--------|-------|
-| Phases completed | 1 / 7 (Phase 0 executed; SUMMARY.md pending for 00-02, 00-03) |
-| Requirements shipped | 20 / 106 (Phase 0 REQ-IDs — DEPLOY/BRAND/CONTENT-01/04/07) |
-| Plans executed | 4 (00-01 brand guard, 00-02 Vite+Pages, 00-03 LFS+placeholder, 00-04 taxonomy+R2 stub) |
+| Phases completed | 2 / 7 (Phase 0 + Phase 1) |
+| Requirements shipped | 34 / 106 (Phase 0: 20 + Phase 1: 14 REQ-IDs) |
+| Plans executed | 8 (Phase 0: 4 + Phase 1: 4) |
 | Repair cycles | 0 |
-| Blockers open | 0 (planning-time); see Open Decisions in REQUIREMENTS.md for client-input items |
+| Blockers open | 0; see Open Decisions in REQUIREMENTS.md for client-input items |
 
 ---
 
@@ -79,6 +97,7 @@ Open client decisions (O-01 through O-10) are tracked in `.planning/REQUIREMENTS
 ## Session Continuity
 
 **Files in play (read on session resume):**
+
 - `.planning/PROJECT.md` — project context, constraints, key decisions
 - `.planning/REQUIREMENTS.md` — 106 v1 REQ-IDs + traceability
 - `.planning/ROADMAP.md` — 7-phase structure with success criteria
@@ -88,7 +107,7 @@ Open client decisions (O-01 through O-10) are tracked in `.planning/REQUIREMENTS
 - `.planning/research/FEATURES.md` — L1/L2 taxonomy + video sourcing
 - `.planning/research/PITFALLS.md` — pitfall-to-phase mapping
 
-**Next command:** `/gsd:execute-phase 1` (after `/gsd:plan-phase 1` completes and produces PLAN files)
+**Next command:** `/gsd:plan-phase 2` (plan Phase 2: Custom Video Player with media-chrome)
 
 **Reference implementation:** `C:\Users\anoop\OneDrive\Desktop\apple\flagmail1` (scoreboard, competency, Lottie, useTimer patterns)
 
@@ -97,3 +116,4 @@ Open client decisions (O-01 through O-10) are tracked in `.planning/REQUIREMENTS
 *Init: 2026-07-07 — roadmap approved, ready for Phase 0 planning*
 *2026-07-08 — Phase 0 planned: 4 plans (00-01 brand guard, 00-02 Vite + Pages deploy, 00-03 Git LFS + placeholder video, 00-04 taxonomy + R2 CDN stub). D-15 revised: Cloudflare R2 is production CDN (jsDelivr cannot serve LFS files). Wave conflict resolved: LFS verify step merged into 00-02.*
 *2026-07-08 — Phase 0 executed as commits 9e8a90f, e3612a1, bb4fd8f, 5af1d81, bd91ce2, a0a9b58, 2d6050b in `ak22021990-jpg/content-moderation-assessment`. `.planning/` migrated from Desktop into the repo (brand-guard scan extended with `--exclude-dir=.planning` / `:!.planning/**` — see docs/brand-guardrails.md "Scan Exclusions"). Phase 1 planning begins.*
+*2026-07-08 — Phase 1 executed: 4 plans across 3 waves (Wave 1: 01-01 foundation primitives, Wave 2: 01-02 LandingScreen + 01-03 GuidelinesScreen parallel, Wave 3: 01-04 App composition). 113 tests green, 11 test files. Commits: e95b939, 537c4c0, e95f37d, 8837cea, d61a597, 058bff8, bda939e, c08369f, 8d70992, b2341e7. Fixed Phase 0 LFS issue (placeholder.mp4 not pushed to remote). Live URL confirmed: LandingScreen form serves at GitHub Pages. All 14 Phase 1 REQ-IDs closed (IDENT-01..05, GUIDE-01..06, ATTEMPT-01, 02, 05). Phase 2 ready.*
