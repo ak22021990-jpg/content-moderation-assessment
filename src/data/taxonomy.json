@@ -1,127 +1,452 @@
 {
-  "version": "0.1.0-draft",
+  "version": "0.2.0-draft",
   "categories": [
     {
       "id": "1",
       "label": "Copyright & IP",
+      "definition": "Content that infringes copyright, trademarks, or intellectual-property rights of others — including full-work reproduction, sync misuse, and counterfeit sales.",
       "subcategories": [
-        { "id": "1.1", "label": "Unauthorized full-work reproduction" },
-        { "id": "1.2", "label": "Sync / soundtrack infringement" },
-        { "id": "1.3", "label": "Franchise / character IP misuse" },
-        { "id": "1.4", "label": "Trademark / logo infringement" },
-        { "id": "1.5", "label": "Counterfeit / bootleg sales" },
-        { "id": "1.6", "label": "Watermark removal / stripped credits" },
-        { "id": "1.7", "label": "Livestream / event piracy" }
+        {
+          "id": "1.1",
+          "label": "Unauthorized full-work reproduction",
+          "definition": "A full copy of a copyrighted work uploaded without rights.",
+          "example": "A full-length film uploaded to a public feed with no license documentation."
+        },
+        {
+          "id": "1.2",
+          "label": "Sync / soundtrack infringement",
+          "definition": "Licensed music used in a video without sync or mechanical rights.",
+          "example": "A popular song playing over a montage with no music license attached."
+        },
+        {
+          "id": "1.3",
+          "label": "Franchise / character IP misuse",
+          "definition": "Unauthorized use of a recognizable fictional character or franchise in promotional or derivative content.",
+          "example": "A creator selling merchandise featuring a well-known animated character without a license."
+        },
+        {
+          "id": "1.4",
+          "label": "Trademark / logo infringement",
+          "definition": "Displaying a protected brand logo or trademark in a way that implies false endorsement or affiliation.",
+          "example": "A video thumbnail placing a major tech company logo next to an unrelated product."
+        },
+        {
+          "id": "1.5",
+          "label": "Counterfeit / bootleg sales",
+          "definition": "Promoting or selling imitation goods that copy a protected brand's design or packaging.",
+          "example": "A video advertisement offering cheap replicas of a luxury handbag brand."
+        },
+        {
+          "id": "1.6",
+          "label": "Watermark removal / stripped credits",
+          "definition": "Removing or obscuring ownership watermarks, credits, or attribution from creative work.",
+          "example": "A stock-photo watermark cropped out of an image used in a promotional video."
+        },
+        {
+          "id": "1.7",
+          "label": "Livestream / event piracy",
+          "definition": "Re-broadcasting a paid or restricted live event without authorization.",
+          "example": "A restream of a pay-per-view sports match on a free video platform."
+        }
       ]
     },
     {
       "id": "2",
       "label": "Hate & Harassment",
+      "definition": "Content that attacks, demeans, or threatens individuals or groups based on protected characteristics, or that targets specific people with sustained abuse.",
       "subcategories": [
-        { "id": "2.1", "label": "Hate speech targeting protected characteristics" },
-        { "id": "2.2", "label": "Slurs / dehumanizing language" },
-        { "id": "2.3", "label": "Targeted harassment / bullying of an individual" },
-        { "id": "2.4", "label": "Doxxing / PII exposure" },
-        { "id": "2.5", "label": "Threats of violence" },
-        { "id": "2.6", "label": "Hateful groups / symbols / praise" }
+        {
+          "id": "2.1",
+          "label": "Hate speech targeting protected characteristics",
+          "definition": "Expressions of contempt or inferiority directed at a group based on race, religion, gender, disability, or other protected traits.",
+          "example": "A monologue claiming a specific ethnic group is inherently inferior."
+        },
+        {
+          "id": "2.2",
+          "label": "Slurs / dehumanizing language",
+          "definition": "Using recognized slurs or language that compares people to animals, diseases, or subhuman categories.",
+          "example": "A comment section filled with racial slurs directed at the video creator."
+        },
+        {
+          "id": "2.3",
+          "label": "Targeted harassment / bullying of an individual",
+          "definition": "Repeated, directed abusive behavior toward a specific person, including threats, insults, or coordinated pile-ons.",
+          "example": "A series of videos mocking and insulting a specific private individual by name."
+        },
+        {
+          "id": "2.4",
+          "label": "Doxxing / PII exposure",
+          "definition": "Publishing private personal information — such as home address, phone number, or workplace — without consent.",
+          "example": "A video displaying a person's home address and encouraging viewers to visit."
+        },
+        {
+          "id": "2.5",
+          "label": "Threats of violence",
+          "definition": "Explicit or credible statements of intent to cause physical harm to a person or group.",
+          "example": "A creator stating on camera they will physically harm another public figure."
+        },
+        {
+          "id": "2.6",
+          "label": "Hateful groups / symbols / praise",
+          "definition": "Promoting, glorifying, or displaying symbols associated with hate organizations or extremist movements.",
+          "example": "A video featuring a recognized hate-group flag with approving commentary."
+        }
       ]
     },
     {
       "id": "3",
       "label": "Violence & Graphic Content",
+      "definition": "Content depicting or encouraging real-world physical harm, graphic injury, or dangerous acts that risk serious injury or death.",
       "subcategories": [
-        { "id": "3.1", "label": "Graphic real-world violence" },
-        { "id": "3.2", "label": "Gore / injury / medical graphic imagery" },
-        { "id": "3.3", "label": "Animal abuse / cruelty" },
-        { "id": "3.4", "label": "Incitement to violence" },
-        { "id": "3.5", "label": "Dangerous acts / stunts likely to cause injury" },
-        { "id": "3.6", "label": "Weapons — instructional / brandishing" },
-        { "id": "3.7", "label": "Terrorism / violent extremism" }
+        {
+          "id": "3.1",
+          "label": "Graphic real-world violence",
+          "definition": "Unedited footage of real assaults, shootings, or violent crimes.",
+          "example": "Security-camera footage of an armed robbery uploaded without context or warning."
+        },
+        {
+          "id": "3.2",
+          "label": "Gore / injury / medical graphic imagery",
+          "definition": "Close-up imagery of severe injuries, surgical procedures, or bodily trauma presented without educational framing.",
+          "example": "A close-up video of a battlefield wound shared for shock value."
+        },
+        {
+          "id": "3.3",
+          "label": "Animal abuse / cruelty",
+          "definition": "Content showing intentional harm, neglect, or mistreatment of animals.",
+          "example": "A video of a person deliberately injuring a domestic animal."
+        },
+        {
+          "id": "3.4",
+          "label": "Incitement to violence",
+          "definition": "Rhetoric that explicitly calls for, encourages, or provides instructions for violent acts against others.",
+          "example": "A speech urging a crowd to attack a specific building or person."
+        },
+        {
+          "id": "3.5",
+          "label": "Dangerous acts / stunts likely to cause injury",
+          "definition": "Challenges or stunts with a high risk of serious physical harm, especially when imitable by viewers.",
+          "example": "A video encouraging viewers to jump from a moving vehicle as a challenge."
+        },
+        {
+          "id": "3.6",
+          "label": "Weapons — instructional / brandishing",
+          "definition": "Demonstrating how to use, modify, or build weapons, or displaying weapons in a threatening manner.",
+          "example": "A tutorial on converting a legal item into an improvised weapon."
+        },
+        {
+          "id": "3.7",
+          "label": "Terrorism / violent extremism",
+          "definition": "Content produced by, promoting, or recruiting for designated terrorist or violent extremist organizations.",
+          "example": "A propaganda video from a recognized extremist group shared on a mainstream platform."
+        }
       ]
     },
     {
       "id": "4",
       "label": "Sexual & Nudity",
+      "definition": "Content depicting explicit sexual activity, nudity, or sexually suggestive material that may violate platform standards or age-gate requirements.",
       "subcategories": [
-        { "id": "4.1", "label": "Explicit sexual activity" },
-        { "id": "4.2", "label": "Nudity (adult)" },
-        { "id": "4.3", "label": "Sexually suggestive content" },
-        { "id": "4.4", "label": "Non-consensual intimate imagery" },
-        { "id": "4.5", "label": "Sexual solicitation / commercial sexual services" },
-        { "id": "4.6", "label": "Fetish content likely to violate site policy" }
+        {
+          "id": "4.1",
+          "label": "Explicit sexual activity",
+          "definition": "Visual depiction of sexual intercourse or other explicit sexual acts.",
+          "example": "An unsimulated sexual encounter uploaded to a public video feed."
+        },
+        {
+          "id": "4.2",
+          "label": "Nudity (adult)",
+          "definition": "Full or partial nudity in a non-educational, non-artistic context involving adults.",
+          "example": "A creator appearing fully nude in a non-documentary video."
+        },
+        {
+          "id": "4.3",
+          "label": "Sexually suggestive content",
+          "definition": "Content that is not explicitly sexual but uses poses, framing, or language to evoke sexual arousal.",
+          "example": "A video with overtly sexual captions and provocative posing, though no nudity is shown."
+        },
+        {
+          "id": "4.4",
+          "label": "Non-consensual intimate imagery",
+          "definition": "Sharing intimate or sexual images of a person without their consent, including deepfakes.",
+          "example": "A video containing private intimate footage of an ex-partner shared as retaliation."
+        },
+        {
+          "id": "4.5",
+          "label": "Sexual solicitation / commercial sexual services",
+          "definition": "Offering, requesting, or facilitating paid sexual services or explicit content sales.",
+          "example": "A video description linking to a paid explicit-content subscription with direct solicitation."
+        },
+        {
+          "id": "4.6",
+          "label": "Fetish content likely to violate site policy",
+          "definition": "Content depicting niche sexual fetishes that, while not explicitly prohibited by law, exceed platform community norms.",
+          "example": "A video focused on a specific body-part fetish with no broader context."
+        }
       ]
     },
     {
       "id": "5",
       "label": "Minor Safety",
+      "definition": "Content that sexualizes, endangers, or exploits minors in any form, or that exposes children to adult themes without appropriate safeguards.",
       "subcategories": [
-        { "id": "5.1", "label": "CSAM / suspected child sexual abuse material" },
-        { "id": "5.2", "label": "Child sexualization (non-CSAM)" },
-        { "id": "5.3", "label": "Grooming / predatory behavior toward minors" },
-        { "id": "5.4", "label": "Minors in dangerous / harmful situations" },
-        { "id": "5.5", "label": "Minors + adult themes co-appearance" },
-        { "id": "5.6", "label": "PII disclosure of a minor" }
+        {
+          "id": "5.1",
+          "label": "CSAM / suspected child sexual abuse material",
+          "definition": "Any visual depiction of sexually explicit conduct involving a minor — illegal in all jurisdictions.",
+          "example": "A video containing explicit imagery of a child; report immediately to NCMEC and law enforcement."
+        },
+        {
+          "id": "5.2",
+          "label": "Child sexualization (non-CSAM)",
+          "definition": "Content that depicts minors in a sexualized manner without meeting the legal threshold of CSAM but still violating platform policy.",
+          "example": "A video of a minor performing suggestive dances in revealing clothing."
+        },
+        {
+          "id": "5.3",
+          "label": "Grooming / predatory behavior toward minors",
+          "definition": "Adults initiating inappropriate relationships with minors, including requesting private communication or images.",
+          "example": "An adult creator repeatedly asking a minor follower to message them privately."
+        },
+        {
+          "id": "5.4",
+          "label": "Minors in dangerous / harmful situations",
+          "definition": "Children depicted in situations that risk physical or psychological harm, including exploitation for entertainment.",
+          "example": "A video showing a child performing a dangerous stunt at an adult's direction."
+        },
+        {
+          "id": "5.5",
+          "label": "Minors + adult themes co-appearance",
+          "definition": "Children present in scenes involving violence, substance use, or sexual content, even if not the direct subject.",
+          "example": "A vlog where a child is visible in the background during an adult-themed discussion."
+        },
+        {
+          "id": "5.6",
+          "label": "PII disclosure of a minor",
+          "definition": "Publishing a minor's personal information — full name, school, home address, or contact details.",
+          "example": "A parent's video revealing their child's school name and daily route."
+        }
       ]
     },
     {
       "id": "6",
       "label": "Regulated Goods & Activities",
+      "definition": "Content promoting the sale, distribution, or use of goods and activities that are subject to legal regulation, including firearms, drugs, and age-restricted substances.",
       "subcategories": [
-        { "id": "6.1", "label": "Firearms / weapons sales" },
-        { "id": "6.2", "label": "Illicit drugs — sale / promotion" },
-        { "id": "6.3", "label": "Alcohol / tobacco / vape promotion (age-restricted)" },
-        { "id": "6.4", "label": "Gambling promotion (unlicensed)" },
-        { "id": "6.5", "label": "Prescription / pharmaceutical sales" },
-        { "id": "6.6", "label": "Human exploitation / trafficking" },
-        { "id": "6.7", "label": "Endangered wildlife / illegal animal trade" }
+        {
+          "id": "6.1",
+          "label": "Firearms / weapons sales",
+          "definition": "Advertising or facilitating the sale of firearms, ammunition, or explosive devices outside regulated channels.",
+          "example": "A video listing unregistered firearms for sale with contact information."
+        },
+        {
+          "id": "6.2",
+          "label": "Illicit drugs — sale / promotion",
+          "definition": "Promoting, instructing, or facilitating the sale or manufacture of controlled substances.",
+          "example": "A video tutorial on synthesizing a controlled substance at home."
+        },
+        {
+          "id": "6.3",
+          "label": "Alcohol / tobacco / vape promotion (age-restricted)",
+          "definition": "Marketing age-restricted substances in a way that targets or is accessible to minors.",
+          "example": "A vape brand sponsoring a creator whose audience is primarily under 18."
+        },
+        {
+          "id": "6.4",
+          "label": "Gambling promotion (unlicensed)",
+          "definition": "Promoting gambling services or platforms that lack proper licensing in the viewer's jurisdiction.",
+          "example": "A video directing viewers to an offshore sportsbook with no licensing disclosure."
+        },
+        {
+          "id": "6.5",
+          "label": "Prescription / pharmaceutical sales",
+          "definition": "Selling or promoting prescription medications without proper authorization or medical oversight.",
+          "example": "A video offering prescription weight-loss drugs for direct purchase without a doctor's visit."
+        },
+        {
+          "id": "6.6",
+          "label": "Human exploitation / trafficking",
+          "definition": "Content that facilitates, depicts, or recruits for labor or sexual trafficking of persons.",
+          "example": "A video advertising suspiciously low-cost domestic labor with indicators of forced work."
+        },
+        {
+          "id": "6.7",
+          "label": "Endangered wildlife / illegal animal trade",
+          "definition": "Promoting the sale, transport, or possession of protected species or products derived from them.",
+          "example": "A video showing exotic animals for sale that are listed under CITES protections."
+        }
       ]
     },
     {
       "id": "7",
       "label": "Misinformation & Deceptive Sync",
+      "definition": "Content that presents false or misleading information as fact, manipulates media to deceive, or impersonates real entities in ways that risk public harm.",
       "subcategories": [
-        { "id": "7.1", "label": "Health misinformation with harm potential" },
-        { "id": "7.2", "label": "Election / civic integrity misinformation" },
-        { "id": "7.3", "label": "Manipulated media / synthetic media undisclosed" },
-        { "id": "7.4", "label": "Impersonation of real people / brands" },
-        { "id": "7.5", "label": "Conspiracy content promoting real-world harm" },
-        { "id": "7.6", "label": "Deceptive edits / out-of-context clips" }
+        {
+          "id": "7.1",
+          "label": "Health misinformation with harm potential",
+          "definition": "False medical claims that could lead viewers to delay treatment, take harmful substances, or distrust proven interventions.",
+          "example": "A video claiming a common household product cures a serious illness."
+        },
+        {
+          "id": "7.2",
+          "label": "Election / civic integrity misinformation",
+          "definition": "False information about voting procedures, election outcomes, or candidate eligibility that could suppress turnout or erode trust in democratic processes.",
+          "example": "A video falsely claiming a polling location has been moved on election day."
+        },
+        {
+          "id": "7.3",
+          "label": "Manipulated media / synthetic media undisclosed",
+          "definition": "Altered video, audio, or images presented as authentic without disclosure that they have been synthetically generated or manipulated.",
+          "example": "A deepfake video of a public figure making statements they never made, with no disclaimer."
+        },
+        {
+          "id": "7.4",
+          "label": "Impersonation of real people / brands",
+          "definition": "Pretending to be a real individual, company, or organization to deceive viewers or gain unwarranted trust.",
+          "example": "A channel posing as an official news network with copied branding and false reports."
+        },
+        {
+          "id": "7.5",
+          "label": "Conspiracy content promoting real-world harm",
+          "definition": "Conspiracy theories that have been linked to real-world violence, harassment, or dangerous behavior.",
+          "example": "A video inciting viewers to confront specific individuals accused in a debunked conspiracy."
+        },
+        {
+          "id": "7.6",
+          "label": "Deceptive edits / out-of-context clips",
+          "definition": "Editing footage to materially change its meaning or presenting clips without necessary context to mislead viewers.",
+          "example": "A speech clip edited to reverse the speaker's actual position on an issue."
+        }
       ]
     },
     {
       "id": "8",
       "label": "Spam & Manipulation",
+      "definition": "Content designed to artificially inflate engagement, deceive users for financial gain, or flood platforms with low-quality or repetitive material.",
       "subcategories": [
-        { "id": "8.1", "label": "Coordinated inauthentic behavior" },
-        { "id": "8.2", "label": "Engagement bait / click farming" },
-        { "id": "8.3", "label": "Scams / financial fraud" },
-        { "id": "8.4", "label": "Repetitive / low-quality reuploads" },
-        { "id": "8.5", "label": "Off-platform link spam to malicious destinations" },
-        { "id": "8.6", "label": "Fake giveaways / lottery scams" }
+        {
+          "id": "8.1",
+          "label": "Coordinated inauthentic behavior",
+          "definition": "Multiple accounts or channels operating in concert to amplify a message, evade bans, or manipulate trends.",
+          "example": "A network of accounts posting identical promotional videos within minutes of each other."
+        },
+        {
+          "id": "8.2",
+          "label": "Engagement bait / click farming",
+          "definition": "Content engineered to provoke clicks, comments, or shares through misleading thumbnails, titles, or calls to action.",
+          "example": "A video titled 'You won't believe what happened' with unrelated content and a request to 'like and share'."
+        },
+        {
+          "id": "8.3",
+          "label": "Scams / financial fraud",
+          "definition": "Schemes that deceive viewers into sending money, sharing financial details, or investing in fraudulent opportunities.",
+          "example": "A video promising guaranteed investment returns in exchange for an upfront payment."
+        },
+        {
+          "id": "8.4",
+          "label": "Repetitive / low-quality reuploads",
+          "definition": "Mass-uploading the same or near-identical content across multiple channels to farm views or evade detection.",
+          "example": "Dozens of channels uploading the same clip with slightly altered titles."
+        },
+        {
+          "id": "8.5",
+          "label": "Off-platform link spam to malicious destinations",
+          "definition": "Posting links that lead to phishing pages, malware downloads, or deceptive landing pages.",
+          "example": "A video description containing a shortened URL that redirects to a credential-harvesting site."
+        },
+        {
+          "id": "8.6",
+          "label": "Fake giveaways / lottery scams",
+          "definition": "Promising prizes, giveaways, or lottery winnings that do not exist, typically to collect personal data or money.",
+          "example": "A video claiming viewers have won a gift card and asking them to enter payment details to claim it."
+        }
       ]
     },
     {
       "id": "9",
       "label": "Brand Safety (GARM)",
+      "definition": "Content that, while not necessarily policy-violating, sits adjacent to sensitive topics and may be unsuitable for mainstream advertising placement per GARM framework guidelines.",
       "subcategories": [
-        { "id": "9.1", "label": "Adjacency to profanity / mature language" },
-        { "id": "9.2", "label": "Adjacency to violence (non-policy-violating)" },
-        { "id": "9.3", "label": "Adjacency to adult / sexual themes (non-policy-violating)" },
-        { "id": "9.4", "label": "Adjacency to sensitive social/political issues" },
-        { "id": "9.5", "label": "Adjacency to death / injury / military conflict" },
-        { "id": "9.6", "label": "Adjacency to controversial IP / hate-adjacent aesthetics" }
+        {
+          "id": "9.1",
+          "label": "Adjacency to profanity / mature language",
+          "definition": "Content featuring frequent or severe profanity that makes it unsuitable for brand advertising.",
+          "example": "A comedy video with continuous bleeped or unbleeped strong language."
+        },
+        {
+          "id": "9.2",
+          "label": "Adjacency to violence (non-policy-violating)",
+          "definition": "Content referencing or depicting violence in a way that does not violate platform policy but is sensitive for advertisers.",
+          "example": "A news recap discussing a violent event with restrained but vivid descriptions."
+        },
+        {
+          "id": "9.3",
+          "label": "Adjacency to adult / sexual themes (non-policy-violating)",
+          "definition": "Content discussing sexual topics in a mature, non-explicit manner that may still be unsuitable for all brand contexts.",
+          "example": "A health educator discussing contraception in clinical terms."
+        },
+        {
+          "id": "9.4",
+          "label": "Adjacency to sensitive social/political issues",
+          "definition": "Content covering divisive social or political topics that carry reputational risk for advertisers.",
+          "example": "An opinion video on a contentious legislative debate."
+        },
+        {
+          "id": "9.5",
+          "label": "Adjacency to death / injury / military conflict",
+          "definition": "Content referencing death, serious injury, or armed conflict in a factual but sensitive context.",
+          "example": "A documentary clip covering a recent armed conflict with battlefield footage."
+        },
+        {
+          "id": "9.6",
+          "label": "Adjacency to controversial IP / hate-adjacent aesthetics",
+          "definition": "Content that borrows visual or thematic elements from controversial intellectual property or aesthetics associated with extremist movements.",
+          "example": "A music video using imagery stylistically similar to a recognized extremist symbol."
+        }
       ]
     },
     {
       "id": "10",
       "label": "Community Standards (Platform-Specific)",
+      "definition": "Content that violates house rules specific to a given platform — including quality thresholds, metadata accuracy, and community-tone expectations — but may not breach universal policy.",
       "subcategories": [
-        { "id": "10.1", "label": "Off-topic / wrong category" },
-        { "id": "10.2", "label": "Low production quality — vertical framing, unwatchable audio" },
-        { "id": "10.3", "label": "Duplicate / cross-posted content" },
-        { "id": "10.4", "label": "Metadata mismatch — title/tags don't match content" },
-        { "id": "10.5", "label": "Community-tone violation (family-friendly surface)" },
-        { "id": "10.6", "label": "Age-gate / rating mismatch" }
+        {
+          "id": "10.1",
+          "label": "Off-topic / wrong category",
+          "definition": "Content posted in a section or channel where it does not belong per platform guidelines.",
+          "example": "A cooking tutorial uploaded to a channel designated for educational content."
+        },
+        {
+          "id": "10.2",
+          "label": "Low production quality — vertical framing, unwatchable audio",
+          "definition": "Videos with technical issues — such as unwatchable audio, extreme pixelation, or unplayable encoding — that fail minimum quality thresholds.",
+          "example": "A video recorded with a broken microphone producing only static noise."
+        },
+        {
+          "id": "10.3",
+          "label": "Duplicate / cross-posted content",
+          "definition": "The same video uploaded multiple times to the same platform, or cross-posted without adaptation to channels that prohibit it.",
+          "example": "An identical video appearing on three channels owned by the same creator."
+        },
+        {
+          "id": "10.4",
+          "label": "Metadata mismatch — title/tags don't match content",
+          "definition": "Titles, descriptions, or tags that do not accurately represent the video's actual content, often used for clickbait.",
+          "example": "A video titled 'Breaking News' that is actually a product review."
+        },
+        {
+          "id": "10.5",
+          "label": "Community-tone violation (family-friendly surface)",
+          "definition": "Content that, while not violating universal policy, is inconsistent with a platform's stated family-friendly tone or audience expectations.",
+          "example": "A creator using innuendo and suggestive humor on a platform marketed to young audiences."
+        },
+        {
+          "id": "10.6",
+          "label": "Age-gate / rating mismatch",
+          "definition": "Content that should be age-restricted but is available without restriction, or content rated for a younger audience that contains mature themes.",
+          "example": "A video with moderate violence available without any age verification on a family-oriented platform."
+        }
       ]
     }
   ]
