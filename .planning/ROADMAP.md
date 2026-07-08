@@ -84,8 +84,14 @@
   2. At 0:00 the current video auto-submits with whatever tags/verdict the user had selected; pausing the video does NOT pause the timer (documented in Guidelines)
   3. TagPanel renders L1 as a multi-select from `taxonomy.json`; selecting an L1 reveals its L2 sub-categories which can also be multi-selected; L2 selection is scoped to its parent L1 (cannot pick an L2 without its L1); deselecting is possible at any time before verdict submission
   4. Approve and Decline buttons are visible and clearly labeled; clicking either records the verdict AND advances to the next video; user cannot go back and edit a video's answers once verdict is recorded; zero-L1-selected + Approve is a valid submission
-  5. Zustand timer slice with selector subscriptions is measurably preventing per-second re-renders of `VideoPlayer` and `TagPanel` (verified via React DevTools profiler on a 3-min run: player renders ≤ 5 times, tag panel renders only on user interaction)
-**Plans:** TBD
+   5. Zustand timer slice with selector subscriptions is measurably preventing per-second re-renders of `VideoPlayer` and `TagPanel` (verified via React DevTools profiler on a 3-min run: player renders ≤ 5 times, tag panel renders only on user interaction)
+**Plans:** 4 plans (4 waves)
+
+Plans:
+- [ ] 03-01-PLAN.md — Zustand Timer Store + Persistence (TIME-01..08): install zustand, RAF+performance.now() timer slice, sessionStorage persistence, CountdownDisplay, amber/red thresholds, auto-submit on expiry
+- [ ] 03-02-PLAN.md — TagPanel Component + L1/L2 Cascade (TAG-01..08): data-driven multi-select L1 chips, dependent L2 reveal, useReducer cascade logic, keyboard accessibility
+- [ ] 03-03-PLAN.md — Verdict Buttons + RunnerScreen (VERDICT-01..04): Approve/Decline with double-click guard, multi-video loop, key-on-index remount, ProgressIndicator, side-by-side layout
+- [ ] 03-04-PLAN.md — Integration + Playlist Expansion: wire RunnerScreen into App.jsx, onPlaying timer start, playlist.json → 5 videos, scoreboard stub, integration test update, human-verify checkpoint
 **UI hint:** yes
 **Notes / Cross-Cutting:**
   - **CC-03 (Taxonomy client sign-off)** — GATE: Phase 3 cannot close until the client moderation lead reviews L2 wording against currently-published guidelines and signs off. Disagreed L2s are renamed or dropped from scoring (ungraded).
@@ -151,7 +157,7 @@
 | 0. Foundations | 4/4 | Complete | 2026-07-08 |
 | 1. App Shell + One-Attempt Gate | 4/4 | Complete | 2026-07-08 |
 | 2. Custom Video Player | 4/4 | Complete | 2026-07-08 |
-| 3. Timer + Tagging + Verdict | 0/? | Not started | — |
+| 3. Timer + Tagging + Verdict | 4/4 | Planned | — |
 | 4. Scoring + Scoreboard | 0/? | Not started | — |
 | 5. Submission + Defense in Depth | 0/? | Not started | — |
 | 6. Polish + Content Freeze + Launch | 0/? | Not started | — |
