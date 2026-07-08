@@ -1,0 +1,32 @@
+import { describe, it, expect } from 'vitest'
+import { SCREENS } from '../../src/state/screens.js'
+
+describe('SCREENS enum', () => {
+  it('has exactly 4 keys', () => {
+    expect(Object.keys(SCREENS)).toHaveLength(4)
+  })
+
+  it('has the required keys', () => {
+    expect(SCREENS).toHaveProperty('LANDING')
+    expect(SCREENS).toHaveProperty('GUIDELINES')
+    expect(SCREENS).toHaveProperty('ASSESSMENT_PLACEHOLDER')
+    expect(SCREENS).toHaveProperty('ALREADY_COMPLETED')
+  })
+
+  it('each key maps to a string equal to the key name', () => {
+    expect(SCREENS.LANDING).toBe('LANDING')
+    expect(SCREENS.GUIDELINES).toBe('GUIDELINES')
+    expect(SCREENS.ASSESSMENT_PLACEHOLDER).toBe('ASSESSMENT_PLACEHOLDER')
+    expect(SCREENS.ALREADY_COMPLETED).toBe('ALREADY_COMPLETED')
+  })
+
+  it('is immutable (Object.freeze applied)', () => {
+    expect(Object.isFrozen(SCREENS)).toBe(true)
+  })
+
+  it('mutation is refused in strict mode', () => {
+    expect(() => {
+      SCREENS.NEW_KEY = 'test'
+    }).toThrow()
+  })
+})
