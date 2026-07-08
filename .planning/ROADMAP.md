@@ -129,7 +129,16 @@ Plans:
   4. Lottie milestone animations (PERFECT_EYE / SNIPER / ON_FIRE / ZONE_CLEAR / etc.) are lazy-loaded on demand (dynamic import, not eager) and fire on qualifying score thresholds
   5. Three independent raters have tagged each of the 5 videos blindly; Cohen (2 raters) or Fleiss (3+) kappa per L1 is computed and stored in `docs/kappa-calibration.md`; videos below kappa 0.6 are flagged for re-authoring in Phase 6
 
-**Plans:** TBD
+**Plans:** 5 plans
+
+Plans:
+
+- [ ] 04-01-PLAN.md — Wave 0: Store Timing Backfill (pre-requisite — add videoId/timeSpentMs/timedOut/submittedAt to commitAnswer)
+- [ ] 04-02-PLAN.md — Wave 1: Scoring Engine (SCORE-01..05,07,09 — pure functions + exhaustive unit tests)
+- [ ] 04-03-PLAN.md — Wave 1: Competency Module + answerKeys + Rubric Doc (SCORE-06,08 + QUALITY-04)
+- [ ] 04-04-PLAN.md — Wave 2: Scoreboard UI — Dependencies, Components, GSAP, Lottie (BOARD-01..07)
+- [ ] 04-05-PLAN.md — Wave 3: App Integration + Answer Key Authoring + Kappa (QUALITY-01,02)
+
 **UI hint:** yes
 **Notes / Cross-Cutting:**
 
@@ -188,7 +197,7 @@ Plans:
 | 1. App Shell + One-Attempt Gate | 4/4 | Complete | 2026-07-08 |
 | 2. Custom Video Player | 4/4 | Complete | 2026-07-08 |
 | 3. Timer + Tagging + Verdict | 4/4 | Complete | 2026-07-08 |
-| 4. Scoring + Scoreboard | 0/? | Not started | — |
+| 4. Scoring + Scoreboard | 5/5 | Planned | 2026-07-08 |
 | 5. Submission + Defense in Depth | 0/? | Not started | — |
 | 6. Polish + Content Freeze + Launch | 0/? | Not started | — |
 
