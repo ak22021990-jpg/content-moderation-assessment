@@ -32,6 +32,22 @@ jobs:
 
       - run: npm ci
 
+      - name: Install ffmpeg
+        run: sudo apt-get install -y ffmpeg
+
+      - name: Generate sprites + WebVTT files
+        run: node scripts/generate-sprites.mjs
+
+      - name: Verify generated assets
+        run: |
+          test -f public/sprites/v01_sprite.jpg || (echo "Missing sprite.jpg" && exit 1)
+          test -f public/vtt/v01.thumbs.vtt || (echo "Missing thumbs.vtt" && exit 1)
+          test -f public/vtt/v01.chapters.vtt || (echo "Missing chapters.vtt" && exit 1)
+
+      - name: Verify sprite is real JPEG (not LFS pointer)
+        run: |
+          file public/sprites/v01_sprite.jpg | grep -q "JPEG" || (echo "Sprite is not a real JPEG" && exit 1)
+
       - run: npm run build
 
       - uses: actions/configure-pages@v5
