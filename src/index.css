@@ -27,6 +27,10 @@
   --cma-chapter-marker: var(--cma-warning);
   --cma-focus-ring: #0085FF;
   --cma-border-subtle: #252840;
+  /* Overlay (Phase 5) */
+  --cma-overlay-bg: rgba(10, 11, 20, 0.85);
+  --cma-overlay-card-bg: var(--cma-bg-elevated);
+  --cma-spinner-color: var(--cma-accent);
   /* Layout */
   --cma-max-content-width: 960px;
   /* Focus ring */
@@ -329,4 +333,49 @@ body {
 .sb-empty {
   text-align: center;
   padding: var(--cma-space-xl);
+}
+
+/* ── Submission Overlay (Phase 5) ── */
+
+@keyframes cma-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes cma-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cma-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--cma-border-subtle);
+  border-top-color: var(--cma-spinner-color);
+  border-radius: 50%;
+  animation: cma-spin 0.6s linear infinite;
+}
+
+.cma-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cma-overlay-bg);
+  animation: cma-fade-in 0.25s ease;
+}
+
+.cma-overlay-card {
+  max-width: 400px;
+  width: calc(100% - var(--cma-space-xl) * 2);
+  padding: var(--cma-space-lg);
+  background: var(--cma-bg-elevated);
+  border: 1px solid var(--cma-border-subtle);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cma-space-md);
+  text-align: center;
 }

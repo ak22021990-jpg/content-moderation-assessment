@@ -8,6 +8,7 @@ import GuidelinesScreen from './components/GuidelinesScreen.jsx'
 import RunnerScreen from './components/RunnerScreen.jsx'
 import AlreadyCompletedScreen from './components/AlreadyCompletedScreen.jsx'
 import ScoreboardScreen from './components/scoreboard/ScoreboardScreen.jsx'
+import SubmitDoneScreen from './components/SubmitDoneScreen.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 export default function App() {
@@ -43,6 +44,8 @@ export default function App() {
         )
       case SCREENS.SCOREBOARD:
         return <ScoreboardScreen />
+      case SCREENS.SUBMIT_DONE:
+        return <SubmitDoneScreen identity={state.identity} />
       case SCREENS.ALREADY_COMPLETED:
         return <AlreadyCompletedScreen />
       default:
