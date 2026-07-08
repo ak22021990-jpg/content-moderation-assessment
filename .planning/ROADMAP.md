@@ -159,9 +159,15 @@ Plans:
   4. On backend 200, the one-attempt localStorage flag is written binding the assessment to that browser (paired with Phase 1's ATTEMPT-01/02 client-side guard)
   5. SubmitDoneScreen thanks the candidate and confirms results were sent; `@formspree/react` fallback endpoint is wired and env-toggle ready (disabled by default) so Apps Script quota exhaustion is a one-flag flip
 
-**Plans:** TBD
-**Notes / Cross-Cutting:**
+**Plans:** 3 plans
 
+Plans:
+
+- [ ] 05-01-PLAN.md — Client Submission Pipeline + Happy Path UI: submission.js payload assembly + Web Crypto HMAC, dedup.js SHA-256 rewrite, ScoreboardScreen overlay (idle→submitting→success), SubmitDoneScreen, screen enum, localStorage flag, sessionStorage clear
+- [ ] 05-02-PLAN.md — Apps Script Backend + Retry Logic + Error UX: doPost webhook (HMAC/origin/rate-limit/dedup/row write), exponential backoff retry, error overlay with manual retry button
+- [ ] 05-03-PLAN.md — Formspree Fallback + Final Coverage: @formspree/react env-toggle, integration tests, full suite green
+
+**Notes / Cross-Cutting:**
   - **CC-01 (Brand-leak defense)** — Apps Script code and Sheet name are generic; secrets live in Apps Script Properties, never in the repo.
 
 ### Phase 6: Polish, Content Freeze & Launch Gates
@@ -198,7 +204,7 @@ Plans:
 | 2. Custom Video Player | 4/4 | Complete | 2026-07-08 |
 | 3. Timer + Tagging + Verdict | 4/4 | Complete | 2026-07-08 |
 | 4. Scoring + Scoreboard | 5/5 | Complete   | 2026-07-08 |
-| 5. Submission + Defense in Depth | 0/? | Not started | — |
+| 5. Submission + Defense in Depth | 0/3 | Not started | — |
 | 6. Polish + Content Freeze + Launch | 0/? | Not started | — |
 
 ---
