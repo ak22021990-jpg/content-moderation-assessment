@@ -29,6 +29,7 @@ jobs:
             --include="*.css" \
             --exclude-dir=node_modules \
             --exclude-dir=.git \
+            --exclude-dir=.planning \
             --exclude=package-lock.json \
             --exclude=brand-guardrails.md \
             --exclude=brand-guard.yml \
