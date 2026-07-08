@@ -11,6 +11,7 @@ import {
   MediaLoadingIndicator,
 } from 'media-chrome/react'
 import playlist from '../../data/playlist.json'
+import './VideoPlayer.css'
 
 export default function VideoPlayerScreen({ src, onReady, onError, onReset }) {
   const [videoError, setVideoError] = useState(false)

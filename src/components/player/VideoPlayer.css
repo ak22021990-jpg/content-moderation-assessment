@@ -1,0 +1,126 @@
+.cma-player-container {
+  max-width: var(--cma-max-content-width);
+  margin: 0 auto;
+  padding: var(--cma-space-xl) var(--cma-space-lg);
+}
+
+.cma-player-card {
+  background: var(--cma-bg-surface);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+}
+
+.cma-video-title-bar {
+  background: var(--cma-bg-surface);
+  padding: 12px 16px;
+  border-radius: 8px 8px 0 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.cma-video-title {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--cma-text-primary);
+}
+
+.cma-video-subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--cma-text-secondary);
+  display: block;
+}
+
+media-controller {
+  --media-control-background: var(--cma-bg-surface);
+  --media-control-hover-background: var(--cma-bg-elevated);
+  --media-text-color: var(--cma-text-primary);
+  --media-font-family: inherit;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+media-control-bar {
+  --media-control-padding: 8px 12px;
+}
+
+media-play-button,
+media-mute-button,
+media-seek-backward-button,
+media-seek-forward-button,
+media-fullscreen-button {
+  --media-control-background: transparent;
+  --media-control-hover-background: var(--cma-bg-elevated);
+  --media-button-icon-width: 20px;
+  --media-button-icon-height: 20px;
+}
+
+media-time-range {
+  --media-range-track-background: var(--cma-seek-track);
+  --media-range-track-color: var(--cma-seek-filled);
+  --media-range-thumb-color: var(--cma-accent);
+  --media-range-thumb-height: 12px;
+  --media-range-thumb-width: 12px;
+  --media-range-track-height: 4px;
+  --media-time-range-background: transparent;
+}
+
+media-time-display {
+  --media-text-color: var(--cma-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+media-volume-range {
+  --media-range-track-background: var(--cma-seek-track);
+  --media-range-track-color: var(--cma-seek-filled);
+  --media-range-thumb-color: var(--cma-accent);
+  --media-range-track-height: 3px;
+  --media-range-thumb-height: 10px;
+  --media-range-thumb-width: 10px;
+}
+
+media-loading-indicator {
+  --media-loading-indicator-color: var(--cma-accent);
+}
+
+media-preview-thumbnail {
+  --media-preview-thumbnail-max-width: 160px;
+  --media-preview-thumbnail-max-height: 90px;
+  --media-preview-thumbnail-border-radius: 4px;
+  --media-preview-thumbnail-border: 1px solid var(--cma-border-subtle);
+  --media-preview-time-background: var(--cma-bg-elevated);
+  --media-preview-time-text-color: var(--cma-text-primary);
+}
+
+.cma-player-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--cma-space-2xl) var(--cma-space-lg);
+  background: var(--cma-bg-surface);
+  color: var(--cma-text-primary);
+}
+
+.cma-error-icon {
+  font-size: 32px;
+  color: var(--cma-destructive);
+  margin-bottom: var(--cma-space-md);
+}
+
+.cma-player-error h2 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--cma-text-primary);
+  margin-bottom: var(--cma-space-sm);
+}
+
+.cma-player-error p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--cma-text-secondary);
+}
