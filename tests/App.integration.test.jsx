@@ -4,6 +4,15 @@ import { readFileSync } from 'fs'
 import { join } from 'path'
 import App from '../src/App.jsx'
 
+vi.mock('../src/components/player/VideoPlayerScreen.jsx', () => ({
+  default: ({ onReady, onReset, onError }) => (
+    <div data-testid="video-player-screen">
+      <button data-testid="player-trigger-ready" onClick={onReady}>Trigger Ready</button>
+      <button data-testid="player-trigger-reset" onClick={onReset}>Trigger Reset</button>
+    </div>
+  ),
+}))
+
 const IDENTITY_KEY = 'cma_identity_v1'
 const ATTEMPT_KEY = 'cma_attempt_v1'
 
@@ -44,7 +53,7 @@ describe('App integration', () => {
 
       // Begin Assessment → ASSESSMENT
       await user.click(screen.getByRole('button', { name: /begin assessment/i }))
-      expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Assessment placeholder')
+      expect(screen.getByTestId('video-player-screen')).toBeInTheDocument()
     })
   })
 
