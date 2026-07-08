@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 04
 status: completed
-stopped_at: Phase 05 context gathered
-last_updated: "2026-07-08T14:47:36.298Z"
+stopped_at: Phase 05 UI-SPEC approved
+last_updated: "2026-07-08T14:55:57.951Z"
 progress:
   total_phases: 7
   completed_phases: 3
@@ -103,9 +103,9 @@ Open client decisions (O-01 through O-10) are tracked in `.planning/REQUIREMENTS
 
 ## Session Continuity
 
-**Last session:** 2026-07-08T14:47:36.283Z
-**Stopped at:** Phase 05 context gathered
-**Resume file:** .planning/phases/05-submission-one-attempt-defense-in-depth/05-CONTEXT.md
+**Last session:** 2026-07-08T14:55:57.935Z
+**Stopped at:** Phase 05 UI-SPEC approved
+**Resume file:** .planning/phases/05-submission-one-attempt-defense-in-depth/05-UI-SPEC.md
 
 **Files in play (read on session resume):**
 
