@@ -21,7 +21,7 @@ describe('App integration', () => {
       expect(document.activeElement).toBe(screen.getByLabelText(/full name/i))
     })
 
-    it('transitions LANDING → GUIDELINES → ASSESSMENT_PLACEHOLDER', async () => {
+    it('transitions LANDING → GUIDELINES → ASSESSMENT', async () => {
       const user = userEvent.setup()
       render(<App />)
 
@@ -42,7 +42,7 @@ describe('App integration', () => {
       expect(stored.email).toBe('alice@example.com')
       expect(typeof stored.startedAt).toBe('string')
 
-      // Begin Assessment → ASSESSMENT_PLACEHOLDER
+      // Begin Assessment → ASSESSMENT
       await user.click(screen.getByRole('button', { name: /begin assessment/i }))
       expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Assessment placeholder')
     })

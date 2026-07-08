@@ -28,7 +28,7 @@ export default function App() {
         )
       case SCREENS.GUIDELINES:
         return <GuidelinesScreen onBegin={state.enterAssessment} />
-      case SCREENS.ASSESSMENT_PLACEHOLDER:
+      case SCREENS.ASSESSMENT:
         return <AssessmentPlaceholderScreen onReset={handleDevReset} />
       case SCREENS.ALREADY_COMPLETED:
         return <AlreadyCompletedScreen />

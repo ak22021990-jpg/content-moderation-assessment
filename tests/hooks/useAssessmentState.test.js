@@ -41,7 +41,7 @@ describe('useAssessmentState', () => {
     expect(typeof stored.startedAt).toBe('string')
   })
 
-  it('enterAssessment transitions to ASSESSMENT_PLACEHOLDER', () => {
+  it('enterAssessment transitions to ASSESSMENT', () => {
     const { result } = renderHook(() => useAssessmentState())
 
     act(() => {
@@ -51,7 +51,7 @@ describe('useAssessmentState', () => {
       result.current.enterAssessment()
     })
 
-    expect(result.current.screen).toBe(SCREENS.ASSESSMENT_PLACEHOLDER)
+    expect(result.current.screen).toBe(SCREENS.ASSESSMENT)
   })
 
   it('showAlreadyCompleted transitions to ALREADY_COMPLETED', () => {

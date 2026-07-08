@@ -9,14 +9,14 @@ describe('SCREENS enum', () => {
   it('has the required keys', () => {
     expect(SCREENS).toHaveProperty('LANDING')
     expect(SCREENS).toHaveProperty('GUIDELINES')
-    expect(SCREENS).toHaveProperty('ASSESSMENT_PLACEHOLDER')
+    expect(SCREENS).toHaveProperty('ASSESSMENT')
     expect(SCREENS).toHaveProperty('ALREADY_COMPLETED')
   })
 
   it('each key maps to a string equal to the key name', () => {
     expect(SCREENS.LANDING).toBe('LANDING')
     expect(SCREENS.GUIDELINES).toBe('GUIDELINES')
-    expect(SCREENS.ASSESSMENT_PLACEHOLDER).toBe('ASSESSMENT_PLACEHOLDER')
+    expect(SCREENS.ASSESSMENT).toBe('ASSESSMENT')
     expect(SCREENS.ALREADY_COMPLETED).toBe('ALREADY_COMPLETED')
   })
 

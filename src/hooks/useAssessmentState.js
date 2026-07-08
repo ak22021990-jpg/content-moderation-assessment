@@ -73,7 +73,7 @@ export function useAssessmentState() {
   }, [])
 
   const enterAssessment = useCallback(() => {
-    setScreen(SCREENS.ASSESSMENT_PLACEHOLDER)
+    setScreen(SCREENS.ASSESSMENT)
   }, [])
 
   const showAlreadyCompleted = useCallback(() => {
