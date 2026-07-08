@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import ScoreboardScreen from '../../../src/components/scoreboard/ScoreboardScreen.jsx'
+import { getSubmissionConfig } from '../../../src/utils/submission.js'
 
 // Use hoisted mocks so factory functions can reference them
 const { markAttemptedMock, goToScreenMock } = vi.hoisted(() => ({
@@ -87,6 +88,10 @@ vi.mock('../../../src/utils/submission.js', () => ({
   })),
   buildHmac: vi.fn(() => Promise.resolve('abcdef123456')),
   submitResults: submitResultsMock,
+  getSubmissionConfig: vi.fn(() => ({
+    endpoint: 'https://script.google.com/macros/s/test/exec',
+    isFormspree: false,
+  })),
 }))
 
 // Mock dedup module
@@ -376,5 +381,39 @@ describe('ScoreboardScreen', () => {
     // Verify submitting state shows attempt info
     expect(screen.getByText(/Submitting your results/i)).toBeInTheDocument()
     expect(screen.getByText(/Attempt/i)).toBeInTheDocument()
+  })
+
+  it('uses Formspree endpoint when isFormspree=true (SUBMIT-10)', async () => {
+    getSubmissionConfig.mockReturnValue({
+      endpoint: 'https://formspree.io/f/test123',
+      isFormspree: true,
+    })
+
+    setAnswers([
+      { videoId: 'v01', selectedL1: ['1'], selectedL2: [], verdict: 'DECLINE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v02', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v03', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v04', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v05', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+    ])
+
+    render(<ScoreboardScreen />)
+
+    await screen.findAllByTestId('submission-overlay', {}, { timeout: 2000 })
+
+    await waitFor(() => {
+      expect(submitResultsMock).toHaveBeenCalled()
+      const callArgs = submitResultsMock.mock.calls[0][0]
+      expect(callArgs.endpoint).toBe('https://formspree.io/f/test123')
+    }, { timeout: 2000 })
+
+    // Formspree path: payload must NOT contain hmac field
+    await waitFor(() => {
+      expect(markAttemptedMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          submissionId: expect.stringMatching(/^formspree-/),
+        }),
+      )
+    }, { timeout: 2000 })
   })
 })

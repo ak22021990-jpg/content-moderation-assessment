@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { buildSubmissionPayload, buildHmac, submitResults } from '../../src/utils/submission.js'
+import { buildSubmissionPayload, buildHmac, submitResults, getSubmissionConfig } from '../../src/utils/submission.js'
 
 // Mock crypto.subtle for buildHmac tests
 const mockSubtle = {
@@ -435,5 +435,29 @@ describe('submitResults', () => {
     const result = await submitResults({ payload, endpoint })
     expect(result).toEqual({ ok: false, error: 'Server rejected: 404' })
     expect(mockFetch).toHaveBeenCalledTimes(1)
+  })
+
+  it('returns error immediately when maxAttempts is 0', async () => {
+    const onProgress = vi.fn()
+    const result = await submitResults({ payload, endpoint, onProgress, maxAttempts: 0 })
+
+    expect(result).toEqual({ ok: false, error: 'All retry attempts exhausted' })
+    expect(mockFetch).not.toHaveBeenCalled()
+    expect(onProgress).toHaveBeenCalledWith({ attempt: 0, total: 0, phase: 'error' })
+  })
+})
+
+describe('getSubmissionConfig', () => {
+  it('returns an object with endpoint and isFormspree properties', () => {
+    const config = getSubmissionConfig()
+    expect(config).toHaveProperty('endpoint')
+    expect(config).toHaveProperty('isFormspree')
+    expect(typeof config.endpoint).toBe('string')
+    expect(typeof config.isFormspree).toBe('boolean')
+  })
+
+  it('defaults to isFormspree=false (apps-script mode)', () => {
+    const config = getSubmissionConfig()
+    expect(config.isFormspree).toBe(false)
   })
 })
