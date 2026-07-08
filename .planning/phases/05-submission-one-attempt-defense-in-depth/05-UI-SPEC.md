@@ -53,16 +53,10 @@ Exceptions: none for Phase 5
 |------|------|--------|-------------|
 | Body | 16px | 400 | 1.6 |
 | Body-small | 14px (0.875rem) | 400 | 1.5 |
-| Label | 13px (0.8125rem) | 400 | 1.4 |
 | Heading-Screen | 24px (1.5rem) | 700 | 1.2 |
-| Display-Value | 64px (4rem) | 800 | 1.0 |
+| Display-Value | 64px (4rem) | 700 | 1.0 |
 
-**New for Phase 5 (not yet in index.css but needed):**
-
-| Role | Size | Weight | Line Height | Purpose |
-|------|------|--------|-------------|---------|
-| Overlay-heading | 20px (1.25rem) | 600 | 1.3 | Submission overlay card title |
-| Overlay-status | 14px (0.875rem) | 500 | 1.4 | Submission attempt counter text |
+Overlay usage: Heading-Screen (24px/700) for overlay card titles; Body-small (14px/400) for attempt counter text. No additional font sizes or weights.
 
 **Source:** Pre-populated from existing patterns in `src/index.css` (body at line 42-43, sb-title at line 190, sb-score-value at line 164-165, chip text at lines 100-107).
 
@@ -95,6 +89,14 @@ Exceptions: none for Phase 5
 Accent reserved for: primary CTA "Retry Submission" button, focus rings on the retry button, spinner border.
 
 **Source:** Pre-populated from existing tokens in `src/index.css` lines 14-29. Overlay specific tokens derived from CONTEXT.md §"Specific Ideas" (semi-transparent dark backdrop).
+
+---
+
+## Visual Hierarchy & Focal Points
+
+**Submission Overlay:** Primary focal point is the status icon (CSS spinner / ✓ checkmark / ⚠ warning) at top-center of card → heading below it → body text → CTA button (error state only). Vertical stack, centered, each element gapped at `--cma-space-md`. Card is contrast-anchored against semi-transparent backdrop.
+
+**SubmitDoneScreen:** Primary focal point is "Thank you, {name}" heading centered in viewport → body paragraph below at `--cma-space-lg` gap. No secondary focal points. Terminal screen — no interactive elements, no navigation.
 
 ---
 
@@ -144,7 +146,7 @@ States: four visually distinct phases.
 | `idle` | Not rendered. Scoreboard visible normally. | N/A |
 | `submitting` | Full-screen overlay: `rgba(10,11,20,0.85)` backdrop over scoreboard. Centered card (max-width 400px, padded `--cma-space-lg`) containing: a CSS spinner (20px × 20px, 2px solid `--cma-spinner-color` border, infinite spin animation), heading "Submitting your results", body text, attempt counter text in `--cma-text-secondary`. | Scoreboard content visible underneath but obscured. User cannot interact with scoreboard. No dismiss action. |
 | `success` | Same overlay backdrop. Card background tinted `--cma-success` at 10% opacity (CSS: `background: rgba(16,185,129,0.1)` with `--cma-bg-elevated` fallback). Checkmark icon (Unicode ✓ or CSS-only checkmark, 48px, `--cma-success` color). Heading "Results sent" in `--cma-success`. Body text. No spinner. No buttons. | Auto-dismiss after exactly 5 seconds via `setTimeout` → transitions to `SUBMIT_DONE` screen. User CAN screenshot the scoreboard (it's visible but dimmed). |
-| `error` | Same overlay backdrop. Card with destructive indicator: ⚠ (Unicode warning, 48px, `--cma-destructive`). Heading "Unable to submit your results". Body text. Secondary message in `--cma-text-secondary`. "Retry Submission" button (styled as primary: `--cma-accent` background, 8px radius, 600 weight, 1rem font, `--cma-text-primary` color) centered below body. | "Retry Submission" button resets attempt counter to 0 and re-initiates `submitResults()`. User remains on scoreboard screen. |
+| `error` | Same overlay backdrop. Card with destructive indicator: ⚠ (Unicode warning, 48px, `--cma-destructive`). Heading "Unable to submit your results". Body text. Secondary message in `--cma-text-secondary`. "Retry Submission" button (styled as primary: `--cma-accent` background, 8px radius, 700 weight, 1rem font, `--cma-text-primary` color) centered below body. | "Retry Submission" button resets attempt counter to 0 and re-initiates `submitResults()`. User remains on scoreboard screen. |
 
 **Spinner animation CSS:**
 ```css
