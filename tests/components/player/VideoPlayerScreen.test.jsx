@@ -1,8 +1,21 @@
+import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+
+const { makeMockMediaController } = vi.hoisted(() => {
+  return {
+    makeMockMediaController: (React) => {
+      const Comp = React.forwardRef(({ children }, ref) =>
+        React.createElement('div', { ref, 'data-testid': 'media-controller' }, children)
+      )
+      Comp.displayName = 'MockMediaController'
+      return Comp
+    },
+  }
+})
 
 vi.mock('media-chrome/react', () => ({
-  MediaController: ({ children }) => <div data-testid="media-controller">{children}</div>,
+  MediaController: makeMockMediaController(React),
   MediaControlBar: ({ children }) => <div data-testid="control-bar">{children}</div>,
   MediaPlayButton: () => <button data-testid="play-btn">Play</button>,
   MediaTimeRange: () => <input type="range" data-testid="time-range" readOnly />,
@@ -202,6 +215,149 @@ describe('VideoPlayerScreen', () => {
       render(<VideoPlayerScreen />)
       const video = document.querySelector('video')
       expect(video.getAttribute('slot')).toBe('media')
+    })
+  })
+
+  describe('track elements', () => {
+    it('renders thumbnail track with kind="metadata"', () => {
+      render(<VideoPlayerScreen />)
+      const thumbTrack = document.querySelector('track[label="thumbnails"]')
+      expect(thumbTrack).toBeTruthy()
+      expect(thumbTrack.kind).toBe('metadata')
+    })
+
+    it('renders chapters track with kind="chapters"', () => {
+      render(<VideoPlayerScreen />)
+      const chaptersTrack = document.querySelector('track[kind="chapters"]')
+      expect(chaptersTrack).toBeTruthy()
+    })
+
+    it('thumbnail track src matches playlist thumbsVttUrl', () => {
+      render(<VideoPlayerScreen />)
+      const thumbTrack = document.querySelector('track[label="thumbnails"]')
+      expect(thumbTrack.getAttribute('src')).toBe('/vtt/v01.thumbs.vtt')
+    })
+
+    it('chapters track src matches playlist chaptersVttUrl', () => {
+      render(<VideoPlayerScreen />)
+      const chaptersTrack = document.querySelector('track[kind="chapters"]')
+      expect(chaptersTrack.getAttribute('src')).toBe('/vtt/v01.chapters.vtt')
+    })
+
+    it('thumbnail track has default attribute', () => {
+      render(<VideoPlayerScreen />)
+      const thumbTrack = document.querySelector('track[label="thumbnails"]')
+      expect(thumbTrack.hasAttribute('default')).toBe(true)
+    })
+
+    it('chapters track has default attribute', () => {
+      render(<VideoPlayerScreen />)
+      const chaptersTrack = document.querySelector('track[kind="chapters"]')
+      expect(chaptersTrack.hasAttribute('default')).toBe(true)
+    })
+  })
+
+  describe('keyboard controls', () => {
+    it('registers keydown handler on controller', () => {
+      const addEventListenerSpy = vi.spyOn(HTMLElement.prototype, 'addEventListener')
+      render(<VideoPlayerScreen />)
+      const keydownCalls = addEventListenerSpy.mock.calls.filter(
+        ([event]) => event === 'keydown'
+      )
+      expect(keydownCalls.length).toBeGreaterThanOrEqual(1)
+      addEventListenerSpy.mockRestore()
+    })
+
+    it('ArrowLeft seeks -5s', () => {
+      render(<VideoPlayerScreen />)
+      const video = document.querySelector('video')
+      video.currentTime = 42
+      const controller = screen.getByTestId('media-controller')
+
+      const event = new KeyboardEvent('keydown', {
+        key: 'ArrowLeft',
+        bubbles: true,
+        cancelable: true,
+      })
+      controller.dispatchEvent(event)
+
+      expect(video.currentTime).toBe(37)
+      expect(event.defaultPrevented).toBe(true)
+    })
+
+    it('ArrowRight seeks +5s', () => {
+      render(<VideoPlayerScreen />)
+      const video = document.querySelector('video')
+      video.currentTime = 30
+      Object.defineProperty(video, 'duration', { value: 100, writable: true, configurable: true })
+      const controller = screen.getByTestId('media-controller')
+
+      const event = new KeyboardEvent('keydown', {
+        key: 'ArrowRight',
+        bubbles: true,
+        cancelable: true,
+      })
+      controller.dispatchEvent(event)
+
+      expect(video.currentTime).toBe(35)
+      expect(event.defaultPrevented).toBe(true)
+    })
+
+    it('ArrowLeft clamps currentTime at 0', () => {
+      render(<VideoPlayerScreen />)
+      const video = document.querySelector('video')
+      video.currentTime = 3
+      const controller = screen.getByTestId('media-controller')
+
+      controller.dispatchEvent(new KeyboardEvent('keydown', {
+        key: 'ArrowLeft',
+        bubbles: true,
+        cancelable: true,
+      }))
+
+      expect(video.currentTime).toBe(0)
+    })
+
+    it('ArrowRight clamps currentTime at duration', () => {
+      render(<VideoPlayerScreen />)
+      const video = document.querySelector('video')
+      video.currentTime = 97
+      Object.defineProperty(video, 'duration', { value: 100, writable: true, configurable: true })
+      const controller = screen.getByTestId('media-controller')
+
+      controller.dispatchEvent(new KeyboardEvent('keydown', {
+        key: 'ArrowRight',
+        bubbles: true,
+        cancelable: true,
+      }))
+
+      expect(video.currentTime).toBe(100)
+    })
+
+    it('does not call preventDefault on non-arrow keys', () => {
+      render(<VideoPlayerScreen />)
+      const controller = screen.getByTestId('media-controller')
+
+      for (const key of ['Space', 'm', 'M']) {
+        const event = new KeyboardEvent('keydown', {
+          key,
+          bubbles: true,
+          cancelable: true,
+        })
+        controller.dispatchEvent(event)
+        expect(event.defaultPrevented).toBe(false)
+      }
+    })
+
+    it('removes keydown listener on unmount', () => {
+      const removeSpy = vi.spyOn(HTMLElement.prototype, 'removeEventListener')
+      const { unmount } = render(<VideoPlayerScreen />)
+      unmount()
+      const keydownRemovals = removeSpy.mock.calls.filter(
+        ([event]) => event === 'keydown'
+      )
+      expect(keydownRemovals.length).toBe(1)
+      removeSpy.mockRestore()
     })
   })
 })

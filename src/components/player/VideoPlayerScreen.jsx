@@ -17,13 +17,15 @@ export default function VideoPlayerScreen({ src, onReady, onError, onReset }) {
   const [videoError, setVideoError] = useState(false)
   const [videoReady, setVideoReady] = useState(false)
   const videoRef = useRef(null)
+  const controllerRef = useRef(null)
 
   const videoSrc = src || playlist.videos[0].srcUrl
   const videoTitle = playlist.videos[0].title
+  const video = playlist.videos[0]
 
   useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
+    const videoEl = videoRef.current
+    if (!videoEl) return
 
     const handleCanPlayThrough = () => {
       setVideoReady(true)
@@ -35,14 +37,40 @@ export default function VideoPlayerScreen({ src, onReady, onError, onReset }) {
       onError?.()
     }
 
-    video.addEventListener('canplaythrough', handleCanPlayThrough)
-    video.addEventListener('error', handleError)
+    videoEl.addEventListener('canplaythrough', handleCanPlayThrough)
+    videoEl.addEventListener('error', handleError)
 
     return () => {
-      video.removeEventListener('canplaythrough', handleCanPlayThrough)
-      video.removeEventListener('error', handleError)
+      videoEl.removeEventListener('canplaythrough', handleCanPlayThrough)
+      videoEl.removeEventListener('error', handleError)
     }
   }, [onReady, onError])
+
+  useEffect(() => {
+    const controller = controllerRef.current
+    if (!controller) return
+
+    if (controller.hotkeys) {
+      controller.hotkeys.add('noarrowleft', 'noarrowright')
+    }
+
+    const handler = (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        const videoEl = videoRef.current
+        if (videoEl) videoEl.currentTime = Math.max(0, videoEl.currentTime - 5)
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        const videoEl = videoRef.current
+        if (videoEl) {
+          videoEl.currentTime = Math.min(videoEl.duration || Infinity, videoEl.currentTime + 5)
+        }
+      }
+    }
+
+    controller.addEventListener('keydown', handler)
+    return () => controller.removeEventListener('keydown', handler)
+  }, [])
 
   const handleDevReset = useCallback(() => {
     if (onReset) onReset()
@@ -62,7 +90,7 @@ export default function VideoPlayerScreen({ src, onReady, onError, onReset }) {
             <p>Please refresh the page to try again.</p>
           </div>
         ) : (
-          <MediaController>
+          <MediaController ref={controllerRef}>
             <video
               ref={videoRef}
               slot="media"
@@ -70,7 +98,10 @@ export default function VideoPlayerScreen({ src, onReady, onError, onReset }) {
               playsInline
               preload="metadata"
               crossOrigin=""
-            />
+            >
+              <track default label="thumbnails" kind="metadata" src={video.thumbsVttUrl} />
+              <track default kind="chapters" src={video.chaptersVttUrl} srcLang="en" />
+            </video>
             <MediaLoadingIndicator slot="centered-chrome" />
             <MediaControlBar>
               <MediaPlayButton />
