@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
+import playlist from '../data/playlist.json'
 
 const STORAGE_KEY = 'cma_timer_v1'
 const TOTAL_MS = 180000
@@ -85,6 +86,11 @@ const useAssessmentStore = create(
 
           if (expired) {
             set({ isRunning: false, rafId: null })
+            const snapshot = get().buildAnswerSnapshot({ timedOut: true })
+            set((s) => ({
+              answers: [...s.answers, snapshot],
+              tagSnapshot: null,
+            }))
             return
           }
 
@@ -143,11 +149,22 @@ const useAssessmentStore = create(
         set({ tagSnapshot: snapshot })
       },
 
-      buildAnswerSnapshot: () => {
+      buildAnswerSnapshot: (opts = {}) => {
         const state = get()
+        const video = playlist.videos[state.currentVideoIndex]
+        const timedOut = opts.timedOut === true || state.isExpired
+        const timeSpentMs = state.startedAt !== null
+          ? performance.now() - state.startedAt
+          : 0
         return {
-          ...state.tagSnapshot,
+          videoId: video?.id ?? '',
           videoIndex: state.currentVideoIndex,
+          selectedL1: state.tagSnapshot?.selectedL1 ?? [],
+          selectedL2: state.tagSnapshot?.selectedL2 ?? [],
+          verdict: state.tagSnapshot?.verdict ?? null,
+          timedOut,
+          timeSpentMs,
+          submittedAt: new Date().toISOString(),
         }
       },
 
