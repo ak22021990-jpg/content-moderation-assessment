@@ -15,7 +15,7 @@
 - [x] **Phase 1: App Shell + One-Attempt Gate** — Screen enum; Landing (name+email); Guidelines skeleton; one-attempt localStorage guard; deploys end-to-end
 - [x] **Phase 2: Custom Video Player (media-chrome)** — media-chrome wired; one MP4 via LFS end-to-end; ffmpeg sprite + WebVTT thumb + chapters pipeline; `canplaythrough`-anchored ready state
 - [x] **Phase 3: Timer + L1/L2 Tagging + Verdict** — Zustand timer slice; 3:00 countdown with amber/red thresholds; multi-select L1 + dependent L2 tagging; Approve/Decline verdict; auto-submit on timeout; taxonomy client sign-off gate
-- [ ] **Phase 4: Scoring + Scoreboard (flagmail1 parity)** — Rubric scoring (50/25/25 partial credit); per-L1 accuracy; competency title; Lottie milestones; 3-rater kappa calibration begins
+- [x] **Phase 4: Scoring + Scoreboard (flagmail1 parity)** — Rubric scoring (50/25/25 partial credit); per-L1 accuracy; competency title; Lottie milestones; 3-rater kappa calibration begins (completed 2026-07-08)
 - [ ] **Phase 5: Submission + One-Attempt Defense in Depth** — Google Apps Script `doPost` deployed; HMAC + origin check + rate limit; SHA-256 email dedup on server; retry/backoff; Formspree fallback wired
 - [ ] **Phase 6: Polish, Content Freeze & Launch Gates** — Final 5 videos committed; GSAP transitions; kappa ≥ 0.6 verified; client taxonomy + answer-key sign-off; CDN swap tested; browser matrix; brand-leak final audit
 
@@ -129,7 +129,7 @@ Plans:
   4. Lottie milestone animations (PERFECT_EYE / SNIPER / ON_FIRE / ZONE_CLEAR / etc.) are lazy-loaded on demand (dynamic import, not eager) and fire on qualifying score thresholds
   5. Three independent raters have tagged each of the 5 videos blindly; Cohen (2 raters) or Fleiss (3+) kappa per L1 is computed and stored in `docs/kappa-calibration.md`; videos below kappa 0.6 are flagged for re-authoring in Phase 6
 
-**Plans:** 4/5 plans executed
+**Plans:** 5/5 plans complete
 
 Plans:
 
@@ -137,7 +137,7 @@ Plans:
 - [x] 04-02-PLAN.md — Wave 1: Scoring Engine (SCORE-01..05,07,09 — pure functions + exhaustive unit tests)
 - [x] 04-03-PLAN.md — Wave 1: Competency Module + answerKeys + Rubric Doc (SCORE-06,08 + QUALITY-04)
 - [x] 04-04-PLAN.md — Wave 2: Scoreboard UI — Dependencies, Components, GSAP, Lottie (BOARD-01..07)
-- [ ] 04-05-PLAN.md — Wave 3: App Integration + Answer Key Authoring + Kappa (QUALITY-01,02)
+- [x] 04-05-PLAN.md — Wave 3: App Integration + Answer Key Authoring + Kappa (QUALITY-01,02)
 
 **UI hint:** yes
 **Notes / Cross-Cutting:**
@@ -197,7 +197,7 @@ Plans:
 | 1. App Shell + One-Attempt Gate | 4/4 | Complete | 2026-07-08 |
 | 2. Custom Video Player | 4/4 | Complete | 2026-07-08 |
 | 3. Timer + Tagging + Verdict | 4/4 | Complete | 2026-07-08 |
-| 4. Scoring + Scoreboard | 4/5 | In Progress|  |
+| 4. Scoring + Scoreboard | 5/5 | Complete   | 2026-07-08 |
 | 5. Submission + Defense in Depth | 0/? | Not started | — |
 | 6. Polish + Content Freeze + Launch | 0/? | Not started | — |
 

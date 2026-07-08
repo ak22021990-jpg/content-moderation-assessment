@@ -151,8 +151,8 @@ Grouped by category. Each requirement is atomic, testable, user-centric.
 
 ### Ground-Truth Quality (QUALITY)
 
-- [ ] **QUALITY-01**: Each video's answer key is authored with explicit written rationale in `docs/video-manifest.md`
-- [ ] **QUALITY-02**: 3 independent raters tag each video blindly during Phase 4; Cohen/Fleiss kappa is computed per L1
+- [x] **QUALITY-01**: Each video's answer key is authored with explicit written rationale in `docs/video-manifest.md`
+- [x] **QUALITY-02**: 3 independent raters tag each video blindly during Phase 4; Cohen/Fleiss kappa is computed per L1
 - [ ] **QUALITY-03**: All 5 videos must reach kappa ≥ 0.6 for their L1 tags before Phase 6 launch — videos below the threshold are re-authored, re-shot, or dropped from scoring
 - [x] **QUALITY-04**: Tie-breaker rule (union L1 / any-one-match L2) is committed to `docs/scoring-rubric.md` BEFORE any candidate data is collected
 - [ ] **QUALITY-05**: Client moderation lead signs off on `taxonomy.json` L2 wording and on the per-video answer keys before Phase 6 launch
