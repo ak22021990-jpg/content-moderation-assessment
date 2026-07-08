@@ -1,11 +1,44 @@
 /**
- * Client-side submission pipeline per SUBMIT-01, SUBMIT-02.
+ * Client-side submission pipeline per SUBMIT-01, SUBMIT-02, SUBMIT-10.
  *
  * - buildSubmissionPayload: assembles payload from identity + answers + scores + competency
  * - buildHmac: HMAC-SHA256 signs the payload (excluding the hmac field) via Web Crypto
+ * - getSubmissionConfig: resolves endpoint + mode from VITE_SUBMISSION_BACKEND env var
+ * - submitResults: POSTs payload with exponential backoff retry
  *
  * All fields use null for missing data, never undefined (JSON.stringify drops undefined).
  */
+
+const BACKEND =
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUBMISSION_BACKEND) ||
+  'apps-script'
+
+const FORMSPREE_FORM_ID =
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_FORMSPREE_FORM_ID) || ''
+
+/**
+ * Returns submission endpoint and mode based on VITE_SUBMISSION_BACKEND env var.
+ *
+ * apps-script: primary path with HMAC + dedup + Sheet row (default)
+ * formspree: degraded fallback — no HMAC validation, no dedup, no Google Sheet row.
+ *   For temporary Apps Script quota overflow only. Disabled by default.
+ */
+export function getSubmissionConfig() {
+  const appsScriptUrl =
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_APPS_SCRIPT_URL) || ''
+
+  if (BACKEND === 'formspree' && FORMSPREE_FORM_ID) {
+    return {
+      endpoint: `https://formspree.io/f/${FORMSPREE_FORM_ID}`,
+      isFormspree: true,
+    }
+  }
+
+  return {
+    endpoint: appsScriptUrl,
+    isFormspree: false,
+  }
+}
 
 export function buildSubmissionPayload({
   identity,

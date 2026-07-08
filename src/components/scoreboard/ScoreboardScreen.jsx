@@ -7,7 +7,7 @@ import { useOneAttemptGuard } from '../../hooks/useOneAttemptGuard.js'
 import useAssessmentStore from '../../stores/useAssessmentStore.js'
 import { SCREENS } from '../../state/screens.js'
 import { hashEmail } from '../../utils/dedup.js'
-import { buildSubmissionPayload, buildHmac, submitResults } from '../../utils/submission.js'
+import { buildSubmissionPayload, buildHmac, submitResults, getSubmissionConfig } from '../../utils/submission.js'
 import taxonomy from '../../data/taxonomy.json'
 import OverallScore from './OverallScore.jsx'
 import PerL1Accuracy from './PerL1Accuracy.jsx'
@@ -95,15 +95,16 @@ export default function ScoreboardScreen() {
 
       payload.emailHash = emailHashVal
 
-      // HMAC sign
-      const secret = import.meta.env?.VITE_HMAC_SECRET ?? ''
-      payload.hmac = await buildHmac(payload, secret)
+      const subConfig = getSubmissionConfig()
 
-      // POST to Apps Script with exponential backoff retry
-      const endpoint = import.meta.env?.VITE_APPS_SCRIPT_URL ?? ''
+      // HMAC sign only for Apps Script (Formspree has no HMAC validation)
+      if (!subConfig.isFormspree) {
+        const secret = import.meta.env?.VITE_HMAC_SECRET ?? ''
+        payload.hmac = await buildHmac(payload, secret)
+      }
 
       // If no endpoint configured, simulate success for local dev
-      if (!endpoint) {
+      if (!subConfig.endpoint) {
         guard.markAttempted({ emailHash: emailHashVal, submissionId: 'simulated' })
         setSubmissionPhase('success')
         setTimeout(() => {
@@ -112,9 +113,14 @@ export default function ScoreboardScreen() {
         return
       }
 
+      // Formspree: strip HMAC field from payload (shared secret must not leak)
+      const body = subConfig.isFormspree
+        ? (() => { const { hmac, ...rest } = payload; return rest })()
+        : payload
+
       const result = await submitResults({
-        payload,
-        endpoint,
+        payload: body,
+        endpoint: subConfig.endpoint,
         onProgress: (p) => {
           setAttemptCount(p.attempt)
           if (p.phase === 'success') {
@@ -127,8 +133,12 @@ export default function ScoreboardScreen() {
       })
 
       if (result.ok) {
+        const submissionId = subConfig.isFormspree
+          ? `formspree-${Date.now()}`
+          : result.id
+
         // Mark attempt in localStorage BEFORE screen transition (ATTEMPT-01)
-        guard.markAttempted({ emailHash: emailHashVal, submissionId: result.id })
+        guard.markAttempted({ emailHash: emailHashVal, submissionId })
 
         setSubmissionPhase('success')
 
