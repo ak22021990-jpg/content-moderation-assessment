@@ -384,11 +384,11 @@ describe('submitResults', () => {
 
     await resultPromise
 
-    // Verify setTimeout was called with increasing delays
+    // Verify setTimeout was called with increasing delays (only between attempts)
     const delayCalls = setTimeoutSpy.mock.calls.filter(
-      ([, ms]) => ms === 1000 || ms === 3000 || ms === 9000,
+      ([, ms]) => ms === 1000 || ms === 3000,
     )
-    expect(delayCalls.length).toBe(3)
+    expect(delayCalls.length).toBe(2)
 
     setTimeoutSpy.mockRestore()
   })

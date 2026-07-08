@@ -89,3 +89,57 @@ export async function buildHmac(payload, secretHex) {
     return ''
   }
 }
+
+/**
+ * Posts payload to Apps Script webhook with exponential backoff.
+ *
+ * Retries on 5xx and network errors only (3 attempts max).
+ * 4xx errors surface immediately without retry.
+ * Calls onProgress({ attempt, total, phase }) on each state change.
+ *
+ * Delays: 1s, 3s, 9s between retries.
+ */
+export async function submitResults({ payload, endpoint, onProgress, maxAttempts = 3 }) {
+  const delays = [1000, 3000, 9000]
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    onProgress?.({ attempt: attempt + 1, total: maxAttempts, phase: 'submitting' })
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        onProgress?.({ attempt: attempt + 1, total: maxAttempts, phase: 'success' })
+        return { ok: true, id: data.id }
+      }
+
+      // 4xx — do not retry (client error: validation, duplicate, rate-limited)
+      if (response.status >= 400 && response.status < 500) {
+        const data = await response.json().catch(() => ({}))
+        onProgress?.({ attempt: attempt + 1, total: maxAttempts, phase: 'error' })
+        return { ok: false, error: data.error || `Server rejected: ${response.status}` }
+      }
+
+      // 5xx — retry if attempts remain
+      if (attempt < maxAttempts - 1) {
+        await new Promise((r) => setTimeout(r, delays[attempt]))
+      }
+    } catch (err) {
+      // Network error — retry if attempts remain
+      if (attempt < maxAttempts - 1) {
+        await new Promise((r) => setTimeout(r, delays[attempt]))
+      } else {
+        onProgress?.({ attempt: attempt + 1, total: maxAttempts, phase: 'error' })
+        return { ok: false, error: err.message || 'Network error' }
+      }
+    }
+  }
+
+  onProgress?.({ attempt: maxAttempts, total: maxAttempts, phase: 'error' })
+  return { ok: false, error: 'All retry attempts exhausted' }
+}

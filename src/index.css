@@ -379,3 +379,25 @@ body {
   gap: var(--cma-space-md);
   text-align: center;
 }
+
+.cma-overlay-btn-retry {
+  background: var(--cma-accent);
+  color: var(--cma-text-primary);
+  border: none;
+  border-radius: 8px;
+  padding: var(--cma-space-sm) var(--cma-space-md);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.cma-overlay-btn-retry:hover {
+  background: var(--cma-accent-hover);
+}
+
+.cma-overlay-btn-retry:focus-visible {
+  outline: var(--cma-focus-outline);
+  outline-offset: 2px;
+}

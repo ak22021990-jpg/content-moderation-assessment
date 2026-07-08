@@ -121,6 +121,14 @@ function setAnswers(answers) {
 beforeEach(() => {
   useAssessmentStore.setState({ answers: [] })
   vi.clearAllMocks()
+  // Ensure submitResults is called in tests (not short-circuited by empty endpoint)
+  vi.stubEnv('VITE_APPS_SCRIPT_URL', 'https://script.google.com/macros/s/test/exec')
+  // Default: submitResults succeeds
+  submitResultsMock.mockResolvedValue({ ok: true, id: '1' })
+})
+
+afterEach(() => {
+  vi.unstubAllEnvs()
 })
 
 describe('ScoreboardScreen', () => {

@@ -88,16 +88,17 @@ export default function SubmissionOverlay({ phase, attempt, totalAttempts, onRet
             </span>
             <h2
               style={{
-                fontSize: '1.5rem',
+                fontSize: '24px',
                 fontWeight: 700,
-                color: 'var(--cma-destructive)',
+                color: 'var(--cma-text-primary)',
               }}
             >
               Unable to submit your results
             </h2>
             <p
               style={{
-                fontSize: '0.875rem',
+                fontSize: '16px',
+                fontWeight: 400,
                 color: 'var(--cma-text-secondary)',
               }}
             >
@@ -105,7 +106,7 @@ export default function SubmissionOverlay({ phase, attempt, totalAttempts, onRet
             </p>
             <p
               style={{
-                fontSize: '0.875rem',
+                fontSize: '14px',
                 color: 'var(--cma-text-secondary)',
               }}
             >
@@ -113,7 +114,7 @@ export default function SubmissionOverlay({ phase, attempt, totalAttempts, onRet
             </p>
             {onRetry && (
               <button
-                className="cma-btn cma-btn-primary"
+                className="cma-overlay-btn-retry"
                 onClick={onRetry}
                 data-testid="retry-button"
               >

@@ -7,7 +7,7 @@ import { useOneAttemptGuard } from '../../hooks/useOneAttemptGuard.js'
 import useAssessmentStore from '../../stores/useAssessmentStore.js'
 import { SCREENS } from '../../state/screens.js'
 import { hashEmail } from '../../utils/dedup.js'
-import { buildSubmissionPayload, buildHmac } from '../../utils/submission.js'
+import { buildSubmissionPayload, buildHmac, submitResults } from '../../utils/submission.js'
 import taxonomy from '../../data/taxonomy.json'
 import OverallScore from './OverallScore.jsx'
 import PerL1Accuracy from './PerL1Accuracy.jsx'
@@ -56,7 +56,7 @@ export default function ScoreboardScreen() {
     if (!scoring.hasAnswers || !identity || submissionPhase !== 'idle') return
 
     const timer = setTimeout(() => {
-      submitResults()
+      handleSubmit()
     }, 500)
 
     return () => clearTimeout(timer)
@@ -64,12 +64,12 @@ export default function ScoreboardScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  async function submitResults() {
+  async function handleSubmit() {
     const data = scoreboardData.current
     if (!data) return
 
     setSubmissionPhase('submitting')
-    setAttemptCount(1)
+    setAttemptCount(0)
 
     try {
       // Hash the normalized email
@@ -99,44 +99,60 @@ export default function ScoreboardScreen() {
       const secret = import.meta.env?.VITE_HMAC_SECRET ?? ''
       payload.hmac = await buildHmac(payload, secret)
 
-      // POST to Apps Script (or simulate success for UI testing)
+      // POST to Apps Script with exponential backoff retry
       const endpoint = import.meta.env?.VITE_APPS_SCRIPT_URL ?? ''
-      let submissionId = 'simulated'
 
-      if (endpoint) {
-        try {
-          const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          })
-
-          if (response.ok) {
-            const result = await response.json()
-            submissionId = result.id ?? 'simulated'
-          }
-          // On failure, still proceed to success for happy-path testing
-        } catch {
-          // Network error — still proceed to success for happy-path testing
-        }
+      // If no endpoint configured, simulate success for local dev
+      if (!endpoint) {
+        guard.markAttempted({ emailHash: emailHashVal, submissionId: 'simulated' })
+        setSubmissionPhase('success')
+        setTimeout(() => {
+          goToScreen(SCREENS.SUBMIT_DONE)
+        }, 5000)
+        return
       }
 
-      // Mark attempt in localStorage BEFORE screen transition (ATTEMPT-01)
-      guard.markAttempted({ emailHash: emailHashVal, submissionId })
+      const result = await submitResults({
+        payload,
+        endpoint,
+        onProgress: (p) => {
+          setAttemptCount(p.attempt)
+          if (p.phase === 'success') {
+            // handled after result
+          } else if (p.phase === 'error') {
+            setSubmissionPhase('error')
+          }
+        },
+        maxAttempts: 3,
+      })
 
-      setSubmissionPhase('success')
+      if (result.ok) {
+        // Mark attempt in localStorage BEFORE screen transition (ATTEMPT-01)
+        guard.markAttempted({ emailHash: emailHashVal, submissionId: result.id })
 
-      // Auto-transition to SubmitDoneScreen after 5 seconds
-      setTimeout(() => {
-        goToScreen(SCREENS.SUBMIT_DONE)
-      }, 5000)
+        setSubmissionPhase('success')
+
+        // Auto-transition to SubmitDoneScreen after 5 seconds
+        setTimeout(() => {
+          goToScreen(SCREENS.SUBMIT_DONE)
+        }, 5000)
+      } else {
+        // Error already set by onProgress callback
+        setSubmissionPhase('error')
+      }
     } catch {
-      // If submission pipeline threw, still show success for happy-path
-      setSubmissionPhase('success')
-      setTimeout(() => {
-        goToScreen(SCREENS.SUBMIT_DONE)
-      }, 5000)
+      // If submission pipeline threw unexpectedly, show error
+      setSubmissionPhase('error')
     }
+  }
+
+  function handleRetry() {
+    setAttemptCount(0)
+    setSubmissionPhase('idle')
+    // Re-trigger submission after a tick
+    setTimeout(() => {
+      handleSubmit()
+    }, 100)
   }
 
   if (!scoring.hasAnswers) {
@@ -180,7 +196,8 @@ export default function ScoreboardScreen() {
         <SubmissionOverlay
           phase={submissionPhase}
           attempt={attemptCount}
-          totalAttempts={1}
+          totalAttempts={3}
+          onRetry={handleRetry}
         />
       )}
     </div>
