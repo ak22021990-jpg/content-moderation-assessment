@@ -184,7 +184,14 @@ Plans:
   4. GSAP transitions between screens use `useGSAP` with scope (React 19 StrictMode-safe); browser matrix (Chrome, Edge, Safari, Firefox latest) passes an end-to-end run of all 5 videos with correct scoring and successful submission
   5. Final brand-leak audit: full-repo `grep -riE` of the forbidden-strings list returns zero hits across code, HTML meta, package.json, commit log (`git log --all --format=%B`), workflow names, and repo settings
 
-**Plans:** TBD
+**Plans:** 5 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — GSAP Screen Transitions: useGSAP fade+slide between all screens (React 19 StrictMode-safe)
+- [ ] 06-02-PLAN.md — Brand Guard Implementation: .husky/pre-commit + CI brand-guard.yml automated gates
+- [ ] 06-03-PLAN.md — Content Infrastructure: env-conditional VIDEO_BASE_URL + per-video answerKeyVersion + playlist metadata
+- [ ] 06-04-PLAN.md — Content Production + Quality Gates: real video production, kappa calibration, client sign-off, CDN provisioning (human-gated)
+- [ ] 06-05-PLAN.md — Launch Readiness: cross-browser matrix, final brand audit, build verification, deployment smoke test, launch checklist
 **UI hint:** yes
 **Notes / Cross-Cutting:**
 
@@ -205,7 +212,7 @@ Plans:
 | 3. Timer + Tagging + Verdict | 4/4 | Complete | 2026-07-08 |
 | 4. Scoring + Scoreboard | 5/5 | Complete   | 2026-07-08 |
 | 5. Submission + Defense in Depth | 3/3 | Complete | 2026-07-08 |
-| 6. Polish + Content Freeze + Launch | 0/? | Not started | — |
+| 6. Polish + Content Freeze + Launch | 0/5 | Planned | 2026-07-08 |
 
 ---
 
