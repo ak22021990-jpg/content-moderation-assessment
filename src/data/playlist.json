@@ -1,5 +1,5 @@
 {
-  "_note": "Single test video for Phase 2. Remaining 4 videos added in Phase 3 (CONTENT-02).",
+  "_note": "5 videos for Phase 3 multi-video assessment. v02-v05 are placeholders reusing v01.mp4 assets.",
   "videos": [
     {
       "id": "v01",
@@ -14,6 +14,66 @@
         { "t": 55.0, "label": "Fictional brand logo appears" },
         { "t": 78.0, "label": "Text overlay with counterfeit claim" }
       ]
+    },
+    {
+      "id": "v02",
+      "title": "Video 2 — Content Moderation",
+      "srcUrl": "/videos/v01.mp4",
+      "spriteUrl": "/sprites/v01_sprite.jpg",
+      "thumbsVttUrl": "/vtt/v01.thumbs.vtt",
+      "chaptersVttUrl": "/vtt/v01.chapters.vtt",
+      "durationSec": 90,
+      "chapters": [
+        { "t": 25.0, "label": "Video 2 — chapter A" },
+        { "t": 55.0, "label": "Video 2 — chapter B" },
+        { "t": 78.0, "label": "Video 2 — chapter C" }
+      ],
+      "_status": "placeholder"
+    },
+    {
+      "id": "v03",
+      "title": "Video 3 — Content Moderation",
+      "srcUrl": "/videos/v01.mp4",
+      "spriteUrl": "/sprites/v01_sprite.jpg",
+      "thumbsVttUrl": "/vtt/v01.thumbs.vtt",
+      "chaptersVttUrl": "/vtt/v01.chapters.vtt",
+      "durationSec": 90,
+      "chapters": [
+        { "t": 25.0, "label": "Video 3 — chapter A" },
+        { "t": 55.0, "label": "Video 3 — chapter B" },
+        { "t": 78.0, "label": "Video 3 — chapter C" }
+      ],
+      "_status": "placeholder"
+    },
+    {
+      "id": "v04",
+      "title": "Video 4 — Content Moderation",
+      "srcUrl": "/videos/v01.mp4",
+      "spriteUrl": "/sprites/v01_sprite.jpg",
+      "thumbsVttUrl": "/vtt/v01.thumbs.vtt",
+      "chaptersVttUrl": "/vtt/v01.chapters.vtt",
+      "durationSec": 90,
+      "chapters": [
+        { "t": 25.0, "label": "Video 4 — chapter A" },
+        { "t": 55.0, "label": "Video 4 — chapter B" },
+        { "t": 78.0, "label": "Video 4 — chapter C" }
+      ],
+      "_status": "placeholder"
+    },
+    {
+      "id": "v05",
+      "title": "Video 5 — Content Moderation",
+      "srcUrl": "/videos/v01.mp4",
+      "spriteUrl": "/sprites/v01_sprite.jpg",
+      "thumbsVttUrl": "/vtt/v01.thumbs.vtt",
+      "chaptersVttUrl": "/vtt/v01.chapters.vtt",
+      "durationSec": 90,
+      "chapters": [
+        { "t": 25.0, "label": "Video 5 — chapter A" },
+        { "t": 55.0, "label": "Video 5 — chapter B" },
+        { "t": 78.0, "label": "Video 5 — chapter C" }
+      ],
+      "_status": "placeholder"
     }
   ],
   "_cdnDocs": "srcUrl paths are relative to Pages root. Phase 6 makes them env-conditional per CONTENT-03."

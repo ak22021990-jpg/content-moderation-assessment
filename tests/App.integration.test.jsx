@@ -4,11 +4,11 @@ import { readFileSync } from 'fs'
 import { join } from 'path'
 import App from '../src/App.jsx'
 
-vi.mock('../src/components/player/VideoPlayerScreen.jsx', () => ({
-  default: ({ onReady, onReset, onError }) => (
-    <div data-testid="video-player-screen">
-      <button data-testid="player-trigger-ready" onClick={onReady}>Trigger Ready</button>
-      <button data-testid="player-trigger-reset" onClick={onReset}>Trigger Reset</button>
+vi.mock('../src/components/RunnerScreen.jsx', () => ({
+  default: ({ onReset, onComplete }) => (
+    <div data-testid="runner-screen">
+      <button data-testid="runner-trigger-complete" onClick={onComplete}>Complete</button>
+      <button data-testid="runner-trigger-reset" onClick={onReset}>Reset</button>
     </div>
   ),
 }))
@@ -30,7 +30,7 @@ describe('App integration', () => {
       expect(document.activeElement).toBe(screen.getByLabelText(/full name/i))
     })
 
-    it('transitions LANDING → GUIDELINES → ASSESSMENT', async () => {
+    it('transitions LANDING → GUIDELINES → RUNNER', async () => {
       const user = userEvent.setup()
       render(<App />)
 
@@ -51,9 +51,24 @@ describe('App integration', () => {
       expect(stored.email).toBe('alice@example.com')
       expect(typeof stored.startedAt).toBe('string')
 
-      // Begin Assessment → ASSESSMENT
+      // Begin Assessment → RUNNER
       await user.click(screen.getByRole('button', { name: /begin assessment/i }))
-      expect(screen.getByTestId('video-player-screen')).toBeInTheDocument()
+      expect(screen.getByTestId('runner-screen')).toBeInTheDocument()
+    })
+
+    it('transitions RUNNER → SCOREBOARD on complete', async () => {
+      const user = userEvent.setup()
+      render(<App />)
+
+      await user.type(screen.getByLabelText(/full name/i), 'Alice')
+      await user.type(screen.getByLabelText(/email/i), 'alice@example.com')
+      await user.click(screen.getByRole('button', { name: /start/i }))
+      await user.click(screen.getByRole('button', { name: /begin assessment/i }))
+
+      expect(screen.getByTestId('runner-screen')).toBeInTheDocument()
+
+      await user.click(screen.getByTestId('runner-trigger-complete'))
+      expect(screen.getByTestId('scoreboard-stub')).toBeInTheDocument()
     })
   })
 
