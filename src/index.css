@@ -131,3 +131,202 @@ body {
 .cma-verdict-btn--approve { background: var(--cma-success); color: var(--cma-text-primary); }
 .cma-verdict-btn--decline { background: var(--cma-destructive); color: var(--cma-text-primary); }
 .cma-progress { color: var(--cma-text-secondary); font-size: 0.875rem; text-align: center; padding: var(--cma-space-sm); }
+
+/* ── Scoreboard Screen ── */
+.sb-screen {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--cma-space-lg) var(--cma-space-md);
+}
+
+.sb-title {
+  text-align: center;
+  margin-bottom: var(--cma-space-lg);
+}
+
+.sb-section {
+  margin-bottom: var(--cma-space-lg);
+  padding: var(--cma-space-md);
+  background: var(--cma-bg-surface);
+  border: 1px solid var(--cma-border-subtle);
+  border-radius: 8px;
+}
+
+/* Overall Score */
+.sb-overall-score {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cma-space-sm);
+}
+
+.sb-score-value {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--cma-text-primary);
+}
+
+.sb-tier-badge {
+  display: inline-block;
+  padding: 0.25rem 1rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Per-L1 Accuracy */
+.sb-l1-accuracy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cma-space-sm);
+}
+
+.sb-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--cma-text-primary);
+  margin-bottom: var(--cma-space-xs);
+}
+
+.sb-l1-row {
+  display: flex;
+  align-items: center;
+  gap: var(--cma-space-sm);
+}
+
+.sb-l1-label {
+  width: 200px;
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  color: var(--cma-text-secondary);
+  text-align: right;
+}
+
+.sb-l1-bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--cma-border-subtle);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.sb-l1-bar-fill {
+  height: 100%;
+  background: var(--cma-success);
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+.sb-l1-pct {
+  width: 40px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--cma-text-primary);
+  text-align: right;
+}
+
+/* Competency Paragraph */
+.sb-competency-text {
+  color: var(--cma-text-secondary);
+  line-height: 1.6;
+}
+
+/* Milestone Lottie */
+.sb-milestone {
+  display: flex;
+  justify-content: center;
+}
+
+.sb-milestone-loading {
+  width: 280px;
+  height: 200px;
+  background: var(--cma-bg-surface);
+  border-radius: 8px;
+}
+
+/* Per-Video Table */
+.sb-video-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.sb-video-table th {
+  text-align: left;
+  padding: var(--cma-space-xs) var(--cma-space-sm);
+  border-bottom: 2px solid var(--cma-border-subtle);
+  color: var(--cma-text-secondary);
+  font-weight: 600;
+}
+
+.sb-video-table td {
+  padding: var(--cma-space-xs) var(--cma-space-sm);
+  border-bottom: 1px solid var(--cma-border-subtle);
+  color: var(--cma-text-primary);
+}
+
+.sb-check {
+  color: var(--cma-success);
+  font-size: 1.25rem;
+}
+
+.sb-cross {
+  color: var(--cma-destructive);
+  font-size: 1.25rem;
+}
+
+.sb-na {
+  color: var(--cma-text-secondary);
+}
+
+/* Time Stats */
+.sb-total-time {
+  color: var(--cma-text-secondary);
+  margin-bottom: var(--cma-space-sm);
+}
+
+.sb-time-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--cma-space-xs);
+}
+
+.sb-time-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--cma-space-xs) var(--cma-space-sm);
+  background: var(--cma-bg-surface);
+  border-radius: 8px;
+}
+
+.sb-time-label {
+  font-size: 0.8125rem;
+  color: var(--cma-text-secondary);
+}
+
+.sb-time-value {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--cma-text-primary);
+}
+
+.sb-timeout-badge {
+  margin-left: var(--cma-space-xs);
+  padding: 0.125rem 0.375rem;
+  background: var(--cma-destructive);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+/* Empty state */
+.sb-empty {
+  text-align: center;
+  padding: var(--cma-space-xl);
+}
