@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { buildSubmissionPayload, buildHmac } from '../../src/utils/submission.js'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { buildSubmissionPayload, buildHmac, submitResults } from '../../src/utils/submission.js'
 
 // Mock crypto.subtle for buildHmac tests
 const mockSubtle = {
@@ -262,5 +262,178 @@ describe('buildHmac', () => {
 
     const result = await buildHmac({ name: 'test' }, 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2')
     expect(result).toBe('')
+  })
+})
+
+describe('submitResults', () => {
+  let mockFetch
+
+  beforeEach(() => {
+    mockFetch = vi.fn()
+    vi.stubGlobal('fetch', mockFetch)
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.unstubAllGlobals()
+  })
+
+  const payload = { name: 'Alice', email: 'a@t.com', hmac: 'abc123' }
+  const endpoint = 'https://script.google.com/macros/s/test/exec'
+
+  it('succeeds on first attempt (200 response)', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ id: '5' }),
+    })
+
+    const onProgress = vi.fn()
+    const result = await submitResults({ payload, endpoint, onProgress })
+
+    expect(result).toEqual({ ok: true, id: '5' })
+    expect(mockFetch).toHaveBeenCalledTimes(1)
+    expect(onProgress).toHaveBeenCalledWith({ attempt: 1, total: 3, phase: 'submitting' })
+    expect(onProgress).toHaveBeenCalledWith({ attempt: 1, total: 3, phase: 'success' })
+  })
+
+  it('succeeds on third attempt after two 503 failures', async () => {
+    mockFetch
+      .mockResolvedValueOnce({ ok: false, status: 503 })
+      .mockResolvedValueOnce({ ok: false, status: 503 })
+      .mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ id: '42' }) })
+
+    const onProgress = vi.fn()
+    const resultPromise = submitResults({ payload, endpoint, onProgress })
+
+    // Attempt 1: 503, wait 1000ms
+    await vi.advanceTimersByTimeAsync(1000)
+    // Attempt 2: 503, wait 3000ms
+    await vi.advanceTimersByTimeAsync(3000)
+
+    const result = await resultPromise
+    expect(result).toEqual({ ok: true, id: '42' })
+    expect(mockFetch).toHaveBeenCalledTimes(3)
+    expect(onProgress).toHaveBeenCalledWith({ attempt: 1, total: 3, phase: 'submitting' })
+    expect(onProgress).toHaveBeenCalledWith({ attempt: 2, total: 3, phase: 'submitting' })
+    expect(onProgress).toHaveBeenCalledWith({ attempt: 3, total: 3, phase: 'submitting' })
+    expect(onProgress).toHaveBeenCalledWith({ attempt: 3, total: 3, phase: 'success' })
+  })
+
+  it('surfaces 4xx error immediately without retry', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 400,
+      json: () => Promise.resolve({ error: 'invalid-hmac' }),
+    })
+
+    const onProgress = vi.fn()
+    const result = await submitResults({ payload, endpoint, onProgress })
+
+    expect(result).toEqual({ ok: false, error: 'invalid-hmac' })
+    expect(mockFetch).toHaveBeenCalledTimes(1) // No retry!
+    expect(onProgress).toHaveBeenCalledWith({ attempt: 1, total: 3, phase: 'error' })
+  })
+
+  it('retries on network error, fails on third attempt', async () => {
+    mockFetch
+      .mockRejectedValueOnce(new Error('Network error'))
+      .mockRejectedValueOnce(new Error('Network error'))
+      .mockRejectedValueOnce(new Error('Network error'))
+
+    const onProgress = vi.fn()
+    const resultPromise = submitResults({ payload, endpoint, onProgress })
+
+    await vi.advanceTimersByTimeAsync(1000) // attempt 1 delay
+    await vi.advanceTimersByTimeAsync(3000) // attempt 2 delay
+
+    const result = await resultPromise
+    expect(result.ok).toBe(false)
+    expect(result.error).toBe('Network error')
+    expect(mockFetch).toHaveBeenCalledTimes(3)
+    expect(onProgress).toHaveBeenCalledWith({ attempt: 3, total: 3, phase: 'error' })
+  })
+
+  it('calls onProgress with correct attempt/total/phase on each state change', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ id: '1' }),
+    })
+
+    const onProgress = vi.fn()
+    await submitResults({ payload, endpoint, onProgress })
+
+    expect(onProgress).toHaveBeenCalledWith({ attempt: 1, total: 3, phase: 'submitting' })
+    expect(onProgress).toHaveBeenCalledWith({ attempt: 1, total: 3, phase: 'success' })
+  })
+
+  it('uses exponential delays: 1s, 3s, 9s between retries', async () => {
+    mockFetch
+      .mockResolvedValueOnce({ ok: false, status: 503 })
+      .mockResolvedValueOnce({ ok: false, status: 503 })
+      .mockResolvedValueOnce({ ok: false, status: 503 })
+
+    const setTimeoutSpy = vi.spyOn(global, 'setTimeout')
+
+    const resultPromise = submitResults({ payload, endpoint })
+
+    // Advance past first delay
+    await vi.advanceTimersByTimeAsync(1500)
+    // Advance past second delay
+    await vi.advanceTimersByTimeAsync(4000)
+
+    await resultPromise
+
+    // Verify setTimeout was called with increasing delays
+    const delayCalls = setTimeoutSpy.mock.calls.filter(
+      ([, ms]) => ms === 1000 || ms === 3000 || ms === 9000,
+    )
+    expect(delayCalls.length).toBe(3)
+
+    setTimeoutSpy.mockRestore()
+  })
+
+  it('POSTs payload as JSON-stringified body', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({ id: '1' }),
+    })
+
+    await submitResults({ payload, endpoint })
+
+    expect(mockFetch).toHaveBeenCalledWith(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+  })
+
+  it('returns error on exhaustion when all 5xx responses', async () => {
+    mockFetch
+      .mockResolvedValueOnce({ ok: false, status: 500 })
+      .mockResolvedValueOnce({ ok: false, status: 502 })
+      .mockResolvedValueOnce({ ok: false, status: 503 })
+
+    const onProgress = vi.fn()
+    const resultPromise = submitResults({ payload, endpoint, onProgress, maxAttempts: 3 })
+
+    await vi.advanceTimersByTimeAsync(1000)
+    await vi.advanceTimersByTimeAsync(3000)
+
+    const result = await resultPromise
+    expect(result).toEqual({ ok: false, error: 'All retry attempts exhausted' })
+    expect(mockFetch).toHaveBeenCalledTimes(3)
+  })
+
+  it('falls back to generic error on 4xx with no json body', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 404,
+      json: () => Promise.reject(new Error('not json')),
+    })
+
+    const result = await submitResults({ payload, endpoint })
+    expect(result).toEqual({ ok: false, error: 'Server rejected: 404' })
+    expect(mockFetch).toHaveBeenCalledTimes(1)
   })
 })

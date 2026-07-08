@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import ScoreboardScreen from '../../../src/components/scoreboard/ScoreboardScreen.jsx'
 
 // Use hoisted mocks so factory functions can reference them
@@ -63,6 +63,10 @@ vi.mock('../../../src/hooks/useOneAttemptGuard.js', () => ({
 }))
 
 // Mock submission module
+const { submitResultsMock } = vi.hoisted(() => ({
+  submitResultsMock: vi.fn(),
+}))
+
 vi.mock('../../../src/utils/submission.js', () => ({
   buildSubmissionPayload: vi.fn(() => ({
     name: 'Alice',
@@ -82,6 +86,7 @@ vi.mock('../../../src/utils/submission.js', () => ({
     hmac: '',
   })),
   buildHmac: vi.fn(() => Promise.resolve('abcdef123456')),
+  submitResults: submitResultsMock,
 }))
 
 // Mock dedup module
@@ -257,5 +262,111 @@ describe('ScoreboardScreen', () => {
     await waitFor(() => {
       expect(markAttemptedMock).toHaveBeenCalled()
     }, { timeout: 2000 })
+  })
+
+  it('renders error overlay with retry button when submitResults fails', async () => {
+    submitResultsMock.mockResolvedValue({ ok: false, error: 'Server rejected: 500' })
+
+    setAnswers([
+      { videoId: 'v01', selectedL1: ['1'], selectedL2: [], verdict: 'DECLINE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v02', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v03', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v04', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v05', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+    ])
+
+    render(<ScoreboardScreen />)
+
+    // Wait for overlay
+    await screen.findAllByTestId('submission-overlay', {}, { timeout: 2000 })
+
+    // Error overlay should show
+    await waitFor(() => {
+      expect(screen.getByText(/Unable to submit your results/i)).toBeInTheDocument()
+    }, { timeout: 2000 })
+
+    // Retry button should be present
+    expect(screen.getByTestId('retry-button')).toBeInTheDocument()
+    expect(screen.getByText(/If the problem persists/i)).toBeInTheDocument()
+  })
+
+  it('calls submitResults again when retry button is clicked', async () => {
+    submitResultsMock.mockResolvedValue({ ok: false, error: 'failed' })
+
+    setAnswers([
+      { videoId: 'v01', selectedL1: ['1'], selectedL2: [], verdict: 'DECLINE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v02', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v03', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v04', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v05', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+    ])
+
+    render(<ScoreboardScreen />)
+
+    // Wait for overlay + error state
+    await screen.findAllByTestId('submission-overlay', {}, { timeout: 2000 })
+    await waitFor(() => {
+      expect(screen.getByTestId('retry-button')).toBeInTheDocument()
+    }, { timeout: 2000 })
+
+    const callsBefore = submitResultsMock.mock.calls.length
+
+    // Click retry
+    screen.getByTestId('retry-button').click()
+
+    await waitFor(() => {
+      expect(submitResultsMock).toHaveBeenCalledTimes(callsBefore + 1)
+    }, { timeout: 2000 })
+  })
+
+  it('calls markAttempted with correct emailHash and submissionId on success', async () => {
+    submitResultsMock.mockResolvedValue({ ok: true, id: '42' })
+
+    setAnswers([
+      { videoId: 'v01', selectedL1: ['1'], selectedL2: [], verdict: 'DECLINE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v02', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v03', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v04', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v05', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+    ])
+
+    render(<ScoreboardScreen />)
+
+    await screen.findAllByTestId('submission-overlay', {}, { timeout: 2000 })
+
+    await waitFor(() => {
+      expect(markAttemptedMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          emailHash: expect.any(String),
+          submissionId: '42',
+        }),
+      )
+    }, { timeout: 2000 })
+  })
+
+  it('updates attempt counter via onProgress callback', async () => {
+    let progressCallback
+    submitResultsMock.mockImplementation(({ onProgress }) => {
+      progressCallback = onProgress
+      return new Promise((resolve) => {
+        // Don't resolve — keep in submitting state
+      })
+    })
+
+    setAnswers([
+      { videoId: 'v01', selectedL1: ['1'], selectedL2: [], verdict: 'DECLINE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v02', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v03', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v04', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+      { videoId: 'v05', selectedL1: [], selectedL2: [], verdict: 'APPROVE', timeSpentMs: 1000, timedOut: false, submittedAt: new Date().toISOString() },
+    ])
+
+    render(<ScoreboardScreen />)
+
+    await screen.findAllByTestId('submission-overlay', {}, { timeout: 2000 })
+
+    // Verify submitting state shows attempt info
+    expect(screen.getByText(/Submitting your results/i)).toBeInTheDocument()
+    expect(screen.getByText(/Attempt/i)).toBeInTheDocument()
   })
 })
