@@ -31,6 +31,7 @@ export default function ScoreboardScreen() {
 
   const [submissionPhase, setSubmissionPhase] = useState('idle')
   const [attemptCount, setAttemptCount] = useState(0)
+  const hasAutoSubmitted = useRef(false)
 
   // Capture scoreboard data snapshot on first render with answers
   if (scoring.hasAnswers && !scoreboardData.current) {
@@ -54,15 +55,16 @@ export default function ScoreboardScreen() {
   // Auto-submit after 500ms delay (scoreboard animation plays first)
   useEffect(() => {
     if (!scoring.hasAnswers || !identity || submissionPhase !== 'idle') return
+    if (hasAutoSubmitted.current) return
+    hasAutoSubmitted.current = true
 
     const timer = setTimeout(() => {
       handleSubmit()
     }, 500)
 
     return () => clearTimeout(timer)
-    // Only fire once on mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [scoring.hasAnswers, identity, submissionPhase])
 
   async function handleSubmit() {
     const data = scoreboardData.current

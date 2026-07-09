@@ -18,7 +18,7 @@ export default function TagPanel({ onSelectionChange = noop, resetKey = 0 }) {
 
   return (
     <section className="cma-tag-panel" aria-label="Content moderation tags" style={{ flex: 1, overflowY: 'auto', paddingRight: '8px' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
         {taxonomy.categories.map(cat => (
           <L1Chip
             key={cat.id}
