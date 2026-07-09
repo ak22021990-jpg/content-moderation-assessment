@@ -10,7 +10,7 @@ export default function TimeStats({ totalTimeMs, perVideoTimes }) {
 
   return (
     <div className="sb-time-stats">
-      <h3 className="sb-section-title">Timing</h3>
+      <h2 className="sb-section-title">Timing</h2>
       {hasTiming && (
         <p className="sb-total-time">
           Total time: <strong>{formatDuration(totalTimeMs)}</strong>

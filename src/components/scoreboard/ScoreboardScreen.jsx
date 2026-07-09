@@ -167,24 +167,27 @@ export default function ScoreboardScreen() {
 
   if (!scoring.hasAnswers) {
     return (
-      <div className="cma-screen sb-empty">
-        <h2>Assessment Complete</h2>
+      <main className="cma-screen sb-empty" aria-labelledby="sb-empty-title">
+        <h1 id="sb-empty-title">Assessment Complete</h1>
         <p>Complete the assessment to see your results.</p>
-      </div>
+      </main>
     )
   }
 
   return (
-    <div ref={containerRef} className="cma-screen sb-screen" data-testid="scoreboard">
-      <h2 className="sb-title">Your Results</h2>
+    <main
+      ref={containerRef}
+      className="cma-screen sb-screen"
+      data-testid="scoreboard"
+      aria-labelledby="sb-title"
+    >
+      <h1 id="sb-title" className="sb-title">Your Results</h1>
 
       <div className="sb-section">
         <OverallScore overallPct={scoring.overallPct} tier={scoring.tier} />
       </div>
 
-      <div className="sb-section">
-        <MilestoneLottie score={scoring.overallPct} />
-      </div>
+      <MilestoneLottie score={scoring.overallPct} />
 
       <div className="sb-section">
         <PerL1Accuracy perL1Accuracy={scoring.perL1Accuracy} />
@@ -210,6 +213,6 @@ export default function ScoreboardScreen() {
           onRetry={handleRetry}
         />
       )}
-    </div>
+    </main>
   )
 }

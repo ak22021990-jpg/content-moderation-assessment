@@ -22,7 +22,10 @@ export default function VideoPlayerScreen({ src, videoIndex, onReady, onPlaying,
   const currentVideoIdx = videoIndex !== undefined ? videoIndex : 0
   const currentVideo = playlist.videos[currentVideoIdx] || playlist.videos[0]
 
-  const videoSrc = src || currentVideo.srcUrl
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+  const videoSrc = src || (base + currentVideo.srcUrl)
+  const thumbsVttUrl = base + currentVideo.thumbsVttUrl
+  const chaptersVttUrl = base + currentVideo.chaptersVttUrl
 
   useEffect(() => {
     const videoEl = videoRef.current
@@ -87,6 +90,13 @@ export default function VideoPlayerScreen({ src, videoIndex, onReady, onPlaying,
     if (onReset) onReset()
   }, [onReset])
 
+  const handleRetry = useCallback(() => {
+    setVideoError(false)
+    setVideoReady(false)
+    const videoEl = videoRef.current
+    if (videoEl) videoEl.load()
+  }, [])
+
   return (
     <section className="cma-player-container" aria-label="Video player">
       <div className="cma-player-card">
@@ -99,6 +109,13 @@ export default function VideoPlayerScreen({ src, videoIndex, onReady, onPlaying,
             <span className="cma-error-icon" aria-hidden="true">!</span>
             <h2>Video failed to load</h2>
             <p>Please refresh the page to try again.</p>
+            <button
+              type="button"
+              className="cma-player-error-retry"
+              onClick={handleRetry}
+            >
+              Retry
+            </button>
           </div>
         ) : (
           <MediaController ref={controllerRef}>
@@ -110,8 +127,8 @@ export default function VideoPlayerScreen({ src, videoIndex, onReady, onPlaying,
               preload="metadata"
               crossOrigin=""
             >
-              <track default label="thumbnails" kind="metadata" src={currentVideo.thumbsVttUrl} />
-              <track default kind="chapters" src={currentVideo.chaptersVttUrl} srcLang="en" />
+              <track default label="thumbnails" kind="metadata" src={thumbsVttUrl} />
+              <track default kind="chapters" src={chaptersVttUrl} srcLang="en" />
             </video>
             <MediaLoadingIndicator slot="centered-chrome" />
             <MediaControlBar>

@@ -19,7 +19,7 @@ export default function PerL1Accuracy({ perL1Accuracy }) {
 
   return (
     <div className="sb-l1-accuracy">
-      <h3 className="sb-section-title">Category Accuracy</h3>
+      <h2 className="sb-section-title">Category Accuracy</h2>
       {entries.map(e => (
         <div key={e.catId} className="sb-l1-row">
           <span className="sb-l1-label">{e.label}</span>

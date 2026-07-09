@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+
 /**
  * Submission overlay renders over the scoreboard during submission.
  * States: idle (hidden), submitting (spinner), success (checkmark), error (retry).
@@ -6,15 +8,49 @@
  * In this plan (05-01), only idle/submitting/success are wired; error renders null placeholder.
  */
 export default function SubmissionOverlay({ phase, attempt, totalAttempts, onRetry }) {
+  const retryRef = useRef(null)
+  const cardRef = useRef(null)
+
+  useEffect(() => {
+    if (phase === 'error' && retryRef.current) {
+      retryRef.current.focus()
+    } else if (phase !== 'idle' && cardRef.current) {
+      cardRef.current.focus()
+    }
+  }, [phase])
+
+  useEffect(() => {
+    if (phase !== 'error' || !onRetry) return
+    const onKey = (e) => {
+      if (e.key === 'Escape' || e.key === 'Enter') {
+        e.preventDefault()
+        onRetry()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [phase, onRetry])
+
   if (phase === 'idle') return null
+
+  const titleId = 'cma-submission-title'
 
   return (
     <div className="cma-overlay" data-testid="submission-overlay">
-      <div className="cma-overlay-card">
+      <div
+        ref={cardRef}
+        className="cma-overlay-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        tabIndex={-1}
+        style={{ outline: 'none' }}
+      >
         {phase === 'submitting' && (
           <>
             <div className="cma-spinner" />
             <h2
+              id={titleId}
               style={{
                 fontSize: '1.5rem',
                 fontWeight: 700,
@@ -55,6 +91,7 @@ export default function SubmissionOverlay({ phase, attempt, totalAttempts, onRet
               ✓
             </span>
             <h2
+              id={titleId}
               style={{
                 fontSize: '1.5rem',
                 fontWeight: 700,
@@ -87,6 +124,7 @@ export default function SubmissionOverlay({ phase, attempt, totalAttempts, onRet
               ⚠
             </span>
             <h2
+              id={titleId}
               style={{
                 fontSize: '24px',
                 fontWeight: 700,
@@ -114,6 +152,7 @@ export default function SubmissionOverlay({ phase, attempt, totalAttempts, onRet
             </p>
             {onRetry && (
               <button
+                ref={retryRef}
                 className="cma-overlay-btn-retry"
                 onClick={onRetry}
                 data-testid="retry-button"

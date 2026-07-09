@@ -41,13 +41,14 @@ export default function MilestoneLottie({ score }) {
   if (!milestoneRef.current || loadError) return null
 
   return (
-    <div className="sb-milestone">
+    <div className="sb-section sb-milestone">
       {animData ? (
         <Lottie
           animationData={animData}
           loop={false}
           autoplay
           style={{ width: '100%', maxWidth: 280 }}
+          aria-label={`Milestone: ${milestoneRef.current.name.replace(/_/g, ' ').toLowerCase()}`}
         />
       ) : (
         <div className="sb-milestone-loading" aria-label="Loading milestone animation" />
