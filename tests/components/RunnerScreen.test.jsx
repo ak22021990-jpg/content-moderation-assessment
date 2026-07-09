@@ -1,10 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, act } from '@testing-library/react'
+import { render, screen, act, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 
 // Mock all subcomponents
 vi.mock('../../src/components/player/VideoPlayerScreen.jsx', () => ({
-  default: (props) => React.createElement('div', { 'data-testid': 'video-player-mock', ...props }),
+  default: (props) => {
+    const { videoIndex, onPlaying, onReset, ...rest } = props
+    return React.createElement('div', { 'data-testid': 'video-player-mock', ...rest })
+  },
 }))
 
 vi.mock('../../src/components/timer/CountdownDisplay.jsx', () => ({
@@ -12,11 +16,30 @@ vi.mock('../../src/components/timer/CountdownDisplay.jsx', () => ({
 }))
 
 vi.mock('../../src/components/tagging/TagPanel.jsx', () => ({
-  default: (props) => React.createElement('div', { 'data-testid': 'tag-panel-mock', ...props }),
+  default: (props) => {
+    const { resetKey, onSelectionChange, ...rest } = props
+    return React.createElement('div', { 'data-testid': 'tag-panel-mock', ...rest })
+  },
 }))
 
 vi.mock('../../src/components/tagging/VerdictButtons.jsx', () => ({
-  default: (props) => React.createElement('div', { 'data-testid': 'verdict-buttons-mock', ...props }),
+  default: (props) => {
+    const { onVerdict, submitting, ...rest } = props
+    return React.createElement(
+      'div',
+      { 'data-testid': 'verdict-buttons-mock', ...rest },
+      React.createElement('button', {
+        type: 'button',
+        onClick: () => onVerdict?.('decline'),
+        disabled: submitting,
+      }, 'Decline'),
+      React.createElement('button', {
+        type: 'button',
+        onClick: () => onVerdict?.('approve'),
+        disabled: submitting,
+      }, 'Approve')
+    )
+  },
 }))
 
 vi.mock('../../src/components/ProgressIndicator.jsx', () => ({
@@ -31,6 +54,16 @@ vi.mock('../../src/data/playlist.json', () => ({
       { id: 'v03', title: 'Video 3', srcUrl: '/videos/v03.mp4' },
       { id: 'v04', title: 'Video 4', srcUrl: '/videos/v04.mp4' },
       { id: 'v05', title: 'Video 5', srcUrl: '/videos/v05.mp4' },
+    ],
+  },
+}))
+
+vi.mock('../../src/data/answerKeys.json', () => ({
+  default: {
+    version: 'test',
+    videos: [
+      { id: 'v01', verdict: 'DECLINE', l1Tags: ['1'], l2Tags: ['1.3'] },
+      { id: 'v02', verdict: 'APPROVE', l1Tags: [], l2Tags: [] },
     ],
   },
 }))
@@ -74,6 +107,12 @@ describe('RunnerScreen', () => {
     mockIsComplete = false
     mockIsRunning = false
     Object.values(mockStoreFns).forEach(fn => fn.mockClear())
+    window.matchMedia = vi.fn().mockReturnValue({
+      matches: false,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })
   })
 
   it('renders subcomponents', () => {
@@ -142,5 +181,32 @@ describe('RunnerScreen', () => {
       await new Promise(resolve => setTimeout(resolve, 0))
     })
     expect(onComplete).toHaveBeenCalledTimes(1)
+  })
+
+  describe('feedback overlay (06-11)', () => {
+    it('shows correct feedback with confetti for matching verdict', async () => {
+      const user = userEvent.setup()
+      render(React.createElement(RunnerScreen, { onComplete: vi.fn(), onReset: vi.fn() }))
+      await user.click(screen.getByRole('button', { name: 'Decline' }))
+      expect(await screen.findByRole('heading', { name: /Correct — great eye/i })).toBeInTheDocument()
+      expect(document.querySelector('canvas')).toBeInTheDocument()
+    })
+
+    it('shows wrong feedback without confetti for mismatching verdict', async () => {
+      const user = userEvent.setup()
+      render(React.createElement(RunnerScreen, { onComplete: vi.fn(), onReset: vi.fn() }))
+      await user.click(screen.getByRole('button', { name: 'Approve' }))
+      expect(await screen.findByRole('heading', { name: /Missed this one/i })).toBeInTheDocument()
+      expect(document.querySelector('canvas')).toBeNull()
+    })
+
+    it('shows partial match breakdown', async () => {
+      const user = userEvent.setup()
+      render(React.createElement(RunnerScreen, { onComplete: vi.fn(), onReset: vi.fn() }))
+      await user.click(screen.getByRole('button', { name: 'Decline' }))
+      expect(await screen.findByText(/Breakdown/i)).toBeInTheDocument()
+      expect(screen.getByText(/Expected categories:/i)).toBeInTheDocument()
+      expect(screen.getByText('Copyright & IP')).toBeInTheDocument()
+    })
   })
 })
