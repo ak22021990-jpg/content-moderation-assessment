@@ -16,8 +16,9 @@
 - [x] **Phase 2: Custom Video Player (media-chrome)** — media-chrome wired; one MP4 via LFS end-to-end; ffmpeg sprite + WebVTT thumb + chapters pipeline; `canplaythrough`-anchored ready state
 - [x] **Phase 3: Timer + L1/L2 Tagging + Verdict** — Zustand timer slice; 3:00 countdown with amber/red thresholds; multi-select L1 + dependent L2 tagging; Approve/Decline verdict; auto-submit on timeout; taxonomy client sign-off gate
 - [x] **Phase 4: Scoring + Scoreboard (flagmail1 parity)** — Rubric scoring (50/25/25 partial credit); per-L1 accuracy; competency title; Lottie milestones; 3-rater kappa calibration begins (completed 2026-07-08)
-- [ ] **Phase 5: Submission + One-Attempt Defense in Depth** — Google Apps Script `doPost` deployed; HMAC + origin check + rate limit; SHA-256 email dedup on server; retry/backoff; Formspree fallback wired
-- [ ] **Phase 6: Polish, Content Freeze & Launch Gates** — Final 5 videos committed; GSAP transitions; kappa ≥ 0.6 verified; client taxonomy + answer-key sign-off; CDN swap tested; browser matrix; brand-leak final audit
+- [x] **Phase 5: Submission + One-Attempt Defense in Depth** — Google Apps Script `doPost` deployed; HMAC + origin check + rate limit; SHA-256 email dedup on server; retry/backoff; Formspree fallback wired
+- [x] **Phase 6: Polish, Content Freeze & Launch Gates** — UI/UX polish extension complete (brand guard disabled, Guidelines redesign, Runner layout, tag reset, tooltips, feedback overlay, L1 icons); answer keys updated for Disney-themed videos
+- [ ] **Phase 7: Launch Execution & Monitoring** — Redeploy Apps Script after CORS fix; end-to-end submission smoke test; production monitoring checklist
 
 ---
 
@@ -192,13 +193,13 @@ Plans:
 - [ ] 06-03-PLAN.md — Content Infrastructure: env-conditional VIDEO_BASE_URL + per-video answerKeyVersion + playlist metadata
 - [ ] 06-04-PLAN.md — Content Production + Quality Gates: real video production, kappa calibration, client sign-off, CDN provisioning (human-gated)
 - [ ] 06-05-PLAN.md — Launch Readiness: cross-browser matrix, final brand audit, build verification, deployment smoke test, launch checklist
-- [ ] 06-06-PLAN.md — Disable Brand Guard Rails: remove Disney/Marvel/etc. scan from pre-commit and CI; log risk decision
-- [ ] 06-07-PLAN.md — Guidelines Screen Redesign: collapsible L1 cards, custom icons, right-side detail panel
-- [ ] 06-08-PLAN.md — Runner Screen Layout Fix: fixed desktop width, remove video title, tighter spacing
-- [ ] 06-09-PLAN.md — Tag State Reset Per Video: clear L1/L2 selections on every video advance
-- [ ] 06-10-PLAN.md — Hover Tooltips: L1 definition, L2 definition + example on runner chips
-- [ ] 06-11-PLAN.md — Feedback Overlay Redesign: verdict + why + partial match + Mickey confetti + correct/wrong animations
-- [ ] 06-12-PLAN.md — L1 Category Icon Assets: 10 custom SVG icons + registry
+- [x] 06-06-PLAN.md — Disable Brand Guard Rails: remove Disney/Marvel/etc. scan from pre-commit and CI; log risk decision
+- [x] 06-07-PLAN.md — Guidelines Screen Redesign: collapsible L1 cards, custom icons, right-side detail panel
+- [x] 06-08-PLAN.md — Runner Screen Layout Fix: fixed desktop width, remove video title, tighter spacing
+- [x] 06-09-PLAN.md — Tag State Reset Per Video: clear L1/L2 selections on every video advance
+- [x] 06-10-PLAN.md — Hover Tooltips: L1 definition, L2 definition + example on runner chips
+- [x] 06-11-PLAN.md — Feedback Overlay Redesign: verdict + why + partial match + Mickey confetti + correct/wrong animations
+- [x] 06-12-PLAN.md — L1 Category Icon Assets: 10 custom SVG icons + registry
 **UI hint:** yes
 **Notes / Cross-Cutting:**
 
@@ -207,6 +208,30 @@ Plans:
   - **CC-03 (Taxonomy client sign-off)** — Final client sign-off on taxonomy L2 wording AND per-video answer keys.
   - **CC-01 (Brand-leak defense)** — REVISED: user accepted legal risk and disabled the guard in 06-06. Final audit no longer required; decision logged in PROJECT.md.
   - **Phase 6 extension (06-06..06-12)** — UI/UX polish added after initial roadmap: brand guard removal, Guidelines redesign, Runner layout fix, tag reset, hover tooltips, feedback overlay redesign, L1 icons.
+
+### Phase 7: Launch Execution & Monitoring
+
+**Goal:** Redeploy the production Apps Script backend after the CORS/origin fix, run an end-to-end submission smoke test from the deployed Pages site, and establish a minimal monitoring checklist so the first hiring cycle can start with confidence.
+**Mode:** mvp
+**Depends on:** Phase 6
+**Requirements:** SUBMIT-01, SUBMIT-02, SUBMIT-03, SUBMIT-09, DEPLOY-08, DEPLOY-09
+**Success Criteria** (what must be TRUE):
+
+  1. Apps Script web app is redeployed with the updated `Code.gs` (doOptions + e.headers origin lookup + robust HMAC strip); the new Deployment URL is copied into `.env` and the client is rebuilt
+  2. A complete assessment run from the deployed Pages site results in one new row in the configured Google Sheet containing email hash, name, answers JSON, scores JSON, competency, timestamps, user-agent, and screen resolution
+  3. Common failure modes are documented in `scripts/apps-script/README.md`: ALLOWED_ORIGIN mismatch, HMAC_SECRET mismatch, wrong SHEET_ID, failure to redeploy after edits, and browser CORS errors
+  4. Full test suite remains green after all changes
+
+**Plans:** 1 plan
+
+Plans:
+- [x] 07-01-PLAN.md — Apps Script Submission Pipeline Fix: CORS preflight, origin header, HMAC robustness, README troubleshooting
+
+**UI hint:** no
+**Notes / Cross-Cutting:**
+
+  - **CC-01 (Brand-leak defense)** — Disabled; Disney/Micky references allowed per owner decision.
+  - **Manual deploy required** — Apps Script changes do not take effect until a new deployment is created and the client URL is updated.
 
 ---
 
@@ -220,7 +245,8 @@ Plans:
 | 3. Timer + Tagging + Verdict | 4/4 | Complete | 2026-07-08 |
 | 4. Scoring + Scoreboard | 5/5 | Complete   | 2026-07-08 |
 | 5. Submission + Defense in Depth | 3/3 | Complete | 2026-07-08 |
-| 6. Polish + Content Freeze + Launch | 0/12 | Planned | 2026-07-08 |
+| 6. Polish + Content Freeze + Launch | 7/12 | Complete (extension) | 2026-07-09 |
+| 7. Launch Execution & Monitoring | 1/1 | In Progress | 2026-07-09 |
 
 ---
 
