@@ -184,7 +184,7 @@ Plans:
   4. GSAP transitions between screens use `useGSAP` with scope (React 19 StrictMode-safe); browser matrix (Chrome, Edge, Safari, Firefox latest) passes an end-to-end run of all 5 videos with correct scoring and successful submission
   5. Final brand-leak audit: full-repo `grep -riE` of the forbidden-strings list returns zero hits across code, HTML meta, package.json, commit log (`git log --all --format=%B`), workflow names, and repo settings
 
-**Plans:** 5 plans
+**Plans:** 12 plans
 
 Plans:
 - [ ] 06-01-PLAN.md — GSAP Screen Transitions: useGSAP fade+slide between all screens (React 19 StrictMode-safe)
@@ -192,13 +192,21 @@ Plans:
 - [ ] 06-03-PLAN.md — Content Infrastructure: env-conditional VIDEO_BASE_URL + per-video answerKeyVersion + playlist metadata
 - [ ] 06-04-PLAN.md — Content Production + Quality Gates: real video production, kappa calibration, client sign-off, CDN provisioning (human-gated)
 - [ ] 06-05-PLAN.md — Launch Readiness: cross-browser matrix, final brand audit, build verification, deployment smoke test, launch checklist
+- [ ] 06-06-PLAN.md — Disable Brand Guard Rails: remove Disney/Marvel/etc. scan from pre-commit and CI; log risk decision
+- [ ] 06-07-PLAN.md — Guidelines Screen Redesign: collapsible L1 cards, custom icons, right-side detail panel
+- [ ] 06-08-PLAN.md — Runner Screen Layout Fix: fixed desktop width, remove video title, tighter spacing
+- [ ] 06-09-PLAN.md — Tag State Reset Per Video: clear L1/L2 selections on every video advance
+- [ ] 06-10-PLAN.md — Hover Tooltips: L1 definition, L2 definition + example on runner chips
+- [ ] 06-11-PLAN.md — Feedback Overlay Redesign: verdict + why + partial match + Mickey confetti + correct/wrong animations
+- [ ] 06-12-PLAN.md — L1 Category Icon Assets: 10 custom SVG icons + registry
 **UI hint:** yes
 **Notes / Cross-Cutting:**
 
   - **CC-04 (3-rater kappa calibration)** — LAUNCH GATE. Videos below kappa 0.6 are re-authored, re-shot, or dropped from scoring before launch.
   - **CC-05 (CDN fallback pre-provisioned)** — LAUNCH GATE. Swap is explicitly tested in this phase.
   - **CC-03 (Taxonomy client sign-off)** — Final client sign-off on taxonomy L2 wording AND per-video answer keys.
-  - **CC-01 (Brand-leak defense)** — Final full-history audit.
+  - **CC-01 (Brand-leak defense)** — REVISED: user accepted legal risk and disabled the guard in 06-06. Final audit no longer required; decision logged in PROJECT.md.
+  - **Phase 6 extension (06-06..06-12)** — UI/UX polish added after initial roadmap: brand guard removal, Guidelines redesign, Runner layout fix, tag reset, hover tooltips, feedback overlay redesign, L1 icons.
 
 ---
 
@@ -212,7 +220,7 @@ Plans:
 | 3. Timer + Tagging + Verdict | 4/4 | Complete | 2026-07-08 |
 | 4. Scoring + Scoreboard | 5/5 | Complete   | 2026-07-08 |
 | 5. Submission + Defense in Depth | 3/3 | Complete | 2026-07-08 |
-| 6. Polish + Content Freeze + Launch | 0/5 | Planned | 2026-07-08 |
+| 6. Polish + Content Freeze + Launch | 0/12 | Planned | 2026-07-08 |
 
 ---
 
@@ -220,7 +228,7 @@ Plans:
 
 | Concern | Lands In | Gated At | Notes |
 |---------|----------|----------|-------|
-| **CC-01** Brand-leak defense | Phase 0 | Phase 6 (final audit) | Pre-commit + CI grep gate is commit-1 infra; leaks are repo-lifetime irreversible |
+| **CC-01** Brand-leak defense | Phase 0 / 06-06 | Disabled by owner decision | Guard rails removed in 06-06; Disney/Mickey references allowed in UI/code. Legal risk accepted and logged in PROJECT.md. |
 | **CC-02** Video production parallel track | Phases 0–4 (one clip per phase) | Phase 6 | Chapter markers cannot be authored against placeholders |
 | **CC-03** Taxonomy client sign-off | Phase 3 (L2 wording) | Phase 3 close + Phase 6 (final) | `taxonomyVersion` on every submission |
 | **CC-04** 3-rater kappa calibration | Phase 4 (starts) | Phase 6 (kappa ≥ 0.6 for all 5) | Rubric committed BEFORE candidate data collected |
@@ -237,4 +245,4 @@ Plans:
 
 ---
 
-*Last updated: 2026-07-08 after Phase 3 completion*
+*Last updated: 2026-07-09 after Phase 6 extension planning*
