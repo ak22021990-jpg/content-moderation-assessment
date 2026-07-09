@@ -7,7 +7,8 @@ import VerdictButtons from './tagging/VerdictButtons.jsx'
 import ProgressIndicator from './ProgressIndicator.jsx'
 import playlist from '../data/playlist.json'
 import answerKeys from '../data/answerKeys.json'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import './RunnerScreen.css'
 
 export default function RunnerScreen({ onComplete, onPlaying, onReset }) {
   const [submitting, setSubmitting] = useState(false)
@@ -19,7 +20,6 @@ export default function RunnerScreen({ onComplete, onPlaying, onReset }) {
   const transitionTimerRef = useRef(null)
   const finalizeRef = useRef(null)
   const overlayRef = useRef(null)
-  const reduce = useReducedMotion()
 
   function handleSelectionChange(l1, l2) {
     tagSelectionRef.current = { selectedL1: l1, selectedL2: l2 }
@@ -90,101 +90,50 @@ export default function RunnerScreen({ onComplete, onPlaying, onReset }) {
     : { primary: 'var(--status-violation)', accent: 'var(--status-violation)' }
 
   return (
-    <section
-      className="cma-runner"
-      aria-label="Video assessment"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-        width: '100%',
-        height: '100dvh',
-        overflow: 'hidden',
-        padding: '1.25rem 1.75rem 1.5rem',
-        position: 'relative',
-        zIndex: 1,
-        background: 'radial-gradient(ellipse at top, #14172b 0%, #0A0B14 65%)',
-        color: '#F5F5F7',
-      }}
-    >
-      <header style={{ flex: '0 0 auto', maxWidth: '1400px', width: '100%', margin: '0 auto' }}>
-        <ProgressIndicator />
-      </header>
+    <section className="cma-runner" aria-label="Video assessment">
+      <div className="cma-runner__container">
+        <header className="cma-runner__header">
+          <ProgressIndicator />
+        </header>
 
-      <div
-        style={{
-          flex: '1 1 auto',
-          minHeight: 0,
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1fr) minmax(320px, 380px)',
-          gap: '1.25rem',
-          width: '100%',
-          maxWidth: '1400px',
-          margin: '0 auto',
-          alignItems: 'stretch',
-        }}
-      >
-        {/* Left: Video column */}
-        <motion.div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-            minHeight: 0,
-            minWidth: 0,
-          }}
-          initial={{ opacity: 0, x: -24 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div
-            style={{
-              aspectRatio: '16 / 9',
-              width: '100%',
-              maxHeight: '100%',
-              minHeight: 0,
-              display: 'flex',
-              overflow: 'hidden',
-              borderRadius: 12,
-            }}
+        <div className="cma-runner__main">
+          <motion.div
+            className="cma-runner__video-col"
+            initial={{ opacity: 0, x: -24 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentVideoIndex}
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.04 }}
-                transition={{ duration: 0.35 }}
-                style={{ width: '100%', height: '100%', display: 'flex' }}
-              >
-                <VideoPlayerScreen
-                  videoIndex={currentVideoIndex}
-                  onPlaying={onPlaying}
-                  onReset={onReset}
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-          <CountdownDisplay />
-        </motion.div>
+            <div className="cma-runner__video-wrapper">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentVideoIndex}
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.04 }}
+                  transition={{ duration: 0.35 }}
+                  style={{ width: '100%', height: '100%', display: 'flex' }}
+                >
+                  <VideoPlayerScreen
+                    videoIndex={currentVideoIndex}
+                    onPlaying={onPlaying}
+                    onReset={onReset}
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            <CountdownDisplay />
+          </motion.div>
 
-        {/* Right: Tagging column */}
-        <motion.div
-          className="glass-panel"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-            padding: '1.25rem',
-            minHeight: 0,
-          }}
-          initial={{ opacity: 0, x: 24 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.55, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <TagPanel onSelectionChange={handleSelectionChange} />
-          <VerdictButtons onVerdict={handleVerdict} submitting={submitting} />
-        </motion.div>
+          <motion.div
+            className="cma-runner__tag-col"
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.55, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <TagPanel onSelectionChange={handleSelectionChange} />
+            <VerdictButtons onVerdict={handleVerdict} submitting={submitting} />
+          </motion.div>
+        </div>
       </div>
 
       {/* Feedback overlay */}

@@ -98,11 +98,7 @@ export default function VideoPlayerScreen({ src, videoIndex, onReady, onPlaying,
   }, [])
 
   return (
-    <section className="cma-player-card" aria-label="Video player">
-      <div className="cma-video-title-bar">
-        <span className="cma-video-title">Video {currentVideoIdx + 1} of {playlist.videos.length}</span>
-        <span className="cma-video-subtitle">{currentVideo.title}</span>
-      </div>
+    <section className="cma-player-card" aria-label={`Video player: ${currentVideo.title}`}>
       <div className="cma-video-frame">
         {import.meta.env.DEV && onReset && (
           <button type="button" className="cma-dev-reset" onClick={handleDevReset}>

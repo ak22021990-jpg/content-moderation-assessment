@@ -33,17 +33,7 @@ vi.mock('media-chrome/react', () => ({
 import VideoPlayerScreen from '../../../src/components/player/VideoPlayerScreen.jsx'
 
 describe('VideoPlayerScreen', () => {
-  describe('title bar', () => {
-    it('renders video number text', () => {
-      render(<VideoPlayerScreen />)
-      expect(screen.getByText('Video 1 of 5')).toBeTruthy()
-    })
 
-    it('renders video title from playlist', () => {
-      render(<VideoPlayerScreen />)
-      expect(screen.getByText('Video 1 — Content Moderation')).toBeTruthy()
-    })
-  })
 
   describe('video element', () => {
     it('has playsinline and preload="metadata" attributes', () => {
@@ -200,9 +190,15 @@ describe('VideoPlayerScreen', () => {
   })
 
   describe('container structure', () => {
-    it('renders section with aria-label "Video player"', () => {
+    it('does not render the video title bar', () => {
       render(<VideoPlayerScreen />)
-      const section = document.querySelector('section[aria-label="Video player"]')
+      expect(screen.queryByText('Video 1 of 5')).toBeNull()
+      expect(screen.queryByText('Video 1 — Content Moderation')).toBeNull()
+    })
+
+    it('renders section with aria-label containing video title', () => {
+      render(<VideoPlayerScreen />)
+      const section = document.querySelector('section[aria-label^="Video player:"]')
       expect(section).toBeTruthy()
     })
 

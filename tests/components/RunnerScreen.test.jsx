@@ -90,6 +90,19 @@ describe('RunnerScreen', () => {
     expect(container.querySelector('.cma-runner')).toBeInTheDocument()
   })
 
+  it('uses fixed desktop container layout', () => {
+    const { container } = render(React.createElement(RunnerScreen, { onComplete: vi.fn(), onReset: vi.fn() }))
+    expect(container.querySelector('.cma-runner')).toBeInTheDocument()
+    expect(container.querySelector('.cma-runner__container')).toBeInTheDocument()
+    expect(container.querySelector('.cma-runner__main')).toBeInTheDocument()
+  })
+
+  it('renders video and tag columns side by side', () => {
+    const { container } = render(React.createElement(RunnerScreen, { onComplete: vi.fn(), onReset: vi.fn() }))
+    expect(container.querySelector('.cma-runner__video-col')).toBeInTheDocument()
+    expect(container.querySelector('.cma-runner__tag-col')).toBeInTheDocument()
+  })
+
   it('has aria-label "Video assessment"', () => {
     render(React.createElement(RunnerScreen, { onComplete: vi.fn(), onReset: vi.fn() }))
     expect(screen.getByLabelText('Video assessment')).toBeInTheDocument()
