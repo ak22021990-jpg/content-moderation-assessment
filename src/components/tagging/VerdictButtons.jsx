@@ -8,11 +8,11 @@ export default function VerdictButtons({ onVerdict, submitting = false }) {
 
   const baseStyle = {
     flex: 1,
-    padding: '14px 18px',
+    padding: '12px 16px',
     borderRadius: 'var(--radius-pill)',
     border: 'none',
     color: '#fff',
-    fontSize: '1.1rem',
+    fontSize: '1rem',
     fontWeight: 700,
     fontFamily: 'inherit',
     cursor: disabled ? 'not-allowed' : 'pointer',
@@ -34,6 +34,7 @@ export default function VerdictButtons({ onVerdict, submitting = false }) {
         paddingTop: '1.25rem',
         borderTop: '1px solid rgba(42, 27, 61, 0.08)',
         marginTop: 'auto',
+        marginBottom: '0.25rem',
       }}
     >
       <motion.button

@@ -141,7 +141,7 @@ export async function submitResults({ payload, endpoint, onProgress, maxAttempts
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload),
       })
 

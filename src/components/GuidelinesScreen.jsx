@@ -120,7 +120,7 @@ export default function GuidelinesScreen({ onBegin, taxonomy = defaultTaxonomy }
           The taxonomy at a glance
         </h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '380px 1fr', gap: '1.5rem', alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '400px 1fr', gap: '1.5rem', alignItems: 'start' }}>
           {/* Left: collapsed cards */}
           <div
             role="tablist"
@@ -201,6 +201,8 @@ export default function GuidelinesScreen({ onBegin, taxonomy = defaultTaxonomy }
             className="glass-panel"
             style={{
               minHeight: '320px',
+              maxHeight: 'calc(100dvh - 3rem)',
+              overflowY: 'auto',
               padding: '2rem',
               borderRadius: 'var(--radius-xl)',
               position: 'sticky',

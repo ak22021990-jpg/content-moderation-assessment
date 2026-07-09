@@ -35,10 +35,12 @@ export default function CountdownDisplay() {
       className={`cma-timer cma-timer--${phase}`}
       style={{
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         alignItems: 'center',
-        gap: '0.75rem',
-        padding: '1.25rem 1rem',
+        justifyContent: 'center',
+        gap: '1rem',
+        height: '64px',
+        padding: '0.65rem 1rem',
         borderRadius: 'var(--radius-lg)',
         background: 'rgba(255, 255, 255, 0.5)',
         backdropFilter: 'blur(16px)',
@@ -54,7 +56,7 @@ export default function CountdownDisplay() {
         transition={reduce || !isPulsing ? {} : { repeat: Infinity, duration: 1 }}
         style={{
           fontFamily: "'JetBrains Mono', monospace",
-          fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+          fontSize: 'clamp(1.5rem, 3vw, 2rem)',
           fontWeight: 800,
           color: isRunning ? style.color : 'var(--text-primary)',
           lineHeight: 1,

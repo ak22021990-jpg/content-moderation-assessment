@@ -150,9 +150,9 @@ function doPost(e) {
   // Open the Sheet
   var sheet;
   if (cfg.SHEET_ID) {
-    sheet = SpreadsheetApp.openById(cfg.SHEET_ID).getActiveSheet();
+    sheet = SpreadsheetApp.openById(cfg.SHEET_ID).getSheets()[0];
   } else {
-    sheet = SpreadsheetApp.getActiveSheet();
+    sheet = SpreadsheetApp.getActiveSpreadsheet() ? SpreadsheetApp.getActiveSpreadsheet().getSheets()[0] : SpreadsheetApp.getActiveSheet();
   }
 
   // Scan column A for existing hash (initial MVP: full column scan)

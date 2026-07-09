@@ -40,10 +40,12 @@ export default function MilestoneLottie({ score }) {
 
   if (!milestoneRef.current || loadError) return null
 
+  const LottieComponent = Lottie.default || Lottie
+
   return (
     <div className="sb-section sb-milestone">
       {animData ? (
-        <Lottie
+        <LottieComponent
           animationData={animData}
           loop={false}
           autoplay

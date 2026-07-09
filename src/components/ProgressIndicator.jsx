@@ -12,9 +12,10 @@ export default function ProgressIndicator() {
     <div
       style={{
         display: 'flex',
-        flexDirection: 'column',
-        gap: '10px',
-        padding: '1rem 1.25rem',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: '1.25rem',
+        padding: '0.65rem 1rem',
         borderRadius: 'var(--radius-lg)',
         background: 'rgba(255, 255, 255, 0.55)',
         backdropFilter: 'blur(16px)',
@@ -22,11 +23,10 @@ export default function ProgressIndicator() {
         boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.8)',
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
-          <span className="eyebrow">
+          <span className="eyebrow" style={{ margin: 0 }}>
             <span className="eyebrow-dot" />
-            Progress
           </span>
         </div>
         <div
@@ -41,7 +41,7 @@ export default function ProgressIndicator() {
       <div
         style={{
           width: '100%',
-          height: '10px',
+          height: '6px',
           background: 'rgba(42, 27, 61, 0.08)',
           borderRadius: 'var(--radius-pill)',
           overflow: 'hidden',
