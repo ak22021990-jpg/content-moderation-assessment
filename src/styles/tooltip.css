@@ -1,0 +1,50 @@
+.cma-tooltip {
+  --tooltip-bg: rgba(42, 27, 61, 0.95);
+  --tooltip-text: #fff;
+  --tooltip-shadow: 0 12px 32px -8px rgba(42, 27, 61, 0.45);
+}
+
+.cma-tooltip__content {
+  max-width: 280px;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-md, 12px);
+  background: var(--tooltip-bg);
+  color: var(--tooltip-text);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  box-shadow: var(--tooltip-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.cma-tooltip__arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--tooltip-bg);
+  transform: rotate(45deg);
+}
+
+.cma-tooltip[data-placement='top'] .cma-tooltip__arrow {
+  bottom: -4px;
+  left: 50%;
+  margin-left: -5px;
+}
+
+.cma-tooltip[data-placement='bottom'] .cma-tooltip__arrow {
+  top: -4px;
+  left: 50%;
+  margin-left: -5px;
+}
+
+.cma-tooltip[data-placement='left'] .cma-tooltip__arrow {
+  right: -4px;
+  top: 50%;
+  margin-top: -5px;
+}
+
+.cma-tooltip[data-placement='right'] .cma-tooltip__arrow {
+  left: -4px;
+  top: 50%;
+  margin-top: -5px;
+}
