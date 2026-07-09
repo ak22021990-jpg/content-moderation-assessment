@@ -1,41 +1,61 @@
 {
-  "version": "1.0.0-draft",
-  "_note": "Initial draft answer keys. All keys will be refined after kappa calibration (QUALITY-02) and client sign-off (Phase 6). Version bumps on every edit.",
+  "version": "1.0.1-draft",
+  "_note": "Updated answer keys based on video analysis. Version bumped.",
   "videos": [
     {
       "id": "v01",
       "verdict": "DECLINE",
-      "l1Tags": ["1", "8"],
-      "l2Tags": ["1.4", "1.6", "8.3"],
-      "rationale": "Visible trademark/logo infringement (1.4) and stripped watermark (1.6) — Copyright & IP violation. Promotes a fraudulent investment scheme (8.3) — financial scam under Spam & Manipulation."
+      "l1Tags": [
+        "1",
+        "10"
+      ],
+      "l2Tags": [
+        "1.3",
+        "10.5"
+      ],
+      "rationale": "The video features a creator modifying a Pluto plush toy into a gory 'undead' version. This represents unauthorized derivative use of a recognizable character (1.3 Franchise / character IP misuse) and violates community expectations for family-friendly characters (10.5 Community-tone violation)."
     },
     {
       "id": "v02",
-      "verdict": "APPROVE",
-      "l1Tags": [],
-      "l2Tags": [],
-      "rationale": "Benign content — generic lifestyle montage with no policy-violating elements. No hate speech, no copyright issues, no regulated goods, no explicit content, no misinformation."
+      "verdict": "DECLINE",
+      "l1Tags": [
+        "1",
+        "5"
+      ],
+      "l2Tags": [
+        "1.3",
+        "5.5"
+      ],
+      "rationale": "The video shows a person in a Minnie Mouse costume twerking at a child's birthday party. This involves minors being present during an adult-themed/suggestive dance (5.5 Minors + adult themes co-appearance) and unauthorized misuse of a recognizable franchise character (1.3 Franchise / character IP misuse)."
     },
     {
       "id": "v03",
       "verdict": "DECLINE",
-      "l1Tags": ["2", "3"],
-      "l2Tags": ["2.2", "3.4"],
-      "rationale": "Contains racial slurs (2.2) and explicit calls to violence against a specific group (3.4). Hate speech + incitement to violence."
+      "l1Tags": [
+        "1",
+        "4",
+        "10"
+      ],
+      "l2Tags": [
+        "1.3",
+        "4.3",
+        "10.5"
+      ],
+      "rationale": "The video shows employees in Pluto and Nick Wilde costumes twerking and playfully stripping. This constitutes sexually suggestive content (4.3), unauthorized misuse of franchise characters (1.3), and a violation of the family-friendly community tone by ruining the character magic (10.5)."
     },
     {
       "id": "v04",
-      "verdict": "DECLINE",
-      "l1Tags": ["7"],
-      "l2Tags": ["7.1"],
-      "rationale": "Makes false medical claims that a household product cures a serious illness (7.1). Health misinformation with clear harm potential."
+      "verdict": "APPROVE",
+      "l1Tags": [],
+      "l2Tags": [],
+      "rationale": "Benign content — standard appearances of Disney princesses (Cinderella, Belle, Ariel, Elsa) greeting the camera with no policy-violating elements."
     },
     {
       "id": "v05",
-      "verdict": "DECLINE",
-      "l1Tags": ["9"],
-      "l2Tags": ["9.6"],
-      "rationale": "Deliberately ambiguous brand-adjacent case. Music video uses imagery stylistically similar to a recognized extremist symbol (9.6). Falls under Brand Safety (GARM) adjacency. **PENDING client decision O-01**: strict brand-safe interpretation = DECLINE; community-guideline-only = APPROVE. Current draft uses DECLINE per preliminary rubric. Will be finalized after client sign-off."
+      "verdict": "APPROVE",
+      "l1Tags": [],
+      "l2Tags": [],
+      "rationale": "Benign content — a creator hired by Disney recreating a Cinderella carriage for a photo shoot. This is sponsored/authorized content with no policy violations."
     }
   ]
 }
