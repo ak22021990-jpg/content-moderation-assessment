@@ -105,6 +105,18 @@ describe('TagPanel', () => {
     }
   })
 
+  it('resets selections when resetKey changes', async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(<TagPanel resetKey={0} />)
+    const copyrightChip = screen.getByRole('checkbox', { name: /copyright & ip/i })
+    await user.click(copyrightChip)
+    expect(copyrightChip).toHaveAttribute('aria-checked', 'true')
+
+    rerender(<TagPanel resetKey={1} />)
+    const resetChip = screen.getByRole('checkbox', { name: /copyright & ip/i })
+    expect(resetChip).toHaveAttribute('aria-checked', 'false')
+  })
+
   it('data-driven: renders taxonomy labels correctly', () => {
     render(<TagPanel />)
     // Verify presence of specific L1 labels from taxonomy

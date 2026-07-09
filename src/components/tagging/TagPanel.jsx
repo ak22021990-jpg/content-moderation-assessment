@@ -5,8 +5,12 @@ import L1Chip from './L1Chip.jsx'
 
 const noop = () => {}
 
-export default function TagPanel({ onSelectionChange = noop }) {
+export default function TagPanel({ onSelectionChange = noop, resetKey = 0 }) {
   const [state, dispatch] = useReducer(tagReducer, initialTagState)
+
+  useEffect(() => {
+    dispatch({ type: 'RESET' })
+  }, [resetKey])
 
   useEffect(() => {
     onSelectionChange(state.selectedL1, state.selectedL2)

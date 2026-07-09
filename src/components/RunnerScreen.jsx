@@ -130,7 +130,7 @@ export default function RunnerScreen({ onComplete, onPlaying, onReset }) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.55, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            <TagPanel onSelectionChange={handleSelectionChange} />
+            <TagPanel resetKey={currentVideoIndex} onSelectionChange={handleSelectionChange} />
             <VerdictButtons onVerdict={handleVerdict} submitting={submitting} />
           </motion.div>
         </div>
