@@ -29,6 +29,7 @@ function readReadme() {
 describe('Code.gs', () => {
   const REQUIRED_PATTERNS = [
     'function doPost',
+    'function doOptions',
     'CacheService',
     'PropertiesService',
     'computeHmacSha256Signature',
@@ -84,6 +85,16 @@ describe('Code.gs', () => {
     const code = readCodeGs()
     expect(code).toContain('getScriptCache')
     expect(code).not.toMatch(/ScriptProperties.*rate/i)
+  })
+
+  it('reads Origin from e.headers (Apps Script canonical location)', () => {
+    const code = readCodeGs()
+    expect(code).toMatch(/e\.headers\['origin'\]|e\.headers\.origin/)
+  })
+
+  it('has a doOptions handler for CORS preflight', () => {
+    const code = readCodeGs()
+    expect(code).toContain('function doOptions')
   })
 
   it('references all 5 script properties', () => {

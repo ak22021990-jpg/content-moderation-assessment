@@ -16,29 +16,87 @@
  *   RATE_LIMIT_WINDOW_SEC  — rate-limit window in seconds (default: 60)
  */
 
-function doPost(e) {
+function jsonResponse(obj) {
+  return ContentService.createTextOutput(
+    JSON.stringify(obj)
+  ).setMimeType(ContentService.MimeType.JSON);
+}
+
+function getRequestOrigin(e) {
+  // Apps Script web apps expose headers on e.headers (lowercased keys).
+  if (e.headers) {
+    if (e.headers['origin']) return e.headers['origin'];
+    if (e.headers['Origin']) return e.headers['Origin'];
+  }
+  // Legacy / fallback: postData.headers is not the canonical location,
+  // but keep for backwards compatibility with older deploys.
+  if (e.postData && e.postData.headers) {
+    if (e.postData.headers['origin']) return e.postData.headers['origin'];
+    if (e.postData.headers['Origin']) return e.postData.headers['Origin'];
+  }
+  // Query-string fallback (client can pass ?origin=... if needed).
+  if (e.parameter && e.parameter.origin) {
+    return e.parameter.origin;
+  }
+  return '';
+}
+
+function getClientIp(e) {
+  // Apps Script does not expose client IP. Trust a client-supplied ?ip=
+  // only as a hint; fall back to 'unknown' so rate limiting still has a key.
+  if (e.parameter && e.parameter.ip) return e.parameter.ip;
+  return 'unknown';
+}
+
+function computeHexHmac(message, secret) {
+  var bytes = Utilities.computeHmacSha256Signature(message, secret);
+  var hex = '';
+  for (var i = 0; i < bytes.length; i++) {
+    var byteVal = bytes[i] & 0xFF;
+    hex += ('0' + byteVal.toString(16)).slice(-2);
+  }
+  return hex;
+}
+
+function computeHexSha256(input) {
+  var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, input);
+  var hex = '';
+  for (var i = 0; i < bytes.length; i++) {
+    var byteVal = bytes[i] & 0xFF;
+    hex += ('0' + byteVal.toString(16)).slice(-2);
+  }
+  return hex;
+}
+
+function loadProps() {
   var props = PropertiesService.getScriptProperties();
-  var HMAC_SECRET = props.getProperty('HMAC_SECRET');
-  var ALLOWED_ORIGIN = props.getProperty('ALLOWED_ORIGIN');
-  var SHEET_ID = props.getProperty('SHEET_ID');
-  var RATE_LIMIT_PER_IP = parseInt(props.getProperty('RATE_LIMIT_PER_IP') || '3', 10);
-  var RATE_LIMIT_WINDOW_SEC = parseInt(props.getProperty('RATE_LIMIT_WINDOW_SEC') || '60', 10);
+  return {
+    HMAC_SECRET: props.getProperty('HMAC_SECRET') || '',
+    ALLOWED_ORIGIN: props.getProperty('ALLOWED_ORIGIN') || '',
+    SHEET_ID: props.getProperty('SHEET_ID') || '',
+    RATE_LIMIT_PER_IP: parseInt(props.getProperty('RATE_LIMIT_PER_IP') || '3', 10),
+    RATE_LIMIT_WINDOW_SEC: parseInt(props.getProperty('RATE_LIMIT_WINDOW_SEC') || '60', 10),
+  };
+}
+
+/**
+ * Handle CORS preflight requests from browsers.
+ * ContentService responses from web-app deploys get CORS headers added
+ * automatically by the Apps Script runtime, but the runtime needs a
+ * doOptions handler to answer the OPTIONS preflight itself.
+ */
+function doOptions(e) {
+  return jsonResponse({ ok: true });
+}
+
+function doPost(e) {
+  var cfg = loadProps();
 
   // ── 1. Origin check ──────────────────────────────────────────────
-  // Apps Script passes request headers inside e.postData.headers
-  var origin = '';
-  if (e.postData && e.postData.headers && e.postData.headers.Origin) {
-    origin = e.postData.headers.Origin;
-  }
-  // Also check e.parameter.origin for query-string origin fallback
-  if (!origin && e.parameter && e.parameter.origin) {
-    origin = e.parameter.origin;
-  }
+  var origin = getRequestOrigin(e);
 
-  if (ALLOWED_ORIGIN && origin !== ALLOWED_ORIGIN) {
-    return ContentService.createTextOutput(
-      JSON.stringify({ ok: false, error: 'invalid-origin' })
-    ).setMimeType(ContentService.MimeType.JSON);
+  if (cfg.ALLOWED_ORIGIN && origin !== cfg.ALLOWED_ORIGIN) {
+    return jsonResponse({ ok: false, error: 'invalid-origin' });
   }
 
   // ── 2. Parse JSON body ───────────────────────────────────────────
@@ -46,24 +104,23 @@ function doPost(e) {
   try {
     payload = JSON.parse(e.postData.contents);
   } catch (err) {
-    return ContentService.createTextOutput(
-      JSON.stringify({ ok: false, error: 'invalid-json' })
-    ).setMimeType(ContentService.MimeType.JSON);
+    return jsonResponse({ ok: false, error: 'invalid-json' });
   }
 
-  // ── 3. Rate limit by IP ──────────────────────────────────────────
-  var ip = (e.parameter && e.parameter.ip) ? e.parameter.ip : 'unknown';
+  // ── 3. Rate limit ────────────────────────────────────────────────
+  // IP is not available server-side; rate-limit key falls back to
+  // 'unknown'. In practice the email-hash dedup below is the stronger
+  // duplicate-submission defense.
+  var ip = getClientIp(e);
   var cache = CacheService.getScriptCache();
   var rlKey = 'rl:' + ip;
   var count = parseInt(cache.get(rlKey) || '0', 10);
 
-  if (count >= RATE_LIMIT_PER_IP) {
-    return ContentService.createTextOutput(
-      JSON.stringify({ ok: false, error: 'rate-limited' })
-    ).setMimeType(ContentService.MimeType.JSON);
+  if (count >= cfg.RATE_LIMIT_PER_IP) {
+    return jsonResponse({ ok: false, error: 'rate-limited' });
   }
 
-  cache.put(rlKey, String(count + 1), RATE_LIMIT_WINDOW_SEC);
+  cache.put(rlKey, String(count + 1), cfg.RATE_LIMIT_WINDOW_SEC);
 
   // ── 4. Validate HMAC ─────────────────────────────────────────────
   // Pitfall 1 avoidance: recompute HMAC over raw body string with hmac
@@ -73,49 +130,27 @@ function doPost(e) {
   var clientHmac = payload.hmac || '';
   var bodyStr = e.postData.contents;
 
-  // Strip the ,"hmac":"<hex>" field from the raw body string.
-  // The regex handles the last field case (no trailing comma) and
-  // the mid-object field case.
-  var bodyWithoutHmac = bodyStr.replace(/,"hmac":"[a-f0-9]*"/, '');
+  // Strip the "hmac":"<hex>" field from the raw body string.
+  // Handles leading comma (,"hmac":"...") and trailing comma
+  // ("hmac":"...",) so the field position in the object does not matter.
+  var bodyWithoutHmac = bodyStr
+    .replace(/,"hmac":"[a-fA-F0-9]*"/, '')
+    .replace(/"hmac":"[a-fA-F0-9]*",/, '');
 
-  var serverHmacBytes = Utilities.computeHmacSha256Signature(
-    bodyWithoutHmac,
-    HMAC_SECRET
-  );
-
-  // Convert signed byte array to hex string
-  var serverHmacHex = '';
-  for (var i = 0; i < serverHmacBytes.length; i++) {
-    var byteVal = serverHmacBytes[i] & 0xFF;
-    serverHmacHex += ('0' + byteVal.toString(16)).slice(-2);
-  }
+  var serverHmacHex = computeHexHmac(bodyWithoutHmac, cfg.HMAC_SECRET);
 
   if (clientHmac !== serverHmacHex) {
-    return ContentService.createTextOutput(
-      JSON.stringify({ ok: false, error: 'invalid-hmac' })
-    ).setMimeType(ContentService.MimeType.JSON);
+    return jsonResponse({ ok: false, error: 'invalid-hmac' });
   }
 
   // ── 5. Dedup by SHA-256 of email ─────────────────────────────────
-  // Hash the client-supplied email. The client already normalizes
-  // (Gmail dots/+alias) before hashing; server hashes the raw email
-  // from the payload for comparison against stored hashes.
   var emailToHash = (payload.email || '').trim().toLowerCase();
-  var emailHashBytes = Utilities.computeDigest(
-    Utilities.DigestAlgorithm.SHA_256,
-    emailToHash
-  );
-
-  var emailHashHex = '';
-  for (var j = 0; j < emailHashBytes.length; j++) {
-    var bv = emailHashBytes[j] & 0xFF;
-    emailHashHex += ('0' + bv.toString(16)).slice(-2);
-  }
+  var emailHashHex = computeHexSha256(emailToHash);
 
   // Open the Sheet
   var sheet;
-  if (SHEET_ID) {
-    sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
+  if (cfg.SHEET_ID) {
+    sheet = SpreadsheetApp.openById(cfg.SHEET_ID).getActiveSheet();
   } else {
     sheet = SpreadsheetApp.getActiveSheet();
   }
@@ -123,9 +158,7 @@ function doPost(e) {
   // Scan column A for existing hash (initial MVP: full column scan)
   var existingHashes = sheet.getRange('A:A').getValues().flat().filter(Boolean);
   if (existingHashes.indexOf(emailHashHex) !== -1) {
-    return ContentService.createTextOutput(
-      JSON.stringify({ ok: false, error: 'duplicate' })
-    ).setMimeType(ContentService.MimeType.JSON);
+    return jsonResponse({ ok: false, error: 'duplicate' });
   }
 
   // ── 6. Write row (formula injection defense: prefix strings with ') ──
@@ -174,7 +207,5 @@ function doPost(e) {
   sheet.getRange(row, 14).setValue(payload.timeToCompleteMs != null ? payload.timeToCompleteMs : 0);
 
   // ── 7. Return success ────────────────────────────────────────────
-  return ContentService.createTextOutput(
-    JSON.stringify({ ok: true, id: String(row) })
-  ).setMimeType(ContentService.MimeType.JSON);
+  return jsonResponse({ ok: true, id: String(row) });
 }

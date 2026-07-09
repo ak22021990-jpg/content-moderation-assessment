@@ -11,6 +11,10 @@ https://script.google.com/macros/s/{deploymentId}/exec
 
 The deployment ID is generated when you deploy the web app (Step 5 below).
 
+> **CORS note:** The web app handles browser POSTs from your static site origin
+> automatically. A `doOptions` handler is included in `Code.gs` to answer the
+> preflight `OPTIONS` request. No additional CORS configuration is required.
+
 ---
 
 ## How to Deploy
@@ -152,6 +156,29 @@ or Properties keys.
 
 ---
 
+---
+
+## Troubleshooting
+
+### Submissions show success on the client but no rows appear in the Sheet
+
+1. **Check `ALLOWED_ORIGIN`.** The server compares the request's `Origin`
+   header to this Script Property. It must match your deployed site origin
+   exactly (including `https://` and no trailing slash). If it mismatches,
+   the client receives `{ "ok": false, "error": "invalid-origin" }`.
+2. **Check `HMAC_SECRET` match.** The same 64-character hex key must be in
+   both `VITE_HMAC_SECRET` (client `.env`) and Apps Script Properties
+   (`HMAC_SECRET`). A mismatch returns `invalid-hmac`.
+3. **Check the Sheet ID.** `SHEET_ID` must be the ID from the Sheet URL.
+   If blank, the script writes to the spreadsheet attached to the script
+   project, which may not be the Sheet you expect.
+4. **Redeploy after every Code.gs edit.** Apps Script requires a new
+   deployment (or "Manage deployments" → new version) for code changes to
+   take effect. Copy the new Deployment URL into `VITE_APPS_SCRIPT_URL`.
+5. **Browser console CORS errors.** If you see CORS errors, confirm the web
+   app is deployed with **Execute as: Me** and **Who has access: Anyone**.
+   The included `doOptions` handler answers the preflight request.
+
 *Script: `scripts/apps-script/Code.gs`*
 *Manifest: `scripts/apps-script/appsscript.json`*
-*Last updated: 2026-07-08*
+*Last updated: 2026-07-09*
