@@ -1,18 +1,28 @@
 # Brand Guardrails
 
+> **⚠️ DISABLED — 2026-07-09**
+>
+> The brand-name guardrails described below are **no longer enforced**.
+> The project owner explicitly accepted the legal risk and requested that
+> Disney-related strings, characters, and iconography be allowed in the UI,
+> code, and repository (see `06-06-PLAN.md` and `PROJECT.md` Key Decisions).
+>
+> The original forbidden-string list is preserved below for audit/reference
+> purposes only.
+
 ## Purpose
 
-This file is the single source of truth for forbidden brand strings in this repository.
+This file previously defined the single source of truth for forbidden brand strings in this repository.
 The pre-commit hook (`.husky/pre-commit`) and CI workflow (`.github/workflows/brand-guard.yml`)
-both use the grep pattern defined below. Any change to the pattern must update all three
+used the grep pattern defined below. Any change to the pattern would have required updating all three
 locations simultaneously.
 
 Client brand identity must never appear in UI, code, meta tags, repo names, commit messages,
-or any file tracked in this repository.
+or any file tracked in this repository — **unless the project owner has explicitly disabled this guard**.
 
 ---
 
-## Forbidden String Clusters
+## Forbidden String Clusters (ARCHIVED)
 
 ### Primary Brand
 - `disney`
@@ -104,9 +114,12 @@ Both `.husky/pre-commit` and `.github/workflows/brand-guard.yml` must enforce th
 
 ## Process for Updating
 
+Guard is disabled. To re-enable:
+
 1. Open a PR with the proposed change.
-2. Get approval from the project lead.
-3. Update the pattern in this file AND `.husky/pre-commit` AND `.github/workflows/brand-guard.yml` in the same commit.
+2. Get written legal/client approval.
+3. Restore the scan in `.husky/pre-commit` AND `.github/workflows/brand-guard.yml` in the same commit.
 4. Verify CI passes after the update.
 
-Never update only one location — the three must always be in sync.
+When the guard was active, the pattern had to stay in sync across this file,
+`.husky/pre-commit`, and `.github/workflows/brand-guard.yml`.

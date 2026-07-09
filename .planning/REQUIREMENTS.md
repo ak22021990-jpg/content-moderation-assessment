@@ -138,16 +138,20 @@ Grouped by category. Each requirement is atomic, testable, user-centric.
 - [ ] **DEPLOY-08**: jsDelivr proxy URL OR Cloudflare R2 bucket is pre-provisioned so `playlist.json` can be re-pointed with zero code change if LFS quota is exhausted
 - [ ] **DEPLOY-09**: GitHub billing spending cap set to $0 to prevent surprise LFS overages
 
-### Brand-Safety Enforcement (BRAND)
+### Brand-Safety Enforcement (BRAND) — DISABLED
 
-- [ ] **BRAND-01**: HTML `<title>`, `<meta name="description">`, favicon, and OG tags contain zero client brand references
-- [ ] **BRAND-02**: `package.json` `name`, `description`, `author`, and `repository` fields contain zero client brand references
-- [ ] **BRAND-03**: Repo name, default branch name, workflow names, and commit messages contain zero client brand references
-- [ ] **BRAND-04**: `.githooks/pre-commit` runs `grep -riE '<forbidden-strings>'` against staged files and blocks any match
-- [ ] **BRAND-05**: `.github/workflows/brand-guard.yml` runs the same grep against the full diff and fails the PR
-- [ ] **BRAND-06**: `docs/brand-guardrails.md` lists the exact forbidden strings (brand + franchise + character names — populated per open decision O-10) and the process to update the list
-- [ ] **BRAND-07**: Author email used for commits does NOT resolve to the client organization
-- [ ] **BRAND-08**: Video filenames, JSON keys, CSS class names, and Lottie file names use generic language (`assessment-*`, `verdict-*`, `milestone-*`) — no brand-adjacent names
+Brand guardrails were disabled by owner decision in Phase 6 extension (06-06-PLAN.md).
+These requirements are preserved as deferred/v2 references but are no longer enforced
+for the current release.
+
+- [ ] **BRAND-01**: HTML `<title>`, `<meta name="description">`, favicon, and OG tags contain zero client brand references *(deferred — guard disabled)*
+- [ ] **BRAND-02**: `package.json` `name`, `description`, `author`, and `repository` fields contain zero client brand references *(deferred — guard disabled)*
+- [ ] **BRAND-03**: Repo name, default branch name, workflow names, and commit messages contain zero client brand references *(deferred — guard disabled)*
+- [ ] **BRAND-04**: `.githooks/pre-commit` runs `grep -riE '<forbidden-strings>'` against staged files and blocks any match *(deferred — guard disabled)*
+- [ ] **BRAND-05**: `.github/workflows/brand-guard.yml` runs the same grep against the full diff and fails the PR *(deferred — guard disabled)*
+- [ ] **BRAND-06**: `docs/brand-guardrails.md` lists the exact forbidden strings (brand + franchise + character names — populated per open decision O-10) and the process to update the list *(deferred — guard disabled)*
+- [ ] **BRAND-07**: Author email used for commits does NOT resolve to the client organization *(deferred — guard disabled)*
+- [ ] **BRAND-08**: Video filenames, JSON keys, CSS class names, and Lottie file names use generic language (`assessment-*`, `verdict-*`, `milestone-*`) — no brand-adjacent names *(deferred — guard disabled)*
 
 ### Ground-Truth Quality (QUALITY)
 

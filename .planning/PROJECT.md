@@ -90,7 +90,7 @@ A browser-based hiring assessment that simulates real-world video content modera
 
 ## Constraints
 
-- **Brand rule**: Client brand name, logo, franchise names, character names must NEVER appear in UI, code, meta tags, repo names, commits, or any deliverable — Non-negotiable client instruction. Visual language allowed; identity is not.
+- **Brand rule**: Client brand name, logo, franchise names, character names must NEVER appear in UI, code, meta tags, repo names, commits, or any deliverable — Non-negotiable client instruction. Visual language allowed; identity is not. **REVISED 2026-07-09**: project owner disabled automated guardrails and approved Disney-related references for assessment videos and UI theme; legal risk retained by project owner.
 - **Tech stack**: Vite + React 19 + GSAP + Lottie (match `flagmail1`) — Reuses proven patterns, minimizes ramp time, and manager's mental model already anchored on flagmail1.
 - **Hosting**: GitHub Pages + Git LFS in a new public repo, deploy via GitHub Actions — Zero-cost, meets "put on Pages including videos" requirement.
 - **Bandwidth**: GitHub Free LFS tier is 10 GiB storage + 10 GiB bandwidth per month (verified 2026-07-07 via research/PITFALLS.md); at ~250 MB/session that's ~40 sessions/mo — CDN fallback (jsDelivr / Cloudflare R2) must be pre-provisioned before real hiring cycle. Total video payload budget ~200 MB across 5 videos; re-encode with H.264 720p if needed. Over-quota disables LFS for the entire account until next billing cycle — treat as launch blocker.
@@ -106,6 +106,7 @@ A browser-based hiring assessment that simulates real-world video content modera
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | Generic "Content Moderation Assessment" branding, no brand name anywhere | Explicit client rule; using brand IP would violate the rule and create legal exposure | — Pending |
+| Disabled brand-name guardrails; Disney/Mickey references allowed in UI/code | Project owner accepted legal risk; assessment videos and UI theme reference Disney content | ⚠️ Revisit |
 | Reuse flagmail1 stack (React 19 + Vite + GSAP + Lottie) instead of Next.js or vanilla | Manager wants scoreboard parity; reusing patterns is fastest path | — Pending |
 | Video hosting via Git LFS in same repo (not external CDN, not YouTube) | Simplicity, single-repo deploy, no third-party dependency, avoids YouTube branding/ads | — Pending |
 | Video-source mix: CC0 clips + AI-gen + originally recorded | Legally safe, controllable violation coverage, avoids infringement in a copyright-moderation product | — Pending |
