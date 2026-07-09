@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import defaultTaxonomy from '../data/taxonomy.json'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { getL1Icon } from '../assets/icons/l1/index.js'
 
 const CANDY_TINTS = ['blush', 'sky', 'mint', 'sunshine', 'plum']
 const CANDY_INK = {
@@ -18,16 +20,16 @@ const CANDY_BG_SOLID = {
 }
 
 export default function GuidelinesScreen({ onBegin, taxonomy = defaultTaxonomy }) {
+  const [expandedId, setExpandedId] = useState(null)
   const reduce = useReducedMotion()
 
-  const containerV = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.06 } },
-  }
+  const expandedCategory = taxonomy.categories.find((c) => c.id === expandedId)
+  const expandedTint = expandedCategory
+    ? CANDY_TINTS[taxonomy.categories.indexOf(expandedCategory) % CANDY_TINTS.length]
+    : null
 
-  const cardV = {
-    hidden: { opacity: 0, y: 24 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
+  function handleToggle(id) {
+    setExpandedId((current) => (current === id ? null : id))
   }
 
   return (
@@ -103,13 +105,13 @@ export default function GuidelinesScreen({ onBegin, taxonomy = defaultTaxonomy }
         </ul>
       </motion.section>
 
-      {/* Taxonomy grid */}
+      {/* Taxonomy grid with side panel */}
       <motion.section
         aria-labelledby="cma-guidelines-categories"
-        variants={containerV}
-        initial="hidden"
-        animate="visible"
-        style={{ width: '100%' }}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        style={{ width: '100%', maxWidth: '1100px', marginLeft: 'auto', marginRight: 'auto' }}
       >
         <h2
           id="cma-guidelines-categories"
@@ -118,80 +120,183 @@ export default function GuidelinesScreen({ onBegin, taxonomy = defaultTaxonomy }
           The taxonomy at a glance
         </h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
-          {taxonomy.categories.map((l1, index) => {
-            const tint = CANDY_TINTS[index % CANDY_TINTS.length]
-            const inkColor = CANDY_INK[tint]
-            const bgSolid = CANDY_BG_SOLID[tint]
+        <div style={{ display: 'grid', gridTemplateColumns: '380px 1fr', gap: '1.5rem', alignItems: 'start' }}>
+          {/* Left: collapsed cards */}
+          <div
+            role="tablist"
+            aria-label="Taxonomy categories"
+            style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
+          >
+            {taxonomy.categories.map((l1, index) => {
+              const tint = CANDY_TINTS[index % CANDY_TINTS.length]
+              const inkColor = CANDY_INK[tint]
+              const bgSolid = CANDY_BG_SOLID[tint]
+              const isExpanded = expandedId === l1.id
+              const Icon = getL1Icon(l1.iconKey)
 
-            return (
-              <motion.div
-                key={l1.id}
-                className={`glass-card candy-glass candy-glass--${tint}`}
-                variants={cardV}
-                whileHover={reduce ? {} : { y: -6, boxShadow: 'var(--shadow-lift)' }}
-                style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-                  <div
+              return (
+                <motion.button
+                  key={l1.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isExpanded}
+                  aria-controls={`cma-guideline-panel-${l1.id}`}
+                  id={`cma-guideline-tab-${l1.id}`}
+                  className={`glass-card candy-glass candy-glass--${tint}`}
+                  onClick={() => handleToggle(l1.id)}
+                  whileHover={reduce ? {} : { y: -2 }}
+                  whileTap={reduce ? {} : { scale: 0.99 }}
+                  animate={{
+                    backgroundColor: isExpanded ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.06)',
+                  }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    width: '100%',
+                    padding: '1rem 1.15rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.85rem',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    border: `1.5px solid ${isExpanded ? inkColor : 'rgba(255,255,255,0.08)'}`,
+                    borderRadius: 'var(--radius-md)',
+                    background: isExpanded ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.06)',
+                    color: 'var(--text-primary)',
+                    fontFamily: 'inherit',
+                    fontSize: '1rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  <span
                     aria-hidden="true"
                     style={{
-                      width: '44px', height: '44px', borderRadius: '14px',
+                      width: '36px', height: '36px', borderRadius: '10px',
                       background: bgSolid,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       color: inkColor,
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontWeight: 700,
-                      fontSize: '1.1rem',
-                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.6)',
                       flexShrink: 0,
                     }}
                   >
-                    {String(index + 1).padStart(2, '0')}
-                  </div>
-                  <h3 id={`cat-${l1.id}`} style={{ fontSize: '1.25rem', color: 'var(--text-primary)' }}>
-                    {l1.label}
-                  </h3>
-                </div>
+                    <Icon width={20} height={20} />
+                  </span>
+                  <span style={{ flex: 1 }}>{l1.label}</span>
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      display: 'inline-flex',
+                      transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: reduce ? 'none' : 'transform 0.2s',
+                      color: 'var(--text-secondary)',
+                    }}
+                  >
+                    ▼
+                  </span>
+                </motion.button>
+              )
+            })}
+          </div>
 
-                {l1.definition && (
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.55 }}>
-                    {l1.definition}
-                  </p>
-                )}
-
-                <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', listStyle: 'none', paddingLeft: 0, marginTop: '0.25rem' }}>
-                  {l1.subcategories.map((l2) => (
-                    <li
-                      key={l2.id}
+          {/* Right: detail panel */}
+          <div
+            className="glass-panel"
+            style={{
+              minHeight: '320px',
+              padding: '2rem',
+              borderRadius: 'var(--radius-xl)',
+              position: 'sticky',
+              top: '1.5rem',
+            }}
+          >
+            <AnimatePresence mode="wait">
+              {expandedCategory ? (
+                <motion.div
+                  key={expandedCategory.id}
+                  id={`cma-guideline-panel-${expandedCategory.id}`}
+                  role="tabpanel"
+                  aria-labelledby={`cma-guideline-tab-${expandedCategory.id}`}
+                  initial={{ opacity: 0, x: 16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -16 }}
+                  transition={{ duration: reduce ? 0 : 0.25 }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                    <span
+                      aria-hidden="true"
                       style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.2rem',
-                        fontSize: '0.9rem',
-                        paddingLeft: '0.85rem',
-                        borderLeft: `3px solid ${bgSolid}`,
+                        width: '56px', height: '56px', borderRadius: '16px',
+                        background: CANDY_BG_SOLID[expandedTint],
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        color: CANDY_INK[expandedTint],
                       }}
                     >
-                      <strong style={{ color: 'var(--text-primary)', fontWeight: 700 }}>
-                        {l2.label}
-                      </strong>
-                      {l2.definition && (
-                        <span style={{ color: 'var(--text-secondary)', lineHeight: 1.45 }}>
+                      {(() => {
+                        const Icon = getL1Icon(expandedCategory.iconKey)
+                        return <Icon width={28} height={28} />
+                      })()}
+                    </span>
+                    <h3 style={{ fontSize: '1.5rem', margin: 0, color: 'var(--text-primary)' }}>
+                      {expandedCategory.label}
+                    </h3>
+                  </div>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                    {expandedCategory.definition}
+                  </p>
+                  <h4 style={{ fontSize: '1rem', marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
+                    Sub-categories
+                  </h4>
+                  <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', listStyle: 'none', paddingLeft: 0, margin: 0 }}>
+                    {expandedCategory.subcategories.map((l2) => (
+                      <li
+                        key={l2.id}
+                        style={{
+                          padding: '0.85rem 1rem',
+                          borderRadius: 'var(--radius-md)',
+                          background: 'rgba(255,255,255,0.04)',
+                          border: '1px solid rgba(255,255,255,0.06)',
+                        }}
+                      >
+                        <strong style={{ color: 'var(--text-primary)', fontWeight: 700, display: 'block', marginBottom: '0.25rem' }}>
+                          {l2.label}
+                        </strong>
+                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.5, display: 'block' }}>
                           {l2.definition}
                         </span>
-                      )}
-                      {l2.example && (
-                        <em style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', fontStyle: 'italic', lineHeight: 1.4 }}>
-                          Example: {l2.example}
-                        </em>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            )
-          })}
+                        {l2.example && (
+                          <em style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontStyle: 'italic', lineHeight: 1.45, display: 'block', marginTop: '0.35rem' }}>
+                            Example: {l2.example}
+                          </em>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="empty"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: reduce ? 0 : 0.2 }}
+                  style={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    color: 'var(--text-secondary)',
+                    gap: '0.75rem',
+                    minHeight: '280px',
+                  }}
+                >
+                  <span aria-hidden="true" style={{ fontSize: '2.5rem', opacity: 0.5 }}>👆</span>
+                  <p style={{ fontSize: '1.05rem', margin: 0 }}>
+                    Select a category on the left to see its definition and sub-categories.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </motion.section>
 

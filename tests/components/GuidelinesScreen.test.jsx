@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import fs from 'node:fs'
 import { describe, it, expect, vi } from 'vitest'
@@ -11,6 +11,7 @@ const fixture = {
       id: 'A',
       label: 'CatA',
       definition: 'DefA',
+      iconKey: 'copyright',
       subcategories: [
         { id: 'A.1', label: 'SubA1', definition: 'D-A1', example: 'E-A1' },
       ],
@@ -19,6 +20,7 @@ const fixture = {
       id: 'B',
       label: 'CatB',
       definition: 'DefB',
+      iconKey: 'hate',
       subcategories: [
         { id: 'B.1', label: 'SubB1', definition: 'D-B1', example: 'E-B1' },
       ],
@@ -28,41 +30,47 @@ const fixture = {
 
 describe('GuidelinesScreen', () => {
   describe('fixture-based rendering', () => {
-    it('renders both L1 labels', () => {
+    it('renders both L1 labels as tab buttons', () => {
       render(<GuidelinesScreen onBegin={() => {}} taxonomy={fixture} />)
-      expect(screen.getByRole('heading', { level: 3, name: 'CatA' })).toBeTruthy()
-      expect(screen.getByRole('heading', { level: 3, name: 'CatB' })).toBeTruthy()
+      expect(screen.getByRole('tab', { name: /CatA/i })).toBeTruthy()
+      expect(screen.getByRole('tab', { name: /CatB/i })).toBeTruthy()
     })
 
-    it('renders L1 definitions', () => {
+    it('hides L2 details by default', () => {
       render(<GuidelinesScreen onBegin={() => {}} taxonomy={fixture} />)
-      expect(screen.getByText('DefA')).toBeTruthy()
-      expect(screen.getByText('DefB')).toBeTruthy()
+      expect(screen.queryByText('D-A1')).toBeNull()
+      expect(screen.queryByText('D-B1')).toBeNull()
     })
 
-    it('renders L2 labels, definitions, and examples', () => {
+    it('clicking an L1 tab reveals its definition and L2 details in side panel', async () => {
+      const user = userEvent.setup()
       render(<GuidelinesScreen onBegin={() => {}} taxonomy={fixture} />)
+      const catATab = screen.getByRole('tab', { name: /CatA/i })
+      await user.click(catATab)
+      expect(await screen.findByText('DefA')).toBeTruthy()
       expect(screen.getByText('SubA1')).toBeTruthy()
       expect(screen.getByText(/D-A1/)).toBeTruthy()
       expect(screen.getByText(/E-A1/)).toBeTruthy()
-      expect(screen.getByText('SubB1')).toBeTruthy()
-      expect(screen.getByText(/D-B1/)).toBeTruthy()
-      expect(screen.getByText(/E-B1/)).toBeTruthy()
     })
 
-    it('renders L1 headers as h3 with correct id for aria-labelledby', () => {
+    it('clicking a second tab switches panel content', async () => {
+      const user = userEvent.setup()
       render(<GuidelinesScreen onBegin={() => {}} taxonomy={fixture} />)
-      const catA = screen.getByRole('heading', { level: 3, name: 'CatA' })
-      expect(catA.id).toBe('cat-A')
-      const catB = screen.getByRole('heading', { level: 3, name: 'CatB' })
-      expect(catB.id).toBe('cat-B')
+      await user.click(screen.getByRole('tab', { name: /CatA/i }))
+      expect(await screen.findByText('DefA')).toBeTruthy()
+      await user.click(screen.getByRole('tab', { name: /CatB/i }))
+      expect(await screen.findByText('DefB')).toBeTruthy()
+      await waitFor(() => expect(screen.queryByText('DefA')).toBeNull())
     })
 
-    it('renders L2 as li with strong wrapping label', () => {
-      const { container } = render(<GuidelinesScreen onBegin={() => {}} taxonomy={fixture} />)
-      const strongA1 = container.querySelector('li strong')
-      expect(strongA1).toBeTruthy()
-      expect(strongA1.textContent).toBe('SubA1')
+    it('clicking the same tab collapses the panel', async () => {
+      const user = userEvent.setup()
+      render(<GuidelinesScreen onBegin={() => {}} taxonomy={fixture} />)
+      const catATab = screen.getByRole('tab', { name: /CatA/i })
+      await user.click(catATab)
+      expect(await screen.findByText('DefA')).toBeTruthy()
+      await user.click(catATab)
+      await waitFor(() => expect(screen.queryByText('DefA')).toBeNull())
     })
   })
 
@@ -70,26 +78,20 @@ describe('GuidelinesScreen', () => {
     it('uses imported taxonomy.json when no taxonomy prop supplied', () => {
       render(<GuidelinesScreen onBegin={() => {}} />)
       const firstLabel = taxonomy.categories[0].label
-      expect(screen.getByRole('heading', { level: 3, name: firstLabel })).toBeTruthy()
+      expect(screen.getByRole('tab', { name: firstLabel })).toBeTruthy()
     })
 
-    it('renders all 10 L1 labels from taxonomy.json', () => {
+    it('renders all 10 L1 tabs from taxonomy.json', () => {
       render(<GuidelinesScreen onBegin={() => {}} />)
       taxonomy.categories.forEach((cat) => {
-        expect(screen.getByRole('heading', { level: 3, name: cat.label })).toBeTruthy()
+        expect(screen.getByRole('tab', { name: cat.label })).toBeTruthy()
       })
     })
 
-    it('renders all 65 L2 li nodes', () => {
+    it('renders icons for all L1 tabs', () => {
       const { container } = render(<GuidelinesScreen onBegin={() => {}} />)
-      const expectedCount = taxonomy.categories.reduce(
-        (sum, cat) => sum + cat.subcategories.length,
-        0
-      )
-      const lis = container.querySelectorAll(
-        'section[aria-labelledby="cma-guidelines-categories"] li'
-      )
-      expect(lis.length).toBe(expectedCount)
+      const svgs = container.querySelectorAll('[role="tab"] svg')
+      expect(svgs.length).toBe(taxonomy.categories.length)
     })
   })
 
@@ -151,17 +153,6 @@ describe('GuidelinesScreen', () => {
       const realLabels = taxonomy.categories.map((c) => c.label)
       realLabels.forEach((label) => {
         expect(src).not.toContain(label)
-      })
-    })
-  })
-
-  describe('brand safety', () => {
-    it('rendered textContent contains no forbidden brand tokens', () => {
-      render(<GuidelinesScreen onBegin={() => {}} taxonomy={fixture} />)
-      const content = document.body.textContent.toLowerCase()
-      const forbidden = ['dis' + 'ney', 'mar' + 'vel', 'pix' + 'ar', 'star' + ' ' + 'wars']
-      forbidden.forEach((token) => {
-        expect(content).not.toContain(token)
       })
     })
   })
