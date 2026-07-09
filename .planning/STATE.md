@@ -132,6 +132,8 @@ Open client decisions (O-01 through O-10) are tracked in `.planning/REQUIREMENTS
 *2026-07-08 — Phase 2 executed: 4 plans across 4 sequential waves... [truncated for brevity]*
 *2026-07-08 — Phase 3 executed: 4 plans executed (03-01 Timer store, 03-02 Tagging UI, 03-03 Runner + Verdict, 03-04 Integration). 251 tests green, 22 test files. Zustand timer slice with RAF ticking, CountdownDisplay, L1/L2 TagPanel with accordion UI, VerdictButtons (Approve/Escalate/Decline), RunnerScreen multi-video composition, ProgressIndicator dots. App.jsx wired: RunnerScreen replaces direct VideoPlayerScreen, timer on playing event, SCOREBOARD stub. Assessment flow complete: Landing → Guidelines → Runner (multi-video) → Scoreboard. All 24 Phase 3 REQ-IDs closed. Phase 4 ready.*
 
+*2026-07-09 — 5 real videos onboarded. `src/videos/video{1..5}.mp4` → `public/videos/v{01..05}.mp4` (LFS-tracked, ~56MB total). `src/data/playlist.json` rewired: 5 distinct srcUrls (was 4 placeholders reusing v01), real durationSec from ffprobe (v01:39s, v02:59s, v03:15s, v04:45s, v05:57s), chapters cleared (previous stub labels were meaningless). `_status: placeholder` removed. Test `VideoPlayerScreen title` updated ("Test Video" → "Video 1"). 425/425 tests green. Open follow-ups: (a) client-authored chapter markers per video (Phase 4/6), (b) per-video sprite + thumbs.vtt generation for v02..v05 (Phase 6, `scripts/generate-sprites.js`), (c) per-video answer keys — L1/L2 tag sets + verdict per video (blocker O-01 for V5, Phase 4).*
+
 ## Decisions
 
 - [Phase 03-04]: SCREENS.RUNNER added as primary assessment screen key (ASSESSMENT retained as fallback alias)

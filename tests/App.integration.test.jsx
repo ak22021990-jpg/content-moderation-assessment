@@ -1,4 +1,5 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { readFileSync } from 'fs'
 import { join } from 'path'
@@ -38,24 +39,20 @@ describe('App integration', () => {
       const user = userEvent.setup()
       render(<App />)
 
-      // Fill identity
       await user.type(screen.getByLabelText(/full name/i), 'Alice')
       await user.type(screen.getByLabelText(/email/i), 'alice@example.com')
       expect(screen.getByRole('button', { name: /start/i }).disabled).toBe(false)
 
-      // Start → GUIDELINES
       await user.click(screen.getByRole('button', { name: /start/i }))
       expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Assessment Guidelines')
       expect(screen.getByText(/before you begin/i)).toBeTruthy()
       expect(screen.getByRole('button', { name: /begin assessment/i })).toBeTruthy()
 
-      // Verify sessionStorage written
       const stored = JSON.parse(sessionStorage.getItem(IDENTITY_KEY))
       expect(stored.name).toBe('Alice')
       expect(stored.email).toBe('alice@example.com')
       expect(typeof stored.startedAt).toBe('string')
 
-      // Begin Assessment → RUNNER
       await user.click(screen.getByRole('button', { name: /begin assessment/i }))
       expect(screen.getByTestId('runner-screen')).toBeInTheDocument()
     })
@@ -112,7 +109,16 @@ describe('App integration', () => {
     })
   })
 
-  describe('Path 5 — Brand safety end-to-end', () => {
+  describe('Path 5 — SUBMIT_DONE screen routing', () => {
+    it('App.jsx source wires SUBMIT_DONE case to SubmitDoneScreen', () => {
+      const src = readFileSync(join(__dirname, '..', 'src', 'App.jsx'), 'utf8')
+      expect(src).toContain('import SubmitDoneScreen')
+      expect(src).toContain("case SCREENS.SUBMIT_DONE:")
+      expect(src).toContain('<SubmitDoneScreen')
+    })
+  })
+
+  describe('Path 6 — Brand safety end-to-end', () => {
     it('has no forbidden brand tokens after completing happy path', async () => {
       const user = userEvent.setup()
       render(<App />)

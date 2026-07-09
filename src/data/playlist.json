@@ -1,79 +1,60 @@
 {
-  "_note": "5 videos for Phase 3 multi-video assessment. v02-v05 are placeholders reusing v01.mp4 assets.",
+  "_note": "5 real videos wired 2026-07-09. Chapters cleared — client-authored markers pending. Per-video thumbs/sprites (v02..v05) not yet generated; media-chrome will silently skip missing tracks. Phase 4 wires answer keys; Phase 6 generates thumbs/sprites + finalizes chapters.",
   "videos": [
     {
       "id": "v01",
-      "title": "Test Video — Content Moderation",
+      "title": "Video 1 — Content Moderation",
       "srcUrl": "/videos/v01.mp4",
       "spriteUrl": "/sprites/v01_sprite.jpg",
       "thumbsVttUrl": "/vtt/v01.thumbs.vtt",
       "chaptersVttUrl": "/vtt/v01.chapters.vtt",
-      "durationSec": 90,
+      "durationSec": 39,
       "chapters": [
-        { "t": 25.0, "label": "Watermark overlay visible at bottom-right" },
-        { "t": 55.0, "label": "Fictional brand logo appears" },
-        { "t": 78.0, "label": "Text overlay with counterfeit claim" }
+        { "t": 0, "label": "Intro — clean frame" },
+        { "t": 8, "label": "Watermark overlay visible" },
+        { "t": 18, "label": "Fictional brand logo appears" },
+        { "t": 28, "label": "Counterfeit-claim text overlay" }
       ]
     },
     {
       "id": "v02",
       "title": "Video 2 — Content Moderation",
-      "srcUrl": "/videos/v01.mp4",
-      "spriteUrl": "/sprites/v01_sprite.jpg",
-      "thumbsVttUrl": "/vtt/v01.thumbs.vtt",
-      "chaptersVttUrl": "/vtt/v01.chapters.vtt",
-      "durationSec": 90,
-      "chapters": [
-        { "t": 25.0, "label": "Video 2 — chapter A" },
-        { "t": 55.0, "label": "Video 2 — chapter B" },
-        { "t": 78.0, "label": "Video 2 — chapter C" }
-      ],
-      "_status": "placeholder"
+      "srcUrl": "/videos/v02.mp4",
+      "spriteUrl": "/sprites/v02_sprite.jpg",
+      "thumbsVttUrl": "/vtt/v02.thumbs.vtt",
+      "chaptersVttUrl": "/vtt/v02.chapters.vtt",
+      "durationSec": 59,
+      "chapters": []
     },
     {
       "id": "v03",
       "title": "Video 3 — Content Moderation",
-      "srcUrl": "/videos/v01.mp4",
-      "spriteUrl": "/sprites/v01_sprite.jpg",
-      "thumbsVttUrl": "/vtt/v01.thumbs.vtt",
-      "chaptersVttUrl": "/vtt/v01.chapters.vtt",
-      "durationSec": 90,
-      "chapters": [
-        { "t": 25.0, "label": "Video 3 — chapter A" },
-        { "t": 55.0, "label": "Video 3 — chapter B" },
-        { "t": 78.0, "label": "Video 3 — chapter C" }
-      ],
-      "_status": "placeholder"
+      "srcUrl": "/videos/v03.mp4",
+      "spriteUrl": "/sprites/v03_sprite.jpg",
+      "thumbsVttUrl": "/vtt/v03.thumbs.vtt",
+      "chaptersVttUrl": "/vtt/v03.chapters.vtt",
+      "durationSec": 15,
+      "chapters": []
     },
     {
       "id": "v04",
       "title": "Video 4 — Content Moderation",
-      "srcUrl": "/videos/v01.mp4",
-      "spriteUrl": "/sprites/v01_sprite.jpg",
-      "thumbsVttUrl": "/vtt/v01.thumbs.vtt",
-      "chaptersVttUrl": "/vtt/v01.chapters.vtt",
-      "durationSec": 90,
-      "chapters": [
-        { "t": 25.0, "label": "Video 4 — chapter A" },
-        { "t": 55.0, "label": "Video 4 — chapter B" },
-        { "t": 78.0, "label": "Video 4 — chapter C" }
-      ],
-      "_status": "placeholder"
+      "srcUrl": "/videos/v04.mp4",
+      "spriteUrl": "/sprites/v04_sprite.jpg",
+      "thumbsVttUrl": "/vtt/v04.thumbs.vtt",
+      "chaptersVttUrl": "/vtt/v04.chapters.vtt",
+      "durationSec": 45,
+      "chapters": []
     },
     {
       "id": "v05",
       "title": "Video 5 — Content Moderation",
-      "srcUrl": "/videos/v01.mp4",
-      "spriteUrl": "/sprites/v01_sprite.jpg",
-      "thumbsVttUrl": "/vtt/v01.thumbs.vtt",
-      "chaptersVttUrl": "/vtt/v01.chapters.vtt",
-      "durationSec": 90,
-      "chapters": [
-        { "t": 25.0, "label": "Video 5 — chapter A" },
-        { "t": 55.0, "label": "Video 5 — chapter B" },
-        { "t": 78.0, "label": "Video 5 — chapter C" }
-      ],
-      "_status": "placeholder"
+      "srcUrl": "/videos/v05.mp4",
+      "spriteUrl": "/sprites/v05_sprite.jpg",
+      "thumbsVttUrl": "/vtt/v05.thumbs.vtt",
+      "chaptersVttUrl": "/vtt/v05.chapters.vtt",
+      "durationSec": 57,
+      "chapters": []
     }
   ],
   "_cdnDocs": "srcUrl paths are relative to Pages root. Phase 6 makes them env-conditional per CONTENT-03."

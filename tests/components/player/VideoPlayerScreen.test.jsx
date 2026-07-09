@@ -41,7 +41,7 @@ describe('VideoPlayerScreen', () => {
 
     it('renders video title from playlist', () => {
       render(<VideoPlayerScreen />)
-      expect(screen.getByText('Test Video — Content Moderation')).toBeTruthy()
+      expect(screen.getByText('Video 1 — Content Moderation')).toBeTruthy()
     })
   })
 

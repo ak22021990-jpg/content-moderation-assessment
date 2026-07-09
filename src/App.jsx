@@ -54,5 +54,20 @@ export default function App() {
     }
   }
 
-  return <ErrorBoundary>{renderScreen()}</ErrorBoundary>
+  const isRunner = state.screen === SCREENS.RUNNER || state.screen === SCREENS.ASSESSMENT
+
+  return (
+    <ErrorBoundary>
+      {!isRunner && (
+        <div className="candy-scene" aria-hidden="true">
+          <div className="candy-shape candy-shape--blush" />
+          <div className="candy-shape candy-shape--sky" />
+          <div className="candy-shape candy-shape--mint" />
+          <div className="candy-shape candy-shape--plum" />
+          <div className="candy-shape candy-shape--sunshine" />
+        </div>
+      )}
+      {renderScreen()}
+    </ErrorBoundary>
+  )
 }

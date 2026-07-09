@@ -714,27 +714,15 @@ export function cohensKappa(rater1Tags, rater2Tags, allCategories) {
 | A5 | 10 milestone animations from flagmail1 are reusable as-is for this project | Pattern 3: MilestoneLottie | Animation themes (email phishing) may not fit content moderation context. May need replacement |
 | A6 | GSAP `@gsap/react` `useGSAP()` hook is compatible with Vite 8 | Pattern 4: GSAP | Vite version mismatch could cause build issues. Both are current major versions — low risk |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **What are the correct score-to-milestone thresholds?**
-   - What we know: flagmail1 has 10 badges with per-round criteria (streaks, speed, perfection). This project needs per-assessment thresholds (overall score %).
-   - What's unclear: Exact thresholds for each of the 5 mapped milestones. A4 assumes thresholds, needs stakeholder confirmation.
-   - Recommendation: Ship with A4 thresholds. Mark as configurable constants in `utils/competency.js`. Adjust after stakeholder review.
+1. **What are the correct score-to-milestone thresholds?** RESOLVED — Ship with A4 thresholds (PERFECT_EYE 100%, SNIPER 90%, ON_FIRE 80%, ZONE_CLEAR 70%, EAGLE_EYE 60%). Mark as configurable constants in `utils/competency.js`. Adjust after stakeholder review.
 
-2. **How should Phase 3 timing data gap be resolved?**
-   - What we know: Answers[] lacks `timeSpentMs`, `timedOut`, `submittedAt`. The timer store (`useAssessmentStore`) tracks `remainingMs` and `isExpired` but doesn't persist them per-answer.
-   - What's unclear: Should Phase 4 backfill the store, or should this be a Phase 3 fix?
-   - Recommendation: Phase 4 Wave 0 task: add timing fields to `commitAnswer()`. The timer state (`remainingMs` at submit time) can compute `timeSpentMs = TOTAL_MS - remainingMs`. `timedOut` is `isExpired` at submit. This is ~10 lines of code change.
+2. **How should Phase 3 timing data gap be resolved?** RESOLVED — Phase 4 Wave 0 backfills timing fields into `commitAnswer()`. Compute `timeSpentMs = 180000 - remainingMs`, capture `timedOut` from `isExpired`, record `submittedAt` from `Date.now()`. ~10 lines of code.
 
-3. **Which Lottie animations from flagmail1 are applicable?**
-   - What we know: flagmail1 has 12 JSON files: 10 badge animations + Celebration + Confetti. Badge themes are email/phishing-specific (GHOST_DETECTIVE, ICE_COLD, NO_HINTS_NEEDED).
-   - What's unclear: Are the email-themed animations appropriate for content moderation? Should we use only the generic ones (PERFECT_EYE, SNIPER, ON_FIRE, ZONE_CLEAR)?
-   - Recommendation: Start with 5 mapped milestones. Use flagmail1's generic animations. If animations feel off-theme, swap in Phase 6 polish. Document in design ticket.
+3. **Which Lottie animations from flagmail1 are applicable?** RESOLVED — Start with 5 mapped milestones using flagmail1's generic animations (PERFECT_EYE, SNIPER, ON_FIRE, ZONE_CLEAR, EAGLE_EYE). If animations feel off-theme, swap in Phase 6 polish.
 
-4. **Kappa calibration: How to collect 3 raters' tags?**
-   - What we know: QUALITY-02 requires 3 independent raters tagging 5 videos blindly. Per-L1 kappa computed.
-   - What's unclear: Rater tooling — spreadsheet, Google Form, or custom tool? How to blind raters (no answer keys visible)?
-   - Recommendation: Use a Google Sheet with columns: Rater ID, Video ID, L1 Tags (checkbox per category), L2 Tags, Verdict. Share without answer key sheet. Compute kappa offline via `utils/kappa.js`. Store in `docs/kappa-calibration.md`.
+4. **Kappa calibration: How to collect 3 raters' tags?** RESOLVED — Use a Google Sheet with columns: Rater ID, Video ID, L1 Tags (checkbox per category), L2 Tags, Verdict. Share without answer key sheet. Compute kappa offline via `utils/kappa.js`. Store in `docs/kappa-calibration.md`.
 
 ## Environment Availability
 

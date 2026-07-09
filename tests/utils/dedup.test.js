@@ -30,6 +30,14 @@ describe('normalizeEmail', () => {
     expect(normalizeEmail('Bob.Smith@Company.COM')).toBe('bob.smith@company.com')
   })
 
+  it('strips multiple dots from Gmail local part', () => {
+    expect(normalizeEmail('a.b.c@gmail.com')).toBe('abc@gmail.com')
+  })
+
+  it('preserves +alias in non-Gmail addresses', () => {
+    expect(normalizeEmail('user+tag@outlook.com')).toBe('user+tag@outlook.com')
+  })
+
   it('returns empty string for null input', () => {
     expect(normalizeEmail(null)).toBe('')
   })
@@ -97,5 +105,13 @@ describe('hashEmail', () => {
     await expect(hashEmail(null)).resolves.toBeDefined()
     await expect(hashEmail(undefined)).resolves.toBeDefined()
     await expect(hashEmail('')).resolves.toBeDefined()
+  })
+
+  it('does not throw on very long email (200+ chars)', async () => {
+    const local = 'a'.repeat(190)
+    const longEmail = `${local}@example.com`
+    expect(longEmail.length).toBeGreaterThan(200)
+    const result = await hashEmail(longEmail)
+    expect(result).toMatch(/^[a-f0-9]{64}$/)
   })
 })

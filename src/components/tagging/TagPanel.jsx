@@ -13,8 +13,8 @@ export default function TagPanel({ onSelectionChange = noop }) {
   }, [state.selectedL1, state.selectedL2, onSelectionChange])
 
   return (
-    <section className="cma-tag-panel" aria-label="Content moderation tags">
-      <div className="cma-tag-l1-list">
+    <section className="cma-tag-panel" aria-label="Content moderation tags" style={{ flex: 1, overflowY: 'auto', paddingRight: '8px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
         {taxonomy.categories.map(cat => (
           <L1Chip
             key={cat.id}

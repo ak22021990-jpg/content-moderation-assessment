@@ -90,6 +90,18 @@ disney|disney\+|marvel|spider-man|spiderman|avengers|iron man|ironman|captain am
 
 ---
 
+## Scan Exclusions
+
+The following paths are excluded from the brand-string scan because they legitimately reference the forbidden strings for meta purposes (documenting the guard system, describing forbidden clusters, or capturing internal planning context that never ships to users):
+
+- `docs/brand-guardrails.md` — this file, which defines the forbidden clusters
+- `.github/workflows/brand-guard.yml` — the CI scanner (contains the pattern)
+- `.husky/pre-commit` — the local scanner (contains the pattern)
+- `package-lock.json` — dependency graph, not authored content
+- `.planning/**` — GSD planning artifacts (roadmap, requirements, phase plans, research). These docs discuss the brand-guard system itself and reference the working directory name; they are never bundled into `dist/` or served to candidates.
+
+Both `.husky/pre-commit` and `.github/workflows/brand-guard.yml` must enforce these exclusions.
+
 ## Process for Updating
 
 1. Open a PR with the proposed change.

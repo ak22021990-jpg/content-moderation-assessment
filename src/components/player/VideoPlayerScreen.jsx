@@ -98,12 +98,17 @@ export default function VideoPlayerScreen({ src, videoIndex, onReady, onPlaying,
   }, [])
 
   return (
-    <section className="cma-player-container" aria-label="Video player">
-      <div className="cma-player-card">
-        <div className="cma-video-title-bar">
-          <span className="cma-video-title">Video {currentVideoIdx + 1} of {playlist.videos.length}</span>
-          <span className="cma-video-subtitle">{currentVideo.title}</span>
-        </div>
+    <section className="cma-player-card" aria-label="Video player">
+      <div className="cma-video-title-bar">
+        <span className="cma-video-title">Video {currentVideoIdx + 1} of {playlist.videos.length}</span>
+        <span className="cma-video-subtitle">{currentVideo.title}</span>
+      </div>
+      <div className="cma-video-frame">
+        {import.meta.env.DEV && onReset && (
+          <button type="button" className="cma-dev-reset" onClick={handleDevReset}>
+            [dev] reset
+          </button>
+        )}
         {videoError ? (
           <div className="cma-player-error" role="alert">
             <span className="cma-error-icon" aria-hidden="true">!</span>
@@ -142,11 +147,12 @@ export default function VideoPlayerScreen({ src, videoIndex, onReady, onPlaying,
           </MediaController>
         )}
       </div>
-      {import.meta.env.DEV && onReset && (
-        <button type="button" onClick={handleDevReset}>
-          [dev] Reset
-        </button>
-      )}
+      <div className="cma-player-shortcuts" aria-label="Keyboard shortcuts">
+        <span><kbd>Space</kbd>play / pause</span>
+        <span><kbd>←</kbd><kbd>→</kbd>±5s</span>
+        <span><kbd>M</kbd>mute</span>
+        <span><kbd>F</kbd>fullscreen</span>
+      </div>
     </section>
   )
 }

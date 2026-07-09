@@ -86,8 +86,8 @@ export default function RunnerScreen({ onComplete, onPlaying, onReset }) {
   }, [])
 
   const feedbackTint = feedback === 'correct'
-    ? { primary: 'var(--candy-mint)', ink: 'var(--candy-mint-ink)', accent: 'var(--status-safe)' }
-    : { primary: 'var(--candy-blush)', ink: 'var(--candy-blush-ink)', accent: 'var(--status-violation)' }
+    ? { primary: 'var(--status-safe)', accent: 'var(--status-safe)' }
+    : { primary: 'var(--status-violation)', accent: 'var(--status-violation)' }
 
   return (
     <section
@@ -96,28 +96,42 @@ export default function RunnerScreen({ onComplete, onPlaying, onReset }) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '1.5rem',
+        gap: '1rem',
         width: '100%',
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: '2rem 2.5rem',
-        minHeight: '100dvh',
+        height: '100dvh',
+        overflow: 'hidden',
+        padding: '1.25rem 1.75rem 1.5rem',
         position: 'relative',
         zIndex: 1,
+        background: 'radial-gradient(ellipse at top, #14172b 0%, #0A0B14 65%)',
+        color: '#F5F5F7',
       }}
     >
-      <ProgressIndicator />
+      <header style={{ flex: '0 0 auto', maxWidth: '1400px', width: '100%', margin: '0 auto' }}>
+        <ProgressIndicator />
+      </header>
 
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'stretch', flexWrap: 'wrap' }}>
-        {/* Left: Video (65%) */}
+      <div
+        style={{
+          flex: '1 1 auto',
+          minHeight: 0,
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1fr) minmax(320px, 380px)',
+          gap: '1.25rem',
+          width: '100%',
+          maxWidth: '1400px',
+          margin: '0 auto',
+          alignItems: 'stretch',
+        }}
+      >
+        {/* Left: Video column */}
         <motion.div
-          className="glass-panel"
           style={{
-            flex: '1 1 65%',
             display: 'flex',
             flexDirection: 'column',
-            gap: '1.25rem',
-            padding: '1.25rem',
+            gap: '1rem',
+            minHeight: 0,
+            minWidth: 0,
           }}
           initial={{ opacity: 0, x: -24 }}
           animate={{ opacity: 1, x: 0 }}
@@ -125,15 +139,13 @@ export default function RunnerScreen({ onComplete, onPlaying, onReset }) {
         >
           <div
             style={{
-              flex: 1,
+              aspectRatio: '16 / 9',
+              width: '100%',
+              maxHeight: '100%',
+              minHeight: 0,
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'linear-gradient(135deg, rgba(42, 27, 61, 0.9), rgba(78, 45, 110, 0.9))',
-              borderRadius: 'var(--radius-lg)',
               overflow: 'hidden',
-              minHeight: '360px',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15)',
+              borderRadius: 12,
             }}
           >
             <AnimatePresence mode="wait">
@@ -143,7 +155,7 @@ export default function RunnerScreen({ onComplete, onPlaying, onReset }) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.04 }}
                 transition={{ duration: 0.35 }}
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: '100%', height: '100%', display: 'flex' }}
               >
                 <VideoPlayerScreen
                   videoIndex={currentVideoIndex}
@@ -156,27 +168,20 @@ export default function RunnerScreen({ onComplete, onPlaying, onReset }) {
           <CountdownDisplay />
         </motion.div>
 
-        {/* Right: Tagging (30%) */}
+        {/* Right: Tagging column */}
         <motion.div
           className="glass-panel"
           style={{
-            flex: '1 1 30%',
-            minWidth: '320px',
             display: 'flex',
             flexDirection: 'column',
             gap: '1rem',
-            padding: '1.5rem',
+            padding: '1.25rem',
+            minHeight: 0,
           }}
           initial={{ opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.55, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div style={{ marginBottom: '0.25rem' }}>
-            <span className="eyebrow">
-              <span className="eyebrow-dot" />
-              Tag &amp; decide
-            </span>
-          </div>
           <TagPanel onSelectionChange={handleSelectionChange} />
           <VerdictButtons onVerdict={handleVerdict} submitting={submitting} />
         </motion.div>
@@ -243,7 +248,7 @@ export default function RunnerScreen({ onComplete, onPlaying, onReset }) {
                   height: '96px',
                   margin: '0 auto 1.25rem',
                   borderRadius: '50%',
-                  background: feedback === 'correct' ? 'var(--accent-gradient)' : `linear-gradient(135deg, ${feedbackTint.primary}, ${feedbackTint.accent})`,
+                  background: `linear-gradient(135deg, ${feedbackTint.primary}, ${feedbackTint.accent})`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -261,13 +266,13 @@ export default function RunnerScreen({ onComplete, onPlaying, onReset }) {
                   </svg>
                 )}
               </motion.div>
-              <h2 id="cma-feedback-title" style={{ fontSize: '2.25rem', marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
-                {feedback === 'correct' ? 'Nice call!' : 'Not quite'}
+              <h2 id="cma-feedback-title" style={{ fontSize: '1.75rem', marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
+                {feedback === 'correct' ? 'Recorded' : 'Recorded — miss'}
               </h2>
-              <p style={{ fontSize: '1.05rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
+              <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
                 {feedback === 'correct'
-                  ? 'Spot on. Moving to the next clip.'
-                  : 'Check the taxonomy panel again — your next clip is loading.'}
+                  ? 'Advancing to next clip.'
+                  : 'Advancing to next clip. Review the taxonomy on scoreboard.'}
               </p>
               <button
                 type="button"
